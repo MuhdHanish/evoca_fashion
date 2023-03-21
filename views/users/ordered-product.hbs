@@ -1,0 +1,78 @@
+{{>user-header}}
+<section id="featured" class="my-5 ">
+   <div class="row mx-auto container">
+      {{#each orderItems}}
+      <hr>
+      <div
+         class="shop-product featured-prodcut text-center  col-lg-3 col-md-6 col-12 mb-3  d-flex justify-content-center">
+         <img class="img-fluid" src="/product-images/{{productDetails.images.[0]}}.jpg">
+      </div>
+      <div class="shop-product featured-prodcut text-center  col-lg-9 col-md-4 col-12  d-flex">
+         <ul style="text-align:left;" class="my-4">
+            <h5 class="text-muted">Productname :<span class="text-dark"> {{productDetails.title}}</span></h5>
+            <h5 class="text-muted">Brand :<span class="text-dark"> {{productDetails.brand}}</span></h5>
+            <h5 class="text-muted">Caregory :<span class="text-dark"> {{productDetails.category}}</span></h5>
+            <h5 class="text-muted">Offerprice :<span class="text-dark"> ₹{{productDetails.offerPrice}}</span></h5>
+            <h5 class="text-muted">Quanitity :<span class="text-dark"> {{quantity}}</span></h5>
+            <h5 class="text-muted">Size :<span class="text-dark"> {{size}}</span></h5>
+         </ul>
+      </div>
+      {{/each}}
+      <hr>
+   </div>
+</section>
+
+<div class="col-12">
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         {{#if (eq orderDetails.orderStatus "Delivered")}}
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         {{else}}
+         {{#if (eq orderDetails.orderStatus "Shipped")}}
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         {{else}}
+         {{#if (eq orderDetails.orderStatus "Processing")}}
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+         {{else}}
+         {{#if (eq orderDetails.orderStatus "Placed")}}
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+         {{/if}}
+         {{/if}}
+         {{/if}}
+         {{/if}}
+      </ul>
+   </div>
+</div>
+{{#if (eq orderDetails.orderStatus "Cancelled")}}
+<p class="text-danger fs-3 text-center " style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED !
+</p>
+<div class="text-center">
+   <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment returned
+   </p>
+</div>
+{{else}}
+<div class="container">
+   <div class="col-12">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li><i class="fa-solid fa-list-check fs-4"></i><span class="ms-2 fs-5">Placed</span></li>
+            <li><i class="fa-solid fa-gears fs-4"></i><span class="ms-2 fs-5">Processing</span></li>
+            <li><i class="fa-solid fa-truck-fast fs-4"></i><span class="ms-2 fs-5">Shipping</span></li>
+            <li><i class="fa-solid fa-box-open fs-4"></i><span class="ms-2 fs-5">Delivered</span></li>
+         </ul>
+      </div>
+   </div>
+</div>
+{{/if}}

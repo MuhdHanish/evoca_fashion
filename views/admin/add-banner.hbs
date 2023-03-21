@@ -1,0 +1,43 @@
+{{>admin-header}}
+
+<div class="container my-5">
+  <form name="banner_form" onsubmit="return bannerValidate()" action="/admin/admin-addbanner"
+    enctype="multipart/form-data" method="post">
+    <div class="row">
+      <div class="col-md-6 mb-5 mb-md-0 ">
+        <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">ADD BANNER</h2>
+        <div class="p-3 p-lg-5 border">
+
+          <div class="form-group row mb-3">
+            <div class="col-md-6">
+              <label for="c_fname" class="text-black">Banner Image <span class="text-danger">*</span></label>
+              <input type="file" class="form-control" accept="image/*" id="banner_img" placeholder="Coupon Name"
+                style="border: black 1px solid;border-radius:0;" value="" name="banner_img" required>
+            </div>
+            <div class="col-md-6">
+              <label for="c_lname" class="text-black">Main Text<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="main_text" placeholder=""
+                style="border: black 1px solid;border-radius:0;" value="" name="main_text">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h2 class="h3 mb-3" style="color: white;">Add Banner</h2>
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <div class="p-3 p-lg-5 border">
+              <div class="form-group  text-center">
+                <button class=" model-btn" type="submit" style="font-family: 'Josefin Sans', sans-serif;">Add
+                  Banner</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h6 class="text-danger text-center mb-4" id="addserrer" name="addserrer"></h6>
+      </div>
+  </form>
+  <!-- </form> -->
+</div>
+</div>

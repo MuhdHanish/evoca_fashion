@@ -1,0 +1,56 @@
+<section class="vh-80 box-shadow" style="overflow-y: hidden;" >
+  <div class="mask d-flex align-items-center h-80 gradient-custom-3 mt-2">
+    <div class="container h-80">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class=" col-12  col-sm-10  col-md-8 col-lg-6">
+          <div class="card mt-2" style="border-top-right-radius: 15px;border-bottom-left-radius: 15px;border: 1px solid; box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+            <div class="card-body p-4 ">
+              <p class="text-uppercase "><strong>evoca</strong></p>
+            
+
+              <form id="formAuthentication" name="signupform" onsubmit="return signup()" action="/signup"  method="POST"  class="mt-4">
+
+                <div class="form-outline  mb-2 col-12  col-md-12  col-lg-12 ">
+                  <label class="form-label" for="form3Example4cg"><small>Username</small></label>
+                  <input type="text" style="border-radius:0% ;border: 1px solid;" name="userName" id="userName" class="form-control form-control-lg " value="{{signdata.userName}}" placeholder="Username" />
+                </div>
+
+                <div class="form-outline  mb-2 col-12  col-md-12  col-lg-12">
+                  <label class="form-label" for="form3Example4cg"><small>Phone</small></label>
+                  <input type="text" style="border-radius:0% ;border: 1px solid;" name="phone" id="phone" class="form-control form-control-lg " value="{{signdata.phone}}" placeholder="Phone" />
+                </div>
+
+                
+                <div class="form-outline  mb-2 col-12  col-md-12  col-lg-12">
+                  <label class="form-label" for="form3Example4cg"><small>Email</small></label>
+                  <input type="text" style="border-radius:0% ;border: 1px solid;" name="email" id="email" class="form-control form-control-lg " value="{{signdata.email}}" placeholder="Email" />
+                </div>
+                
+                <div class="form-outline mb-2 col-12  col-lg-12 ">
+                  <label class="form-label" for="form3Example4cdg"><small>Password</small></label>
+                  <input type="password" name="password" style="border-radius:0% ;border: 1px solid;" id="password" class="form-control form-control-lg" value="{{signdata.rePassword}}" placeholder="Password"/>
+                </div>
+
+                <div class="form-outline mb-2 col-12  col-lg-12 ">
+                  <label class="form-label" for="form3Example4cdg"><small>Confirm Password</small></label>
+                  <input type="password" name="rePassword" style="border-radius:0% ;border: 1px solid;" id="rePassword" class="form-control form-control-lg" value="{{signdata.rePassword}}" placeholder="Confirm Password"/>
+                </div> 
+
+                
+                <p class="text-danger" name="signerr" id="signerr">{{signerr}}</p>
+
+                <div class="d-flex justify-content-center offset-3 col-6 offset-3 col-sm-6 offset-3 col-md-6  offset-3 col-lg-6 ">
+                  <div class="text-cetner box"> 
+                    <button type="submit" class="btn btn-dark btn-block btn-lg gradient-custom-4 log-btn " >Signup</button></div>
+                </div>
+
+                <p class="text-center text-muted mt-1 mb-0">Have already an account? <a href="/login"
+                    class="fw-bold text-primary link-line">Login here</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

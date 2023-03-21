@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-bottom: rgb(189, 188, 188) 1px solid;">
+  <div class="container-fluid">
+    <a href="/"><img src="/images/evoca-logo.png" alt=""></a>
+    <button class="navbar-toggler button-toggle" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span><i id="bar" class="fa-solid fa-list"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-5  mb-lg-0 gap-4 d-flex" style="font-size: larger;">
+        {{#if search}}
+        <form class="d-flex  ms-auto d-block d-lg-none ">
+          <input class="form-control me-2 " type="search" placeholder="Search..." aria-label="Search"
+            style="border-radius: 25px;">
+          <button type="submit" class="search"><i class="fa-solid fa-magnifying-glass text-dark "></i></button>
+        </form>
+        {{/if}}
+        <li class="nav-item ">
+          <a class="nav-link " aria-current="page" href="/shop">Shop</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link " aria-current="page" href="/user-orderlist">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="#">Contact Us</a>
+        </li>
+      </ul>
+      {{#if search}}
+      <form class="d-flex  ms-auto me-auto d-none  d-lg-flex  ">
+        <input class="form-control me-2 " type="search" placeholder="Search..." aria-label="Search"
+          style="border-radius: 25px;">
+        <button type="submit" class="search"><i class="fa-solid fa-magnifying-glass text-dark "></i></button>
+      </form>
+      {{/if}}
+      <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0 ">
+        <div class="d-flex">
+          {{#if User}}
+          </script>
+          <div class="dropdown  mt-2 ms-2">
+            <a class="nav-link active ms-5" aria-current="page" href="">{{user.userName}}</a>
+            <div class="dropdown-content tex-center">
+              <a href="/user-profile">Profile</a>
+              <a href="/logout">Log Out</a>
+            </div>
+          </div>
+          <li class="nav-item d-inline ms-5 mt-2">
+            <a class="nav-link active" aria-current="page" href="/user-cart"><i class="fa-solid fa-cart-shopping"
+                style="font-size: 20px;"></i> <span
+                class="badge bg-danger badge-pos"><small>{{count}}</small></span></a>
+          </li>
+          <li class="nav-item d-inline ms-4" style="margin-top:6px ;">
+            <a class="nav-link active" aria-current="page" href="#"><i class="fa-regular fa-heart"
+                style="font-size: 20px;"></i></a>
+          </li>
+          {{else}}
+          <div class="dropdown ms-4 mt-2 ps-4">
+            Guest<i class="ms-3 fa-regular fa-user dropbtn search" style="font-size: 20px;"></i>
+            <div class="dropdown-content text-center">
+              <a href="/login">Login</a>
+            </div>
+          </div>
+          {{/if}}
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>

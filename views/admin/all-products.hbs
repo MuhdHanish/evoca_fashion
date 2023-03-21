@@ -1,0 +1,150 @@
+{{>admin-header}}
+
+<div class="layout-wrapper layout-content-navbar ">
+    <div class="layout-container d-none d-md-block">
+        <div class="layout-page">
+            <br><br>
+            <div class="card " style="border: 0px solid rgba(0,0,0,.125)">
+                <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+                    PRODUCTS</h5>
+                <div class="table-responsive text-nowrap container">
+                    <table class="table " id="admin-product-list">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Title</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">OfferPrice</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {{#each products}}
+                            <tr class="text-center">
+                                <td>{{title}}</td>
+                                <td>{{brand}}</td>
+                                <td>{{offerPrice}}</td>
+                                <td>{{category}}</td>
+                                <td>{{stock}}</td>
+                                <td class="text-center"><img src="/product-images/{{images.[0]}}.jpg" alt=""
+                                        style="width: 100px;height: 100px;border: black 1px solid"></td>
+                                {{#if status}}
+                                <td class="text-success">Listed</td>
+                                <td class="text-center">
+                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
+                                    <a class="btn btn-outline-danger" onclick="unlist('{{_id}}')"></i>Un-List</a>
+                                </td>
+                                {{else}}
+                                <td class="text-danger">Un-Listed</td>
+                                <td class="text-center">
+                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
+                                    <a class="btn btn-outline-success" onclick="list('{{_id}}')"></i>List</a>
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="layout-wrapper layout-content-navbar ">
+    <div class="layout-container d-block d-md-none">
+        <div class="layout-page">
+            <br><br>
+            <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
+                <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+                    PRODUCTS</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table " id="admin-product-list">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Details</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {{#each products}}
+                            <tr class="text-center">
+                                <td>{{title}} <br>
+                                    {{brand}} <br>
+                                    {{offerPrice}} <br>
+                                    {{category}} <br>
+                                    {{stock}}</td>
+                                <td class="text-center"><img src="/product-images/{{images.[0]}}.jpg" alt=""
+                                        style="width: 100px;height: 100px; border-radius: 10px;"></td>
+                                {{#if status}}
+                                <td class="text-success">Listed</td>
+                                <td class="text-center">
+                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
+                                    <a class="btn btn-outline-danger" onclick="unlist('{{_id}}')"></i>Un-List</a>
+                                </td>
+                                {{else}}
+                                <td class="text-danger">Un-Listed</td>
+                                <td class="text-center">
+                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
+                                    <a class="btn btn-outline-success" onclick="list('{{_id}}')"></i>List</a>
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function unlist(productId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, list',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/unlist-product/' + productId
+            }
+        })
+    }
+
+    function list(productId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, list',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/list-product/' + productId
+            }
+        })
+
+
+    }
+</script>

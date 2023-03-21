@@ -1,0 +1,62 @@
+{{>admin-header}}
+<div class="site-section my-5">
+  <div class="container">
+    <form name="coupon_form" onsubmit="return couponValidate()" action="/admin/expand-coupon/{{coupon._id}}" method="post">
+      <div class="row">
+        <div class="col-md-6 mb-5 mb-md-0 ">
+          <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">Expand COUPON</h2>
+          <div class="p-3 p-lg-5 border">
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_fname" class="text-black">Coupon Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_name" placeholder="Coupon Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{coupon.coupon}}" name="c_name">
+              </div>
+              <div class="col-md-6">
+                <label for="c_lname" class="text-black">Expire Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="c_date" placeholder=""
+                  style="border: black 1px solid;border-radius:0;" value="{{coupon.expireDate}}" name="c_date">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">Minimum-Price<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_price" placeholder="Minimum-Price"
+                  style="border: black 1px solid;border-radius:0;" name="c_price" value="{{coupon.minimum}}">
+              </div>
+
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">Discount<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_discount" placeholder="Discount"
+                  style="border: black 1px solid;border-radius:0;" name="c_discount" value="{{coupon.discount}}">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <h2 class="h3 mb-3" style="color: white;">Add Coupon</h2>
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <div class="p-3 p-lg-5 border">
+                <div class="form-group  text-center">
+                  <button class=" model-btn" type="submit" style="font-family: 'Josefin Sans', sans-serif;">expand
+                    Coupon</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h6 class="text-danger text-center mb-4" id="addserrer">{{exapnderr}}</h6>
+        </div>
+    </form>
+    <!-- </form> -->
+  </div>
+</div>
+
+<script>
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('c_date').setAttribute("min", today)
+</script>

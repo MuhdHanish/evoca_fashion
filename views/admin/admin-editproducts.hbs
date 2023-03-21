@@ -1,0 +1,111 @@
+{{>admin-header}}
+
+<div class="site-section my-5">
+  <div class="container">
+    <form action="/admin/edit-product/{{products._id}}" method="post" enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-6 mb-5 mb-md-0 ">
+          <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">EDIT PRODUCT</h2>
+          <div class="p-3 p-lg-5 border">
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_fname" class="text-black">Product Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_fname" placeholder="Product Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{products.title}}" name="title">
+              </div>
+              <div class="col-md-6">
+                <label for="c_lname" class="text-black">Brand Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_lname" placeholder="Brand Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{products.brand}}" name="brand">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">Price<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_state" placeholder="Price"
+                  style="border: black 1px solid;border-radius:0;" name="price" value="{{products.price}}">
+              </div>
+              <div class="col-md-6">
+                <label for="c_companyname" class="text-black">Stock <span class="text-danger">*</span></label>
+                <input class="form-control" id="c_district" placeholder="Stock"
+                  style="border: black 1px solid;border-radius:0;" type="number" name="stock"
+                  value="{{products.stock}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_postal_zip" class="text-black">Discount<span class="text-danger">*</span></label>
+                <input type="number" name="discount" class="form-control" id="c_pin" placeholder="Discound"
+                  style="border: black 1px solid;border-radius:0;" value="{{products.discount}}">
+              </div>
+
+              <div class="col-md-6">
+                <label for="c_phone" class="text-black">Category <span class="text-danger">*</span></label>
+                <select name="category" class="form-control form-control-line"
+                  style="border: black 1px solid;border-radius:0;">
+                  <option value="{{products.category}}">{{products.category}}</option>
+                  {{#each Category}}
+                  <option value="{{category}}">{{category}}</option>
+                  {{/each}}
+                </select>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-12">
+                <label for="c_companyname" class="text-black">Discription <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_address" placeholder="Discription"
+                  style="border: black 1px solid;border-radius:0;" name="description" value="{{products.description}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-12">
+                <label for="c_companyname" class="text-black">Size<span class="text-danger">* </span></label>
+                SMALL<input type="checkbox" name="small" {{#if products.size.[0]}}checked{{/if}} id=""
+                  class="ms-1 me-3">
+                MEDIUM<input type="checkbox" name="medium" {{#if products.size.[1]}}checked{{/if}} id=""
+                  class="ms-1 me-3">
+                LARGE<input type="checkbox" name="large" {{#if products.size.[2]}}checked{{/if}} id="" class="ms-1 ">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <label for="c_companyname" class="text-black mb-5">Product-Image <span style="color: red;">(Only edit
+                  (Max-4))</span><span class="text-danger">*</span></label>
+              <div class="col-md-12">
+                {{#each products.images}}
+                <img src="/product-images/{{[]}}.jpg" class="m-3" style="border: black 1px solid;border-radius:0;"
+                  width="100px" height="100px" alt="">
+                <input type="file" name="{{[]}}" value="" style="border: black 1px solid;border-radius:0;"
+                  id="typePasswordX-2" class="form-control form-control-lg mt-2" />
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6">
+          <h2 class="h3 mb-3" style="color: white;">Add Product</h2>
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <div class="p-3 p-lg-5 border">
+                <div class="form-group  text-center">
+                  <button class=" model-btn" type="submit" style="font-family: 'Josefin Sans', sans-serif;">Edit
+                    Product</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h6 class="text-danger text-center mb-4">{{addsererr}}</h6>
+        </div>
+    </form>
+    <!-- </form> -->
+  </div>
+</div>

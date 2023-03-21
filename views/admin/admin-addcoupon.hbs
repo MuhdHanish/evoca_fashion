@@ -1,0 +1,129 @@
+{{>admin-header}}
+
+<div class="site-section my-5">
+  <div class="container">
+    <form name="coupon_form" onsubmit="return couponValidate()" action="/admin/admin-addcoupon" method="post">
+      <div class="row">
+        <div class="col-md-6 mb-5 mb-md-0 ">
+          <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">ADD COUPON</h2>
+          <div class="p-3 p-lg-5 border">
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_fname" class="text-black">Coupon Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_name" placeholder="Coupon Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{Data.c_name}}" name="c_name">
+              </div>
+              <div class="col-md-6">
+                <label for="c_lname" class="text-black">Expire Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="c_date" placeholder=""
+                  style="border: black 1px solid;border-radius:0;" value="{{Data.c_date}}" name="c_date">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">Minimum-Price<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_price" placeholder="Minimum-Price"
+                  style="border: black 1px solid;border-radius:0;" name="c_price" value="{{Data.c_price}}">
+              </div>
+
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">Discount<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_discount" placeholder="Discount"
+                  style="border: black 1px solid;border-radius:0;" name="c_discount" value="{{Data.c_discount}}">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <h2 class="h3 mb-3" style="color: white;">Add Coupon</h2>
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <div class="p-3 p-lg-5 border">
+                <div class="form-group  text-center">
+                  <button class=" model-btn" type="submit" style="font-family: 'Josefin Sans', sans-serif;">Add
+                    Coupon</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h6 class="text-danger text-center mb-4" id="addserrer">{{addserrer}}</h6>
+        </div>
+    </form>
+    <!-- </form> -->
+  </div>
+</div>
+
+<div class="layout-wrapper layout-content-navbar ">
+  <div class="layout-container">
+    <div class="layout-page">
+      <br><br>
+      <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
+        <h5 class="card-header text-center mb-3"
+          style="border: 0px solid rgba(255, 255, 255, 0.125);font-family: 'Bebas Neue', cursive;">ALL
+          COUPONS</h5>
+        <div class="table-responsive text-nowrap container" style="font-family: 'Bebas Neue', cursive;">
+          <table class="table ">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">Coupon</th>
+                <th scope="col">Minimum</th>
+                <th scope="col">Discount</th>
+                <th scope="col">ExpireDate</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              {{#each couponDetails}}
+              <tr class="text-center">
+                <td>{{coupon}}</td>
+                <td>{{minimum}}</td>
+                <td>{{discount}}%</td>
+                {{#if status}}
+                <td>{{expireDate}}</td>
+                {{else}}
+                <td class='text-danger'>Expired!</td>
+                {{/if}}
+                {{#if status}}
+                <td><button onclick=" disable('{{_id}}')" class="btn btn-outline-danger">disable</button></td>
+                {{else}}
+                <td><a href="/admin/expand-coupon/{{_id}}" class="btn btn-outline-secondary">expand</a></td>
+                {{/if}}
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('c_date').setAttribute("min", today)
+
+      function disable(couponId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, disable',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/disable-coupon/'+couponId
+            }
+        })
+    }
+
+</script>

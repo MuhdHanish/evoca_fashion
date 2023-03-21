@@ -1,0 +1,26 @@
+{{>admin-header}}
+
+<div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
+<a class="text-cetner btn btn-outline-primary" style="margin-left: 25%;">Print Sales Report</a>
+
+<script>
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+  ['Contry', 'Mhl'],
+  ['India',70],
+  ['France',49],
+  ['Brazil',44],
+  ['USA',24],
+]);
+
+var options = {
+  title:'Evoca Clothes Production'
+};
+
+var chart = new google.visualization.BarChart(document.getElementById('myChart'));
+  chart.draw(data, options);
+}
+</script>

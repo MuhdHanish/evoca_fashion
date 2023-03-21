@@ -1,0 +1,113 @@
+{{>admin-header}}
+
+<section id="featured" class="my-5 pb-5">
+   <div class="row mx-auto container ">
+      {{#each products}}
+      <hr>
+      <div
+         class="shop-product featured-prodcut text-center  col-lg-3 col-md-6 col-12 mb-3 d-flex justify-content-center">
+         <img class="img-fluid" src="/product-images/{{product.images.[0]}}.jpg">
+      </div>
+      <div class="shop-product featured-prodcut text-center  col-lg-9 col-md-4 col-12  d-flex">
+         <ul style="text-align:left;" class="my-4">
+            <h5 class="text-muted">Productname :<span class="text-dark"> {{product.title}}</span></h5>
+            <h5 class="text-muted">Brand :<span class="text-dark"> {{product.brand}}</span></h5>
+            <h5 class="text-muted">Caregory :<span class="text-dark"> {{product.category}}</span></h5>
+            <h5 class="text-muted">Offerprice :<span class="text-dark"> ₹{{product.offerPrice}}</span></h5>
+            <h5 class="text-muted">Quanitity :<span class="text-dark"> {{quantity}}</span></h5>
+            <h5 class="text-muted">Size :<span class="text-dark"> {{size}}</span></h5>
+         </ul>
+      </div>
+      {{/each}}
+      <hr>
+   </div>
+</section>
+
+<div class="container">
+   <div class="row p-5 d-flex" style="justify-content: space-between;">
+      <div class="col-lg-3 order-style-1  mb-5" style="border: 1px solid rgb(189, 189, 189);">
+         <h3 class="text-center mt-5 pt-1" style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">
+            Shipping Address</h3>
+         <div class="text-start px-auto" style="font-family: 'Josefin Sans', sans-serif;">
+            <p class="mb-0">{{orderDetails.deliveryDetails.fname}} {{orderDetails.deliveryDetails.lname}}</p>
+            <p class="mb-0">{{orderDetails.deliveryDetails.country}}</p>
+            <p class="mb-0">{{orderDetails.deliveryDetails.state}},{{orderDetails.deliveryDetails.district}}</p>
+            <p class="mb-0">{{orderDetails.deliveryDetails.pin}}</p>
+            <p class="mb-3">{{orderDetails.deliveryDetails.mobile}}</p>
+         </div>
+      </div>
+      <div class="col-lg-3 order-style-2  mb-5" style="border: 1px solid rgb(189, 189, 189);">
+         <div class=" my-5 py-1  text-center">
+            <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Payment Details</h3>
+            <div style="font-family: 'Josefin Sans', sans-serif;">
+               <p class="mt-4 mb-2">Total Amount : <b>Rs.{{orderDetails.amount}}</b></p>
+               {{#if cod}}
+               <p>Payment Method : <b class="text-success">COD</b></p>
+               {{else}}
+               <p>Payment Method : <b class="text-success">UPI</b></p>
+               {{/if}}
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-3 order-style-2   mb-5" style="border: 1px solid rgb(189, 189, 189);">
+         <div class="mt-3 ps-3 mb-5">
+            {{#if (eq orderDetails.orderStatus "Cancelled")}}
+            <p class="text-danger fs-3 text-center mt-5" style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED !
+            </p>
+            <div class="text-center">
+               <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment returned
+               </p>
+            </div>
+            {{else}}
+            <form action="/admin/update-order-status/{{orderDetails._id}}" method="post">
+               <div class="col-lg-12 mt-3">
+                  <div class="text-start" style="font-family: 'Josefin Sans', sans-serif;">
+                     {{#if (eq orderDetails.orderStatus "Placed")}}
+                     <div class="mt-5 pt-1">
+                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                        </h3>
+                     </div>
+                     <input type="radio" value="Processing" name="OrderStatus" class="mb-1 ">
+                     <label for="" style="color: blueviolet;">Processing</label><br>
+                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                     </div>
+                     {{else}}
+                     {{#if (eq orderDetails.orderStatus "Processing")}}
+                     <div class="mt-5 pt-1">
+                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                        </h3>
+                     </div>
+                     <input type="radio" value="Shipped" name="OrderStatus" class="mb-1 ">
+                     <label for="" class=" text-primary">Shipped</label><br>
+                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                     </div>
+                     {{else}}
+                     {{#if (eq orderDetails.orderStatus "Shipped")}}
+                     <div class="mt-5 pt-1">
+                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                        </h3>
+                     <input type="radio" value="Delivered" name="OrderStatus" class="mb-1">
+                     <label for="" class=" mb-1 text-success">Delivered</label>
+                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                     </div>
+                     {{else}}
+                     <div class="text-center my-5">
+                        <p class="text-success fs-3" style="font-family: 'Bebas Neue', cursive;">ORDER COMPLETED <i class="text-success fa-regular fa-circle-check"></i></p>
+                        <div class="text-center">
+                           <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment
+                              successfull
+                           </p>
+                           <a href="/admin/admin-orderlist" style="font-family: 'Bebas Neue', cursive;" class=" link-line btn btn-outline-dark">Go To Orders</a>
+                        </div>
+                     </div>
+                     {{/if}}
+                     {{/if}}
+                     {{/if}}
+                  </div>
+               </div>
+            </form>
+            {{/if}}
+         </div>
+      </div>
+   </div>
+</div>

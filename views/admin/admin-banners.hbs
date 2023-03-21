@@ -1,0 +1,95 @@
+{{>admin-header}}
+
+<div class="layout-wrapper layout-content-navbar ">
+  <div class="layout-container">
+    <div class="layout-page">
+      <br><br>
+      <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
+        <h5 class="card-header text-center mb-3"
+          style="border: 0px solid rgba(255, 255, 255, 0.125);font-family: 'Bebas Neue', cursive;">ALL
+          Banners</h5>
+        <div class="table-responsive text-nowrap container" style="font-family: 'Bebas Neue', cursive;">
+          <a href="/admin/admin-addbanner" class="btn btn-outline-primary">Add banner</a>
+
+          <table class="table ">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">Image</th>
+                <th scope="col">Main-Text</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              {{#each banners}}
+              <tr class="text-center">
+                <td class="text-center"><img src="/banner-images/{{image}}.jpg" alt=""
+                    style="width: 100px;height: 70px;border: black 1px solid"></td>
+                <td>{{title}}</td>
+                {{#if status}}
+                <td class="text-success">Listed</td>
+                <td class="text-center">
+                  <a href="/admin/banner-preview/{{_id}}" class="btn btn-outline-secondary">Preview</a>
+                  <button class="btn btn-outline-danger"
+                    onclick="unlist('{{_id}}')">Un-List</button>
+                </td>
+                {{else}}
+                <td class="text-danger">Un-Listed</td>
+                <td class="text-center">
+                  <a href="/admin/banner-preview/{{_id}}" class="btn btn-outline-secondary">Preview</a>
+                  <a class="btn btn-outline-success"
+                  onclick="list('{{_id}}')"></i>List</a>
+                </td>
+                {{/if}}
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+      function unlist(bannerId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, unlist',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/unlist-banner/' +bannerId
+            }
+        })
+    }
+
+      function list(bannerId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, list',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/list-banner/' +bannerId
+            }
+        })
+    }
+    
+</script>

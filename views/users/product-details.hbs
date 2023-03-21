@@ -1,0 +1,88 @@
+{{>user-header}}
+
+<section class="container sproduct featured-prodcut  my-5">
+   <div class="row mb-5">
+      <div class="col-lg-4 col-md-6 offset-1 col-10 mb-3">
+         <img src="/product-images/{{product.images.[0]}}.jpg" id="bigImg" width="100%" class="img-fluid w-100 pb-3"
+            alt="">
+         <div class="small-img-group">
+            {{#each product.images}}
+            <div class="small-img-col mb-4">
+               <img src="/product-images/{{[]}}.jpg" id="{{[]}}" onclick="imgzoom(this.id)" width="100%"
+                  style="border: black 1px solid;" class="small-img" alt="">
+            </div>
+            {{/each}}
+         </div>
+      </div>
+      <div class="col-lg-4 col-md-4 offset-1 col-10 detials">
+         <h6 class="text-secondary">Category: {{product.category}}</h6>
+         <h3 class="py-3">{{product.title}}</h3>
+         <h5 class="py-3"><span class="text-secondary fs-5">Brand: </span> {{product.brand}}</h5>
+         {{#if disc}}
+         <span class="fs-6 text-muted">{{product.discount}}% discount</span>
+         <h4 class="mt-1"><span>₹{{product.offerPrice}}</span>
+            <span class="fs-6 text-muted ms-2"><strike>₹{{product.price}}</strike></span>
+         </h4>
+         {{else}}
+         <h4>₹{{product.price}}</h4>
+         {{/if}}
+         <form action="/add-to-cart/{{product._id}}" method="POST">
+            <select name="size" class="my-3 " id="">
+               {{#each product.size}}
+               <option value="{{[]}}">{{[]}}</option>
+               {{/each}}
+            </select>
+            {{#if stock}}
+            <button class="model-btn mb-3 mt-4 offset-3 col-6 col-md-10 col-lg-6 d-flex justify-content-center"
+               type="submit"><i class="fa-solid fa-cart-shopping text-white me-2 fs-6"></i>Cart</button>
+         </form>
+         <a href="/add-to-whishlist/{{product._id}}" class="link-line"><button
+               class="model-wish-btn offset-3 col-6 offset-2 col-md-10  col-lg-6 d-flex justify-content-center"><i
+                  class="fa-regular fa-heart fs-6 me-2"></i>Wishlist</button></a>
+         {{else}}
+         <p class="text-danger fs-3 text-center" style="font-family: 'Bebas Neue', cursive;">OUT OF STOCK !</p>
+         <a href="/add-to-whishlist/{{product._id}}" class="link-line"><button
+               class="model-wish-btn offset-3 col-6 offset-2 col-md-10  col-lg-6 d-flex justify-content-center"><i
+                  class="fa-regular fa-heart fs-6 me-2"></i>Wishlist</button></a>
+         {{/if}}
+         <h4 class="mt-4 mb-4">Description:</h4>
+         <span>{{product.description}}</span>
+      </div>
+   </div>
+</section>
+
+<section id="featured" class="my-5 pb-5">
+   <div class="container text-center mt-5 py-5 featured-text ">
+      <h3 style="	font-family: 'Climate Crisis', cursive;">Related Collections</h3>
+      <hr>
+      <p>This is our new and Related products.You can explore our #Male Fashion by Evoca Fashion Store.</p>
+   </div>
+   <div class="row mx-auto container-fluid">
+      {{#each products}}
+      <div class="shop-product featured-prodcut text-center col-lg-3 col-md-6 col-12 mb-5">
+         <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
+               onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+               onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+         <div class="star">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+         </div>
+         <h5 class="p-name">{{title}}</h5>
+         <h6 class="p-price">₹ {{offerPrice}}</h6>
+         <button class="model-btn" id="btn">buy now</button>
+      </div>
+      {{/each}}
+   </div>
+</section>
+
+{{>user-footer}}
+
+<script>
+   function imgzoom(id) {
+      img = document.getElementById(id).src
+      document.getElementById("bigImg").src = img
+   }
+</script>

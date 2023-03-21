@@ -1,0 +1,132 @@
+{{>admin-header}}
+
+<div class="layout-wrapper layout-content-navbar container">
+    <div class="layout-container d-none d-md-block ">
+        <div class="layout-page">
+            <br><br>
+            <div class="card " style="border: 0px solid rgba(255, 255, 255, 0.125);">
+                <h5 class="card-header text-center mb-4" style="background-color: rgba(0,0,0,.03);border:none">ALL USERS
+                </h5>
+                <div class="table-responsive text-nowrap container">
+                    <table class="table" id="admin-users-list">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {{#each users}}
+                            <tr class="text-center">
+                                <td>{{userName}}</td>
+                                <td>{{email}}</td>
+                                <td>{{phone}}</td>
+                                {{#if status}}
+                                <td class="text-success">Active</td>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-danger" onclick="ban('{{_id}}')">Ban</a>
+                                </td>
+                                {{else}}
+                                <td class="text-danger">Banned</td>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-success" onclick="unban('{{_id}}')">Un-Ban</a>
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="layout-wrapper layout-content-navbar ">
+    <div class="layout-container d-block d-md-none ">
+        <div class="layout-page">
+            <br><br>
+            <div class="card " style="border: 0px solid rgba(255, 255, 255, 0.125);">
+                <h5 class="card-header text-center mb-4" style="background-color: rgba(0,0,0,.03);border:none">ALL USERS
+                </h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table " id="admin-users-list">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Detials</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {{#each users}}
+                            <tr class="text-center">
+                                <td>{{userName}} <br>
+                                    {{email}} <br>
+                                    {{phone}} <br>
+                                    {{#if status}}
+                                    <p>Status:<span class="text-success">Active</span></p>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-danger" onclick="ban('{{_id}}')">Ban</a>
+                                </td>
+                                {{else}}
+                                <p>Status:<span class="text-danger">Banned</span></p>
+                                <td class="text-center">
+                                    <button class="btn btn-outline-success" onclick="unban('{{_id}}')">Un-Ban</a>
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function ban(userId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, ban',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/block-user/' + userId
+            }
+        })
+    }
+
+    function unban(userId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#9d4de6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, unban',
+            position: 'top-end',
+            timer: 3000,
+            customClass: {
+                container: 'my-swal'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.href = '/admin/unblock-user/' + userId
+            }
+        })
+    }
+
+
+</script>

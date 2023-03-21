@@ -1,0 +1,45 @@
+  <div id="form_align" class="container-xxl justify-content-center col-12 col-sm-10  col-md-8 col-lg-6 mt-5 pt-5">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+
+          <!-- Register -->
+          <div class="card" style="border-radius: 10px;border: 1px solid;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                
+                  </span>
+                  <span class="app-brand-text demo text-body fw-bolder mb-5">Evoca</span>
+                </a>
+              </div>
+              <!-- /Logo -->
+              <h6 class="mb-2 text-uppercase">OTP-LOGIN</h6>
+
+              <form id="formAuthentication" name="otpform" onsubmit="return otplogin()" class="mb-3" action="/otp-login" method="POST">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="text" name="otpEmail"
+                    class="form-control"
+                    id="otpEmail"
+                    style="border-radius:0% ;border: 1px solid;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;"
+                    placeholder="Enter your Registered Email Address"
+                    value="{{otpdata.email}}"
+                  />
+                </div>
+                </div>
+                <div class="mb-3 ms-4">
+                  <p class="text-danger" name="otpoerr" id="otperr">{{otperr}}</p>
+                </div>
+                <div class="mb-3 box">
+                  <button class="btn btn-dark d-grid col-4 offset-4 col-sm-4 offset-4 col-md-4  offset-4 col-lg-4 log-btn" type="submit">Request OTP</button>
+                  <p class="text-center text-muted mt-3 mb-0">New on our platform?<a href="/signup"
+                  style="text-decoration: none;"> Register here</a></p>
+                </div>
+
+              </form>
+
+      </div>
+    </div>
+
+  </div>
+  

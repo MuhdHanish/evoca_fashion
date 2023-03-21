@@ -1,0 +1,63 @@
+{{>user-header}}
+
+<section id="cart-container" class="container my-5">
+  <table width="100%"  id="Order-list" >
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+      <tr style="border-bottom: rgb(196, 196, 196) 1px solid;">
+        <td style="height: 80px;">{{date}}</td>
+        <td>{{deliveryDetails.address}},
+          {{deliveryDetails.pin}}</td>
+        <td>{{deliveryDetails.mobile}}</td>
+        <td>₹{{amount}}</td>
+        <td>{{payment}}</td>
+        {{#if (eq orderStatus "Placed")}}
+        <td class="text-success">{{orderStatus}}</td>
+        {{else}}
+        {{#if (eq orderStatus "Shipped")}}
+        <td class="text-primary">{{orderStatus}}</td>
+        {{else}}
+        {{#if (eq orderStatus "Delivered")}}
+        <td class="text-success">{{orderStatus}}</td>
+        {{else}}
+        {{#if (eq orderStatus "Cancelled")}}
+        <td class="text-danger">{{orderStatus}}</td>
+        {{else}}
+        <td class="text-secondary">{{orderStatus}}</td>
+        {{/if}}
+        {{/if}}
+        {{/if}}
+        {{/if}}
+        {{#if (eq orderStatus "Cancelled")}}
+        <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
+        {{else}}
+        {{#if (eq orderStatus "Delivered")}}
+        <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a>
+        <a href="" class="btn btn-outline-danger">Return</a>
+        {{else}}
+        <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a>
+        <a href="/cancel-order/{{_id}}" class="btn btn-outline-danger">Cancel</a></td>
+        {{/if}}
+        {{/if}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  $(document).ready( function () {
+    $('#Order-list').DataTable();
+});
+</script>

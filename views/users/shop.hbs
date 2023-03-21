@@ -1,0 +1,32 @@
+{{>user-header}}
+
+<section id="page-header" class="mb-5">
+   <h1>#Explore The Fashion</h1>
+   <p>Evoca Male Fashion Club</p>
+</section>
+
+<!-- Shop Section Begin -->
+<section id="featured" class="my-5 pb-5">
+   <div class="row mx-auto container-fluid d-flex justify-content-center">
+      {{#each products}}
+      <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+         <a href="/product-details/{{_id}}"><img class="img-fluid"
+         src="/product-images/{{images.[0]}}.jpg"  
+         onmouseover="this.src='/product-images/{{images.[1]}}.jpg'" 
+         onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+         <div class="star">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+         </div>
+         <h5 class="p-name">{{title}}</h5>
+         <h6 class="p-price">₹ {{offerPrice}}</h6>
+         <button class="model-btn" id="btn" >buy now</button>
+      </div>
+      {{/each}}
+   </div>
+</section>
+
+{{>user-footer}}

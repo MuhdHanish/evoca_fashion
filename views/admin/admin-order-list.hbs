@@ -1,0 +1,43 @@
+{{>admin-header}}
+<section id="cart-container" class="container my-5 order-details">
+  <table width="100%" id="admin-order-list">
+    <thead>
+      <tr>
+        <th>Fullname</th>
+        <th>Date</th>
+        <th>Phone</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="pt-5 pb-5">
+      {{#each orders}}
+      <tr style="border-bottom: rgb(196, 196, 196) 1px solid;">
+        <td style="height: 70px;">{{deliveryDetails.fname}} {{deliveryDetails.lname}}</td>
+        <td>{{date}}</td>
+        <td>{{deliveryDetails.mobile}}</td>
+        <td>₹{{amount}}</td>
+        <td>{{payment}}</td>
+        {{#if (eq paymentStatus  "Paid")}}
+        <td class="text-success">{{paymentStatus}}</td>
+        {{else}}
+        {{#if (eq paymentStatus  "Pending")}}
+        <td class="text-warning">{{paymentStatus}}</td>
+        {{else}}
+        <td class="text-danger">{{paymentStatus}}</td>
+        {{/if}}
+        {{/if}}
+        <td><a href="/admin/admin-order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  $(document).ready( function () {
+    $('#admin-order-list').DataTable();
+});
+</script>

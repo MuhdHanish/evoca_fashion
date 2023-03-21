@@ -1,0 +1,118 @@
+{{>user-header}}
+
+<section class="hero">
+  <div class="hero__slider owl-carousel">
+    <div class="container-fluid">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        {{#each firstBanner}}
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="hero__slider owl-carousel">
+              <div class="container-fluid banner-image-home"
+                style="background-image: url('/banner-images/{{image}}.jpg');">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
+                  <div class="hero__text ms-5 mb-5 " style="position: relative;top: 200px;">
+                    <h6>Evoca Collections</h6>
+                    <h2>{{title}}</h2>
+                    <a href="/shop"><button class="mt-5 ms-5 shop_now_index">Shop now</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+          {{#each banners}}
+          <div class="carousel-item">
+            <div class="hero__slider owl-carousel">
+              <div class="container-fluid banner-image-home"
+                style="background-image: url('/banner-images/{{image}}.jpg');">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
+                  <div class="hero__text ms-5 mb-5 " style="position: relative;top: 200px;">
+                    <h6>Evoca</h6>
+                    <h2>{{title}}</h2>
+                    <a href="/shop"><button class="mt-5 ms-5 shop_now_index-2">Shop now</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brand" class="container">
+  <div class="row mt-5 py-5">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/1.png" alt="">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/2.png" alt="">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/3.png" alt="">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/4.png" alt="">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/5.png" alt="">
+    <img class="img-fluid col-lg-2 col-md-4 col-6" src="/images/brands/6.png" alt="">
+  </div>
+</section>
+
+<section id="featured" class="my-5 pb-5">
+  <div class="container text-center mt-5 py-5 featured-text ">
+    <h3 style="	font-family: 'Climate Crisis', cursive;">Featured Collections</h3>
+    <hr>
+    <p>This is our new and featured products.You can explore our #Male Fashion by Evoca Fashion Store.</p>
+  </div>
+  <div class="row mx-auto container-fluid">
+    {{#each products}}
+    <div class="shop-product  featured-prodcut text-center col-lg-3 col-md-6 col-12 mb-5">
+      <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg" alt=""
+          onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+          onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+      <div class="star">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+      </div>
+      <h5 class="p-name">{{title}}</h5>
+      <h6 class="p-price">₹ {{offerPrice}}</h6>
+      <button class="model-btn" id="btn">buy now</button>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<div></div>
+
+{{#if logged}}
+<script>
+  Swal.fire({
+    position: 'bottom',
+    title: '<span style="color: green; font-size: 20px;"><i class="fa-regular fa-circle-check"></i> </span> Login successful!',
+    showConfirmButton: false,
+    timer: 1200,
+    customClass: {
+      popup: 'my-popup-class',
+      content: 'my-content-class',
+      confirmButton: 'my-confirm-button-class'
+    },
+  }); 
+</script>
+{{/if}}
+
+{{#if signed}}
+<script>
+  Swal.fire({
+    position: 'bottom',
+    title: 'Profile created <span style="color: green; font-size: 20px;"> <i class="fa-regular fa-circle-check"></i> </span>',
+    showConfirmButton: false,
+    timer: 1200,
+    customClass: {
+      popup: 'my-popup-class',
+      content: 'my-content-class',
+      confirmButton: 'my-confirm-button-class'
+    },
+  }); 
+</script>
+{{/if}}
+
+{{>user-footer}}

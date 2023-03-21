@@ -1,0 +1,93 @@
+{{>admin-header}}
+
+<div class="layout-wrapper layout-content-navbar ">
+  <div class="layout-container ">
+    <div class="layout-page container">
+      <br><br>
+      <div class="col-xxl">
+        <div class="card mb-4" style="border: none;">
+          <div class="card-body">
+            {{#if editCatedata}}
+            <div class="card-header d-flex align-items-center justify-content-between" style="padding: 0;border: none;">
+              <h5 class="mb-0">Edit category</h5>
+              <small class="text-muted float-end">Edit category</small>
+            </div>
+            <form action="/admin/edit-category/{{editCatedata._id}}" method="post">
+              <div class="row mt-3">
+                <label class=" col-sm-2 col-form-label" for="basic-default-name">Category name</label>
+                <div class=" col-lg-6 col-md-6 col-sm-6 col-6">
+                  <input type="text" class="form-control" id="basic-default-name" name="category"
+                    value="{{editCatedata.category}}" />
+                </div>
+              </div>
+              <div class="text-center">
+                <p class="text-danger"><strong><u>{{cateerr}}</u></strong></p>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-outline-primary">Edit Category</button>
+                </div>
+              </div>
+            </form>
+            {{else}}
+            <div class="card-header d-flex align-items-center justify-content-between" style="padding: 0;border: none;">
+              <h5 class="mb-0">New category</h5>
+              <small class="text-muted float-end">Input new category</small>
+            </div>
+            <form action="/admin/admin-category" method="post">
+              <div class="row mb-3 mt-3">
+                <label class="col-sm-2 col-form-label" for="basic-default-name">Category name</label>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                  <input type="text" class="form-control" style="width: 50%;" id="basic-default-name" name="category"
+                    value="{{catadata.category}}" />
+                </div>
+              </div>
+              <div class="text-center">
+                <p class="text-danger"><strong><u>{{cateerr}}</u></strong></p>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-outline-primary">Submit</button>
+                </div>
+              </div>
+            </form>
+            {{/if}}
+
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h5 class="card-header text-center mb-3 me-5 " style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+          CATEGORYS</h5>
+        <div class="table-responsive text-nowrap offset-3 col-lg-6 col-md-6 offset-3 col-sm-6 col-6">
+          <table class="table" id="admin-category-list">
+            <thead>
+              <tr class="text-center">
+                <th>Category</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              {{#each Category}}
+              <tr class="text-center">
+                <td>{{category}}</td>
+                <td class="text-center">
+                  <a class="btn btn-outline-secondary" href="/admin/edit-category/{{_id}}">Edit</a>
+                  <a class="btn btn-outline-danger" href="/admin/delete-category/{{_id}}"
+                    onclick="return confirm('are you sure! you want to delete')">Delete</a>
+                </td>
+                {{else}}
+                {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#admin-category-list').DataTable();
+  });
+</script>

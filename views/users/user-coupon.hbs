@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="Coupon">
+    <div class="coupon-container">
+      <div class="coupon-card">
+        <img src="/images/evoca-footer-logo.jpg" class="logo" style="border-radius: 6px;">
+        <p><small>{{coupon.discount}}% flat off for all above Rs.{{coupon.minimum}} purchases<br> Enjoy your
+            Shopping</small></p>
+        <div class="coupon-row">
+          <span id="coupon-code">{{coupon.coupon}}</span>
+          <span id="copy-code">Copy code</span>
+        </div>
+        {{#if exp}}
+        <p><small class="text-danger">Coupon has been expired !</small></p>
+        {{else}}
+        <p><small>Valid Till : {{coupon.expireDate}}</small></p>
+        {{/if}}
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const cpnBtn = document.getElementById('copy-code')
+  const cpdCod = document.getElementById('coupon-code')
+  cpnBtn.onclick = function () {
+    navigator.clipboard.writeText(cpdCod.innerHTML)
+    cpnBtn.innerHTML = 'copied !'
+    setTimeout(() => {
+      cpnBtn.innerHTML = 'Copy code'
+    }, 3000)
+  }
+</script>

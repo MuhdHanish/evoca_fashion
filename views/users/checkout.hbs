@@ -1,0 +1,238 @@
+{{>user-header}}
+<div class="site-section my-5">
+  <div class="container">
+
+    <div class="row mb-5 mt-4 ">
+      <div class="col-md-6">
+        <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">COUPON CODE</h2>
+        <div class="p-3 p-lg-5 border">
+          <label for="c_code" class="text-black mb-3">Enter Your Coupon Code If You Have One <span
+              class="text-danger">*</span></label>
+          <form id="coupon-form">
+            <div class="input-group w-75">
+              <input type="text" class="form-control" name="c_code" style="border: black 1px solid;border-radius:0;"
+                id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+              <input id="overall" name="overall" value="{{overall}}" hidden>
+              <div class="input-group-append">
+                <button class="model-wish-btn ms-2" type="submit" id="button-addon2"
+                  style="font-family: 'Josefin Sans', sans-serif;">Apply</button>
+              </div>
+            </div>
+          </form>
+          <div class="text-danger mt-2" id="coupon-err"></div>
+          {{#if coupon}}
+          <a href="/coupon-card/{{overall}}" class="link-line d-block mt-3" style="color:#3a5df8;">Show Available Coupon</a>
+          {{else}}
+          <p class="link-line d-block mt-3 text-danger">Coupon's not available for this purchase</p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <form id="checkOut" name="myForm" action="">
+      <div class="row">
+        <div class="col-md-6 mb-5 mb-md-0 ">
+          <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">BILLING DETAILS</h2>
+          <div class="p-3 p-lg-5 border">
+            <div class="form-group mb-3">
+              <label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
+              <input type="text" id="c_country" name="c_country" class="form-control"
+                style="border: black 1px solid;border-radius:0;" placeholder="Country" value="{{Selected.country}}">
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_fname" name="c_fname" placeholder="First Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.fname}}">
+              </div>
+              <div class="col-md-6">
+                <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_lname" name="c_lname" placeholder="Last Name"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.lname}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_state_country" class="text-black">State<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_state" name="c_state" placeholder="State"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.state}}">
+              </div>
+              <div class="col-md-6">
+                <label for="c_companyname" class="text-black">District <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_district" name="c_district" placeholder="District"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.district}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-6">
+                <label for="c_postal_zip" class="text-black">Post-Pin Code<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_pin" name="c_pin" placeholder="Pin Code"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.pin}}">
+              </div>
+              <div class="col-md-6">
+                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_phone" name="c_phone" placeholder="Phone Number"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.mobile}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-12">
+                <label for="c_companyname" class="text-black">Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_address" name="c_address" placeholder="Adress"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.address}}">
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <div class="col-md-12">
+                <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="c_email" name="c_email" placeholder="Email Adress"
+                  style="border: black 1px solid;border-radius:0;" value="{{Selected.email}}">
+              </div>
+            </div>
+
+
+
+            <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+
+            <input type="checkbox" value="true" name="save"><label for="" class="ms-2">Save Adress</label>
+            {{#if adr}}
+            <a href="/stored-address/{{user._id}}" class="link-line d-block mt-3" style="color: #3a5df8;">Ship To Saved
+              Address</a>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">YOUR ORDER</h2>
+              <div class="p-3 p-lg-5 border">
+                <table class="table site-block-order-table mb-5" style="font-family: 'Josefin Sans', sans-serif;">
+                  <tbody>
+                    <tr>
+                      <th>Cart-Total</th>
+                      <td><span class="check-cart-total">₹{{total.[0].total}}</span></td>
+                    </tr>
+                    <tr>
+                      <th>Shipping</th>
+                      <td>₹10</td>
+                    </tr>
+                    <tr>
+                      <th>Total</th>
+                      <td>₹<span id="total">{{overall}}</span></td>
+                    </tr>
+                    <tr id="tr-discount" style="visibility: hidden;">
+                      <th>Coupon Applied</th>
+                      <td><span id="discount"></span>%</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="text-center" style="font-family: 'Josefin Sans', sans-serif; ">
+                  <input type="radio" value="COD" name="c_payment" class="mb-4 ms-4"><label for="" class="ms-2">Cash-On
+                    Delivery</label>
+                  <input type="radio" value="UPI" name="c_payment" class="mb-4 ms-4"><label for=""
+                    class="ms-2">Online-Payment</label>
+                </div>
+                <div class="form-group  text-center">
+                  <button class=" model-btn" type="submit" onclick="return placeOrder()"
+                    style="font-family: 'Josefin Sans', sans-serif;">Place
+                    Order</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h6 class="text-danger text-center mb-4" id="placeOrderErr"></h6>
+        </div>
+    </form>
+
+  </div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+  $('#coupon-form').submit((e) => {
+    e.preventDefault()
+    $.ajax({
+      url: '/use-coupon',
+      method: 'post',
+      data: $('#coupon-form').serialize(),
+      success: (response) => {
+        if (response.err == true) {
+          document.getElementById('coupon-err').innerHTML = response.msg
+          setTimeout(() => {
+            document.getElementById('coupon-err').innerHTML = ""
+          }, 2000)
+        } else {
+          document.getElementById('total').innerHTML = response.overall
+          document.getElementById('tr-discount').style.visibility = 'visible'
+          document.getElementById('discount').innerHTML = response.discount
+          document.getElementById('c_code').value = ''
+        }
+      }
+    })
+  })
+
+
+  $('#checkOut').submit((e) => {
+    e.preventDefault()
+    $.ajax({
+      url: '/palce-order',
+      method: 'post',
+      data: $('#checkOut').serialize(),
+      success: (response) => {
+        if (response.COD) {
+          location.href = '/order-success'
+        } else {
+          razorpayPayment(response)
+        }
+      }
+    })
+  })
+
+  function razorpayPayment(order) {
+    var options = {
+      "key": "rzp_test_6QlE4rij2CCjk2", // Enter the Key ID generated from the Dashboard
+      "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Evoca Fashion", //your business name
+      "description": "Test Transaction",
+      "image": "https://scontent.fcok6-1.fna.fbcdn.net/v/t39.30808-1/294859368_417884657022767_7075606287520088295_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=c6021c&_nc_ohc=TN73xAWb69kAX9PLNjh&_nc_ht=scontent.fcok6-1.fna&oh=00_AfBM1Gt1mE9dYHYz9rSN5xoEWUaRgr8KaQcRr4oxBVFZXA&oe=64173707",
+      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+        verifyPayment(response, order)
+      },
+      "prefill": {
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+      },
+      "notes": {
+        "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+        "color": "#8a2be2"
+      }
+    }
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+
+  function verifyPayment(payment, order) {
+    $.ajax({
+      url: '/verify-payment',
+      data: {
+        payment,
+        order,
+      },
+      method: 'post',
+      success: (response) => {
+        location.href = '/order-success'
+      }
+    })
+  }
+</script>

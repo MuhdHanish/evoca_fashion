@@ -1,0 +1,157 @@
+{{>user-header}}
+
+
+<section class="pt-5  container">
+  <h2 style="font-weight: bold;font-family: 'Josefin Sans', sans-serif;text-transform: uppercase;" class="pt-5">Shopping
+    Cart<i class="fa-solid fa-cart-shopping text-dark ms-2 fs-4"></i></h2>
+  <hr>
+</section>
+
+<section id="cart-container" class="container my-5">
+  <table width="100%">
+    <thead>
+      <tr>
+        <th>Remove</th>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr style="border-bottom: rgb(196, 196, 196) 1px solid;font-family: 'Josefin Sans', sans-serif;">
+        <td><i class="fa-regular fa-square-minus text-danger" onclick="removeProduct('{{_id}}','{{product._id}}')"></i>
+        </td>
+        <td><img src="/product-images/{{product.images.[0]}}.jpg" class="my-3 img-fluid" style="border: black 1px solid"
+            alt=""></td>
+        <td>
+          <h5 class="text-start">{{product.title}}</h5>
+        </td>
+        <td>
+          <h5>₹{{product.offerPrice}}</h5>
+        </td>
+        <td><button class="cart-increase"
+            onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',-1)"
+            id="decrease">-</button>
+          <span id="{{product._id}}">{{this.quantity}}</span>
+          <button class="cart-increase"
+            onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',1)"
+            id="{{@index}}">+</button>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <p class="text-danger text-start mt-4 fs-6" id="item"></p>
+</section>
+
+<section class="container my-5 " id="cart-bottom">
+  <div class="row ">
+    <div class="total col-lg-4 col-md-6 col-12 text-center ms-auto">
+      <h5>CART TOTAL</h5>
+      <div class="text-start p-3 pb-0 " style="font-family: 'Josefin Sans', sans-serif;">
+        {{#each products}}
+        <h6>- {{product.title}}</h6>
+        {{/each}}
+      </div>
+      <hr class="second-hr">
+      <div class="d-flex justify-content-between p-3 pb-0" style="font-family: 'Josefin Sans', sans-serif;">
+        <h6 class="mt-1">Cart-Total</h6>
+        <p id="Cart-Total" class="mb-1">₹{{total.[0].total}}</p>
+      </div>
+      <hr class="second-hr">
+      <button class="model-btn col-12" onclick="window.location.href='/user-checkout'">Proceed to check</button>
+    </div>
+  </div>
+</section>
+
+{{>user-footer}}
+
+<script>
+
+  function changeQuantity(cartId, productId, product, index, count) {
+    const quantity = parseInt(document.getElementById(productId).innerHTML)
+    if (quantity > 9 & count == 1) {
+      document.getElementById(index).style.visibility = 'hidden'
+      document.getElementById('item').style.visibility = 'visible'
+      document.getElementById('item').innerHTML = '<span class="text-dark fs-5">' + product + '</span>' + " - " + " You can't buy more than 10 at one time !"
+      return
+    } else {
+      document.getElementById(index).style.visibility = 'visible'
+      document.getElementById('item').style.visibility = 'hidden'
+    }
+
+    $.ajax({
+      url: '/change-quantity',
+      data: {
+        cart: cartId,
+        product: productId,
+        count: count,
+        quantity: quantity
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.status == true) {
+          Swal.fire({
+            position: 'bottom',
+            title: 'Product removed <i class="fa-regular text-warning fa-exclamation"></i>',
+            showConfirmButton: false,
+            timer: 1200,
+            customClass: {
+              popup: 'my-popup-class',
+              content: 'my-content-class',
+              confirmButton: 'my-confirm-button-class'
+            },
+          });
+          setTimeout(()=>{
+          location.reload()
+          },1000)
+        }
+        else if (response.status == 'out') {
+          document.getElementById(index).style.visibility = 'hidden'
+          document.getElementById('item').style.visibility = 'visible'
+          document.getElementById('item').innerHTML = '<span class="text-dark fs-5">' + product + '</span>' + '<br>' + " This Product is out of stock! Missed out on this item! " + '<br>' + '<span class="text-dark">' + "Its will added soon. Now you can purchase it related products don't worry" + '</span>'
+          return
+        }
+        else {
+          document.getElementById(productId).innerHTML = quantity + count
+          document.getElementsByClassName(productId).innerHTML = quantity + count
+          document.getElementById('Cart-Total').innerHTML = "₹" + response.total[0].total
+          return
+        }
+      }
+    })
+  }
+
+  function removeProduct(cartId, productId) {
+    $.ajax({
+      url: '/remove-product',
+      data: {
+        cart: cartId,
+        product: productId,
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.status == true) {
+          Swal.fire({
+            position: 'bottom',
+            title: 'Product removed <i class="fa-regular text-warning fa-exclamation"></i>',
+            showConfirmButton: false,
+            timer: 1200,
+            customClass: {
+              popup: 'my-popup-class',
+              content: 'my-content-class',
+              confirmButton: 'my-confirm-button-class'
+            },
+          });
+          setTimeout(()=>{
+          location.reload()
+          },1000)
+        }
+      }
+    })
+  }
+
+
+</script>
