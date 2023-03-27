@@ -38,50 +38,110 @@ module.exports = {
 
   getShopProducts: async (req, res, next) => {
     try {
-      const products = await productCollection.find({ status: true }).toArray()
+
+      if (req.session.allProudcts == true) {
+        req.session.cateFilter = null
+        req.session.category = null
+        req.session.sort = null
+        req.session.sortId = null
+        req.session.priceFilter = null
+        req.session.price = null
+        req.session.brandFilter = null
+        req.session.brand = null
+      }
+
+      let products = await productCollection.find({ status: true }).toArray()
       const categorys = await categoryCollection.find().toArray()
       const brands = await productCollection.distinct("brand")
+
       const user = req.session.user
 
+      if (req.session.sortId) {
+        if (req.session.sortId == 'low-to-high') {
+          req.session.sort = await productCollection.find().sort({ offerPrice: 1 }).toArray()
+          products = req.session.sort
+
+        } else {
+          req.session.sort = await productCollection.find().sort({ offerPrice: -1 }).toArray()
+          products = req.session.sort
+
+        }
+      }
       if (req.session.category) {
         req.session.cateFilter = await productCollection.find({ category: req.session.category }).toArray()
+        products = req.session.cateFilter
       }
 
-      const cateFilter = req.session.cateFilter
 
-      if(req.session.brand){
-        req.session.brandFilter = await productCollection.find({brand:req.session.brand}).toArray()
+      if (req.session.brand) {
+        req.session.brandFilter = await productCollection.find({ brand: req.session.brand }).toArray()
+        products = req.session.brandFilter
       }
 
-      const brandFilter = req.session.brandFilter
+
 
       if (req.session.price) {
         if (req.session.price == 'b-1500') {
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).toArray()
+          products = req.session.priceFilter
         } else if (req.session.price == 'b-2000') {
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).toArray()
+          products = req.session.priceFilter
         } else if (req.session.price == 'b-2500') {
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).toArray()
+          products = req.session.priceFilter
         } else {
           req.session.priceFilter = await productCollection.find().toArray()
+          products = req.session.priceFilter
         }
       }
-      const priceFilter = req.session.priceFilter
 
-      if (user) {
-        const count = await globalFunction.cartCount(req.session.user._id)
-        res.render('users/shop', { User: true, user, products, cateFilter,priceFilter,brandFilter, categorys, count, search: true,brands })
-      } else {
-        res.render('users/shop', { products, categorys, cateFilter,priceFilter,brandFilter, search: true ,brands})
+      if (req.session.sortId && req.session.category) {
+        if (req.session.sortId == 'low-to-high') {
+          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: 1 }).toArray()
+          products = req.session.combine
+
+        } else {
+          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: -1 }).toArray()
+          products = req.session.combine
+
+        }
+      }
+      if (req.session.sortId && req.session.brand) {
+        if (req.session.sortId == 'low-to-high') {
+          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: 1 }).toArray()
+          products = req.session.combine
+
+        } else {
+          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: -1 }).toArray()
+          products = req.session.combine
+
+        }
+      }
+      if (req.session.sortId && req.session.price) {
+        if (req.session.sortId == 'low-to-high') {
+          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: 1 }).toArray()
+          products = req.session.combine
+
+        } else {
+          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: -1 }).toArray()
+          products = req.session.combine
+        }
       }
 
-      req.session.cateFilter = null
-      req.session.category = null
-      req.session.priceFilter = null
-      req.session.brandFilter = null
-      req.session.brand = null
-      req.session.price = null
-
+      if (products.length === 0) {
+        req.session.filterMsg = 'No results found!';
+      }
+      const filterMsg = req.session.filterMsg
+      if (user) {
+        const count = await globalFunction.cartCount(req.session.user._id)
+        res.render('users/shop', { User: true, user, products, filterMsg, categorys, count, search: true, brands })
+      } else {
+        res.render('users/shop', { products, categorys, filterMsg, search: true, brands })
+      }
+      req.session.filterMsg = null
+      req.session.combine = null
+      req.session.allProudcts = null
     } catch (err) {
       next(err)
     }
@@ -107,12 +167,32 @@ module.exports = {
     }
   },
 
-  brandFilter:async(req,res,next)=>{
-    try{
-      const response = {} 
+  brandFilter: async (req, res, next) => {
+    try {
+      const response = {}
       req.session.brand = req.body.brand
       res.json(response)
-    }catch(err){
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  priceSort: async (req, res, next) => {
+    try {
+      const response = {}
+      req.session.sortId = req.body.sort
+      res.json(response)
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  allProudcts: async (req, res, next) => {
+    try {
+      const response = {}
+      req.session.allProudcts = true
+      res.json(response)
+    } catch (err) {
       next(err)
     }
   },

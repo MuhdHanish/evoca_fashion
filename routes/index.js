@@ -34,6 +34,12 @@ router.post('/priceFilter',productController.priceFilter)
 //BRAND-FILTER
 router.post('/brandFilter',productController.brandFilter)
 
+//SORT-FILTER
+router.post('/priceSort',productController.priceSort)
+
+//ALL-PRODUCTS
+router.get('/allProducts',productController.allProudcts)
+
 //GET-SEARCH-RESULT
 router.post('/getSearch',productController.getSearch)
 

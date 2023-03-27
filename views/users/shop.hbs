@@ -8,11 +8,22 @@
 <!-- Shop Section Begin -->
 <section id="featured" class="pb-5">
    <div class="row mx-auto container-fluid d-flex justify-content-center">
-      <div class="d-none d-md-block col-lg-2 text-center" style="border: rgb(159, 158, 158) 1px solid;max-height: 900px;">
+      <div class="d-none d-lg-block col-lg-2 text-center" style="border: rgb(159, 158, 158) 1px solid;max-height: 1000px;">
          <div class="shop__sidebar">
             <div class="shop__sidebar__accordion">
                <div class="accordion" id="accordionExample">
                   <div class="col-12 ">
+                     <div class="card">
+                        <div id="collapseOne" class="collapse show " data-parent="#accordionExample">
+                           <div class="card-body text-start">
+                              <div class="shop__sidebar__categories" style="height: 10px;">
+                                 <ul class="nice-scroll">
+                                    <li><a onclick="allProducts()" class="link-line">All</a></li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                      <div class="card">
                         <div class="card-heading">
                            <a class="link-line">Categories</a>
@@ -96,84 +107,25 @@
             </div>
          </div>
       </div>
+      {{#if filterMsg}}
       <div class="col-9">
-         <div class="row"> {{#if cateFilter}}
-            {{#each cateFilter}}
-            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
-               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
-                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
-                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
-               <div class="star">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star-half-stroke"></i>
-               </div>
-               <h5 class="p-name">{{title}}</h5>
-               <h6 class="p-price">₹ {{offerPrice}}</h6>
-               <button class="model-btn" id="btn">buy now</button>
-            </div>
-            {{/each}}
-            {{else}}
-            {{#if brandFilter}}
-            {{#each brandFilter}}
-            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
-               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
-                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
-                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
-               <div class="star">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star-half-stroke"></i>
-               </div>
-               <h5 class="p-name">{{title}}</h5>
-               <h6 class="p-price">₹ {{offerPrice}}</h6>
-               <button class="model-btn" id="btn">buy now</button>
-            </div>
-            {{/each}}
-            {{else}}
-            {{#if priceFilter}}
-            {{#each priceFilter}}
-            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
-               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
-                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
-                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
-               <div class="star">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star-half-stroke"></i>
-               </div>
-               <h5 class="p-name">{{title}}</h5>
-               <h6 class="p-price">₹ {{offerPrice}}</h6>
-               <button class="model-btn" id="btn">buy now</button>
-            </div>
-            {{/each}}
-            {{else}}
+         <div class="row"> 
+         <div class="text-center fs-5">{{filterMsg}}</div>
+         </div>
+      </div>
+      {{/if}}
+      <div class="col-9">
+         <div class="row"> 
             {{#each products}}
             <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
                <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
                      onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
                      onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
-               <div class="star">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star-half-stroke"></i>
-               </div>
-               <h5 class="p-name">{{title}}</h5>
+               <h5 class="p-name mt-2">{{title}}</h5>
                <h6 class="p-price">₹ {{offerPrice}}</h6>
                <button class="model-btn" id="btn">buy now</button>
             </div>
             {{/each}}
-            {{/if}}
-            {{/if}}
-            {{/if}}
          </div>
       </div>
 
@@ -184,6 +136,15 @@
 {{>user-footer}}
 
 <script>
+   function allProducts(){
+      $.ajax({
+         url: '/allProducts',
+         method: 'GET',
+         success: (response) => {
+            location.reload()
+         }
+      })
+   }
    function cateFilter(category) {
       $.ajax({
          url: '/cateFilter',
@@ -215,6 +176,19 @@
          method: "POST",
          data: {
             brand: brand
+         },
+         success: (response) => {
+            location.reload()
+         }
+      })
+   }
+   function priceSort(sortId) {
+
+      $.ajax({
+         url: '/priceSort',
+         method: "POST",
+         data: {
+            sort: sortId
          },
          success: (response) => {
             location.reload()
