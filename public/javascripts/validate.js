@@ -117,7 +117,7 @@ function login() {
     return false
   }
   if (pasregx.test(password) == false) {
-    document.getElementById('error').innerHTML = "Password is invalid format"
+    document.getElementById('error').innerHTML = "Password is incorrect"
     return false
   }
 
@@ -149,7 +149,7 @@ function adminlogin() {
     return false
   }
   if (pasregx.test(adminpassword) == false) {
-    document.getElementById('admerr').innerHTML = "Password is invalid format"
+    document.getElementById('admerr').innerHTML = "Password is tincorrect"
     return false
   }
   return true
@@ -361,6 +361,52 @@ function bannerValidate() {
     document.getElementById('addserrer').innerHTML = 'Main Text is invalid format'
     setTimeout(() => {
       document.getElementById('addserrer').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  return true
+}
+
+function validateReset(){
+
+  const pasregx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/gm
+
+  const newPass = document.post_reset.newPass.value
+  const newConfirmPass = document.post_reset.newConfirmPass.value
+  if(newPass==''&&newConfirmPass==''){
+    document.getElementById('veriferr').innerHTML = 'Feilds are required'
+    setTimeout(() => {
+      document.getElementById('veriferr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  if(newPass==''){
+    document.getElementById('veriferr').innerHTML = 'New Password feild is required'
+    setTimeout(() => {
+      document.getElementById('veriferr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+
+  if(pasregx.test(newPass)==false){
+    document.getElementById('veriferr').innerHTML = 'Password is invalid format'
+    setTimeout(() => {
+      document.getElementById('veriferr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+
+  if(newConfirmPass==''){
+    document.getElementById('veriferr').innerHTML = 'Confirm Password feild is required'
+    setTimeout(() => {
+      document.getElementById('veriferr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  if(newPass!==newConfirmPass){
+    document.getElementById('veriferr').innerHTML = 'Confirm password not matching'
+    setTimeout(() => {
+      document.getElementById('veriferr').innerHTML = ''
     }, 2000);
     return false
   }

@@ -1,20 +1,31 @@
 const adminCollection = require('../model/adminSchema')
 const userCollection = require('../model/userSchema')
+const orderCollection = require('../model/orderSchema')
+const productCollection = require('../model/productSchema')
 
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 
 module.exports = {
 
-  adminHome: (req, res,next) => {
+  adminHome: async (req, res, next) => {
     try {
-      res.render('admin/admin-home')
+      const usersCount = await userCollection.estimatedDocumentCount()
+      const ordersCount = await orderCollection.estimatedDocumentCount()
+      const productsCount = await orderCollection.estimatedDocumentCount()
+
+      const totalAmount = await orderCollection.aggregate([
+        { $match: { paymentStatus: "Paid" } },
+        { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
+      ]).toArray()
+      const revenue = totalAmount[0].totalAmount
+      res.render('admin/admin-home', { usersCount, ordersCount, productsCount,revenue })
     } catch (err) {
       next(err);
     }
   },
 
-  getAdminLogin: (req, res,next) => {
+  getAdminLogin: (req, res, next) => {
     try {
       if (req.session.admin) {
         res.redirect('/')
@@ -31,7 +42,7 @@ module.exports = {
     }
   },
 
-  postAdminLogin: async (req, res,next) => {
+  postAdminLogin: async (req, res, next) => {
     try {
       const adminData = req.body
       const admin = await adminCollection.findOne({ adminEmail: adminData.adminEmail })
@@ -56,7 +67,29 @@ module.exports = {
     }
   },
 
-  getUsersList: async (req, res,next) => {
+  getData:async(req,res)=>{
+  try{
+  const monthWise= await orderCollection.aggregate([
+    {
+    $group:{_id:'$month',revenue:{$sum:'$amount'}},
+    },
+    {
+      $sort:{_id:1}
+    }
+    ]).toArray()
+    res.json(monthWise)
+  }catch(err){
+    res.next(err)
+  }
+  },
+
+  getSalesReport:async(req,res)=>{
+    const report = await orderCollection.find({orderStatus:'Delivered'}).sort({date:-1}).toArray()
+    const products = await productCollection.find().toArray()
+    res.render('admin/sales-report',{report,products})
+  },
+
+  getUsersList: async (req, res, next) => {
     try {
       const users = await userCollection.find().toArray()
       res.render('admin/all-users', { users })
@@ -65,7 +98,7 @@ module.exports = {
     }
   },
 
-  blockUser: async (req, res,next) => {
+  blockUser: async (req, res, next) => {
     try {
       const userId = req.params.id
       await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { status: false } }).then()
@@ -75,7 +108,7 @@ module.exports = {
     }
   },
 
-  unblockUser: async (req, res,next) => {
+  unblockUser: async (req, res, next) => {
     try {
       const userId = req.params.id
       await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { status: true } }).then()
@@ -85,7 +118,7 @@ module.exports = {
     }
   },
 
-  adminLogout: (req, res,next) => {
+  adminLogout: (req, res, next) => {
     try {
       req.session.admin = null
       res.redirect('/admin/login')

@@ -1,8 +1,8 @@
 {{>user-header}}
 
-<section id="cart-container" class="container my-5">
-  <table width="100%"  id="Order-list" >
-    <thead>
+<div class="table-responsive p-5">
+  <table id="Order-list" class="large-screen">
+    <thead >
       <tr>
         <th>Date</th>
         <th>Address</th>
@@ -16,7 +16,7 @@
     <tbody>
       {{#each orders}}
       <tr style="border-bottom: rgb(196, 196, 196) 1px solid;">
-        <td style="height: 80px;">{{date}}</td>
+        <td>{{date}}</td>
         <td>{{deliveryDetails.address}},
           {{deliveryDetails.pin}}</td>
         <td>{{deliveryDetails.mobile}}</td>
@@ -54,10 +54,10 @@
       {{/each}}
     </tbody>
   </table>
-</section>
+</div>
 
 <script>
   $(document).ready( function () {
     $('#Order-list').DataTable();
-});
+  });
 </script>

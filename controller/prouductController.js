@@ -9,9 +9,11 @@ const { ObjectId } = mongoose.Types
 
 const uuid = require('uuid')
 
+const sharp = require('sharp')
+
 module.exports = {
 
-  getHomeProducts: async (req, res,next) => {
+  getHomeProducts: async (req, res, next) => {
     try {
       const products = await productCollection.find({ status: true }).sort({ _id: -1 }).limit(4).toArray()
       const banners = await bannerCollection.find({ status: true }).skip(1).toArray()
@@ -34,24 +36,99 @@ module.exports = {
     }
   },
 
-  getShopProducts: async (req, res,next) => {
+  getShopProducts: async (req, res, next) => {
     try {
       const products = await productCollection.find({ status: true }).toArray()
       const categorys = await categoryCollection.find().toArray()
+      const brands = await productCollection.distinct("brand")
       const user = req.session.user
+
+      if (req.session.category) {
+        req.session.cateFilter = await productCollection.find({ category: req.session.category }).toArray()
+      }
+
+      const cateFilter = req.session.cateFilter
+
+      if(req.session.brand){
+        req.session.brandFilter = await productCollection.find({brand:req.session.brand}).toArray()
+      }
+
+      const brandFilter = req.session.brandFilter
+
+      if (req.session.price) {
+        if (req.session.price == 'b-1500') {
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).toArray()
+        } else if (req.session.price == 'b-2000') {
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).toArray()
+        } else if (req.session.price == 'b-2500') {
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).toArray()
+        } else {
+          req.session.priceFilter = await productCollection.find().toArray()
+        }
+      }
+      const priceFilter = req.session.priceFilter
 
       if (user) {
         const count = await globalFunction.cartCount(req.session.user._id)
-        res.render('users/shop', { User: true, user, products, categorys, count, search: true })
+        res.render('users/shop', { User: true, user, products, cateFilter,priceFilter,brandFilter, categorys, count, search: true,brands })
       } else {
-        res.render('users/shop', { products, categorys, search: true })
+        res.render('users/shop', { products, categorys, cateFilter,priceFilter,brandFilter, search: true ,brands})
       }
+
+      req.session.cateFilter = null
+      req.session.category = null
+      req.session.priceFilter = null
+      req.session.brandFilter = null
+      req.session.brand = null
+      req.session.price = null
+
     } catch (err) {
       next(err)
     }
   },
 
-  getProductDetails: async (req, res,next) => {
+  cateFilter: async (req, res, next) => {
+    try {
+      const response = {}
+      req.session.category = req.body.category
+      res.json(response)
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  priceFilter: async (req, res, next) => {
+    try {
+      const response = {}
+      req.session.price = req.body.price
+      res.json(response)
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  brandFilter:async(req,res,next)=>{
+    try{
+      const response = {} 
+      req.session.brand = req.body.brand
+      res.json(response)
+    }catch(err){
+      next(err)
+    }
+  },
+
+  getSearch: async (req, res, next) => {
+    try {
+      const payload = req.body.payload.trim();
+      const product = await productCollection.find({ title: { $regex: new RegExp(payload + '.*', 'i') } }).toArray()
+      search = product.slice(0, 10)
+      res.send({ payload: search })
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  getProductDetails: async (req, res, next) => {
     try {
       const productId = req.params.id
       const product = await productCollection.findOne({ _id: new ObjectId(productId) })
@@ -98,7 +175,7 @@ module.exports = {
 
 
 
-  getProductList: async (req, res,next) => {
+  getProductList: async (req, res, next) => {
     try {
       const products = await productCollection.find().toArray()
       res.render('admin/all-products', { products })
@@ -107,7 +184,7 @@ module.exports = {
     }
   },
 
-  getAddProduct: async (req, res,next) => {
+  getAddProduct: async (req, res, next) => {
     try {
       const Category = await categoryCollection.find().toArray()
       const addsererr = req.session.addingerr
@@ -120,7 +197,7 @@ module.exports = {
     }
   },
 
-  postAddProduct: async (req, res,next) => {
+  postAddProduct: async (req, res, next) => {
     try {
       const productData = req.body
       const images = req.files.images
@@ -212,11 +289,12 @@ module.exports = {
         if (count) {
           for (i = 0; i < count; i++) {
             imgId[i] = uuid.v4()
-            images[i].mv('./public/product-images/' + imgId[i] + '.jpg', (err, done) => {
-              if (err) {
-                console.log(err)
-              }
-            })
+            let path = images[i].tempFilePath
+            await sharp(path)
+              .rotate()
+              .resize(540, 720)
+              .jpeg({ mozjpeg: true })
+              .toFile(`./public/product-images/${imgId[i]}.jpg`)
           }
         }
         const size = []
@@ -245,7 +323,7 @@ module.exports = {
 
   },
 
-  getEditProduct: async (req, res,next) => {
+  getEditProduct: async (req, res, next) => {
     try {
       const productId = req.params.id
       const products = await productCollection.findOne({ _id: new ObjectId(productId) })
@@ -258,7 +336,7 @@ module.exports = {
     }
   },
 
-  postEditProduct: (req, res,next) => {
+  postEditProduct: (req, res, next) => {
     try {
       const numberregx = /^[0-9]{1,6}$/
       const discountregx = /^[0-9]{1,2}$/
@@ -342,20 +420,19 @@ module.exports = {
             status: true,
             stock: parseInt(productData.stock)
           }
-        }).then(() => {
+        }).then(async () => {
           Obj = req.files
           if (Obj) {
             const count = Object.keys(Obj).length
             for (i = 0; i < count; i++) {
               imgId = Object.keys(Obj)[i]
               img = Object.values(Obj)[i]
-              img.mv('./public/product-images/' + imgId + '.jpg').then((err) => {
-                if (err) {
-                  console.log(err)
-                } else {
-                  console.log("Success")
-                }
-              })
+              let path = img.tempFilePath
+              await sharp(path)
+                .rotate()
+                .resize(540, 720)
+                .jpeg({ mozjpeg: true })
+                .toFile(`./public/product-images/${imgId}.jpg`)
             }
             res.redirect('/admin/admin-productslist')
           } else {
@@ -368,7 +445,7 @@ module.exports = {
     }
   },
 
-  unlistProduct: async (req, res,next) => {
+  unlistProduct: async (req, res, next) => {
     try {
       const productId = req.params.id
       productCollection.updateOne({ _id: new ObjectId(productId) }, { $set: { status: false } }).then()
@@ -378,7 +455,7 @@ module.exports = {
     }
   },
 
-  getbackProduct: async (req, res,next) => {
+  getbackProduct: async (req, res, next) => {
     try {
       const productId = req.params.id
       productCollection.updateOne({ _id: new ObjectId(productId) }, { $set: { status: true } }).then()

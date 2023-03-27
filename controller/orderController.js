@@ -22,7 +22,7 @@ const instance = new Razorpay({
 });
 
 module.exports = {
-  palceOrder: async (req, res,next) => {
+  palceOrder: async (req, res, next) => {
     try {
       const userId = req.body.userId
       const Cartproducts = await globalFunction.getCartProducts(userId)
@@ -73,6 +73,7 @@ module.exports = {
         paymentStatus: paymentStatus,
         orderStatus: "Placed",
         date: orderDate,
+        month: date.getMonth() + 1,
         couponApplied: couponApplied
       }
       const proCount = Cartproducts.length
@@ -93,6 +94,19 @@ module.exports = {
           cartCollection.deleteOne({ userId: new ObjectId(req.body.userId) }).then(
             res.json({ COD: true })
           )
+        }
+        )
+        req.session.deliveryDetails = null
+        req.session.ordObj = null
+      }
+      else if (payment == 'Wallet') {
+        orderCollection.insertOne(orderObj).then((data) => {
+          req.session.successId = data.insertedId
+          const amount = -(parseFloat(orderObj.amount))
+          userCollection.updateOne({ _id: new ObjectId(req.body.userId) }, { $inc: { wallet: amount } }).then()
+          cartCollection.deleteOne({ userId: new ObjectId(req.body.userId) }).then(()=>{
+            res.json({ COD: true })
+          })
         }
         )
         req.session.deliveryDetails = null
@@ -120,7 +134,7 @@ module.exports = {
     }
   },
 
-  verifyPayment: async (req, res,next) => {
+  verifyPayment: async (req, res, next) => {
     try {
       const deliveryDetails = req.session.deliveryDetails
 
@@ -171,6 +185,7 @@ module.exports = {
           paymentStatus: paymentStatus,
           orderStatus: "Placed",
           date: orderDate,
+          month: date.getMonth() + 1,
           couponApplied: req.session.ordObj.couponApplied
         }
         orderCollection.insertOne(orderObj).then((data) => {
@@ -189,7 +204,7 @@ module.exports = {
     }
   },
 
-  orderSuccess: async (req, res,next) => {
+  orderSuccess: async (req, res, next) => {
     try {
       const user = req.session.user
       const count = await globalFunction.cartCount(user._id)
@@ -201,7 +216,7 @@ module.exports = {
     }
   },
 
-  getOrderList: async (req, res,next) => {
+  getOrderList: async (req, res, next) => {
     try {
       const user = req.session.user
       const userId = user._id
@@ -213,7 +228,7 @@ module.exports = {
     }
   },
 
-  orderedProducts: async (req, res,next) => {
+  orderedProducts: async (req, res, next) => {
     try {
       const orderId = req.params.id
       const user = req.session.user
@@ -249,24 +264,34 @@ module.exports = {
         }
       ]).toArray();
       const orderDetails = await orderCollection.findOne({ _id: new ObjectId(orderId) })
-      console.log(orderDetails)
-      res.render('users/ordered-product', { orderItems, User: true, user, count ,orderDetails})
+      res.render('users/ordered-product', { orderItems, User: true, user, count, orderDetails })
     } catch (err) {
       next(err)
     }
   },
 
-  orderCancel: async (req, res,next) => {
+  download_invoice:async(req,res)=>{
+  const orderId = req.params.id
+  const orderDetails = await orderCollection.findOne({_id:new ObjectId(orderId)})
+  console.log(orderDetails)
+  res.render('users/invoice',{orderDetails})
+  },
+
+  orderCancel: async (req, res, next) => {
     try {
       const orderId = req.params.id
+      const order = await orderCollection.findOne({ _id: new ObjectId(orderId) })
       orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Cancelled', paymentStatus: 'Return' } })
+      const amount = order.amount
+      const userId = order.userId
+      userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } })
       res.redirect('/user-orderlist')
     } catch (err) {
       next(err)
     }
   },
 
-  adminGetOrderList: async (req, res,next) => {
+  adminGetOrderList: async (req, res, next) => {
     try {
       const admin = req.session.admin
       const orders = await orderCollection.find().sort({ _id: -1 }).toArray()
@@ -276,24 +301,18 @@ module.exports = {
     }
   },
 
-  adminOrderDetails: async (req, res,next) => {
+  adminOrderDetails: async (req, res, next) => {
     try {
       const orderId = req.params.id
       const orderDetails = await orderCollection.findOne({ _id: new ObjectId(orderId) })
       const products = orderDetails.products
-      const payment = orderDetails.payment
-      if (payment == 'COD') {
-        res.render('admin/admin-orderd-details', { orderDetails, products, cod: true })
-      }
-      else {
-        res.render('admin/admin-orderd-details', { orderDetails, products })
-      }
+      res.render('admin/admin-orderd-details', { orderDetails, products})
     } catch (err) {
       next(err)
     }
   },
 
-  updateOrderStatus: async (req, res,next) => {
+  updateOrderStatus: async (req, res, next) => {
     try {
       const status = req.body.OrderStatus
       const orderId = req.params.id

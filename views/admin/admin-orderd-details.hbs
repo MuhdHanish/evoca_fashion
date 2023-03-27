@@ -41,10 +41,14 @@
             <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Payment Details</h3>
             <div style="font-family: 'Josefin Sans', sans-serif;">
                <p class="mt-4 mb-2">Total Amount : <b>Rs.{{orderDetails.amount}}</b></p>
-               {{#if cod}}
+               {{#if (eq orderDetails.payment "COD")}}
                <p>Payment Method : <b class="text-success">COD</b></p>
                {{else}}
+               {{#if (eq orderDetails.payment "UPI")}}
                <p>Payment Method : <b class="text-success">UPI</b></p>
+               {{else}}
+               <p>Payment Method : <b class="text-success">Wallet</b></p>
+               {{/if}}
                {{/if}}
             </div>
          </div>

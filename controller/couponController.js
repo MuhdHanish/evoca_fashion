@@ -4,29 +4,25 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 
 module.exports = {
-  getCoupon: async (req, res,next) => {
-    try {
-      const total = parseInt(req.params.id)
-      const couponCard = await couponCollection.find({ minimum: { $lt: total }, status: true }).sort({ minimum: -1 }).toArray()
-      const coupon = couponCard[0]
-      const expiry = new Date(coupon.expireDate)
-      const today = new Date()
-      const exp = (expiry - today) / 1000 * 60 * 60 * 24
-      if (coupon) {
-        if (exp < 0) {
-          res.render('users/user-coupon', { coupon, exp: true })
-        } else {
-          res.render('users/user-coupon', { coupon })
-        }
-      } else {
+  getCoupon: async (req, res, next) => {
+    const total = parseInt(req.params.id)
+    const couponCard = await couponCollection.find({ minimum: { $lt: total }, status: true }).sort({ minimum: -1 }).toArray()
+    const coupon = couponCard[0]
+    const expiry = new Date(coupon.expireDate)
+    const today = new Date()
+    const exp = (expiry - today) / 1000 * 60 * 60 * 24
+    if (coupon) {
+      if (exp < 0) {
         res.render('users/user-coupon', { coupon, exp: true })
+      } else {
+        res.render('users/user-coupon', { coupon })
       }
-    } catch (err) {
-      next(err);
+    } else {
+      res.render('users/user-coupon', { coupon, exp: true })
     }
   },
 
-  useCoupon: async (req, res,next) => {
+  useCoupon: async (req, res, next) => {
     try {
       const response = {}
       const details = req.body
@@ -80,7 +76,7 @@ module.exports = {
     }
   },
 
-  getCouponForm: async (req, res,next) => {
+  getCouponForm: async (req, res, next) => {
     try {
       const addserrer = req.session.addserrer
       const Data = req.session.addData
@@ -104,7 +100,7 @@ module.exports = {
 
   },
 
-  postCouponForm: async (req, res,next) => {
+  postCouponForm: async (req, res, next) => {
     try {
       const Data = req.body
       const couponname = req.body.c_name
@@ -129,7 +125,7 @@ module.exports = {
     }
   },
 
-  disableCoupon: async (req, res,next) => {
+  disableCoupon: async (req, res, next) => {
     try {
       const couponId = req.params.id
       couponCollection.updateOne({ _id: new ObjectId(couponId) }, { $set: { status: false } }).then()
@@ -139,7 +135,7 @@ module.exports = {
     }
   },
 
-  expandCoupon: async (req, res,next) => {
+  expandCoupon: async (req, res, next) => {
     try {
       const couponId = req.params.id
       const coupon = await couponCollection.findOne({ _id: new ObjectId(couponId) })
@@ -151,7 +147,7 @@ module.exports = {
     }
   },
 
-  updateCoupon: async (req, res,next) => {
+  updateCoupon: async (req, res, next) => {
     try {
       const couponId = req.params.id
       const Data = req.body

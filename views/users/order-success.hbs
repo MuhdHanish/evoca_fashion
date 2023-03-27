@@ -26,6 +26,10 @@
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
               <p class="mb-0">{{orderDetails.deliveryDetails.address}}</p>
             </li>
+            <li class="list-group-item p-3">
+              <button class="model-btn" style="border-radius: 0;background-color: black;"
+                onclick="location.href='/download-invoice/{{orderDetails._id}}'">Download</button>
+            </li>
           </ul>
         </div>
       </div>

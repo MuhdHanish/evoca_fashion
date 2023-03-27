@@ -17,12 +17,18 @@ const nocache = require('nocache');
 
 router.use(nocache())
 
-//ADMIN-HOME
-router.get('/',verify,adminController.adminHome);
-
 //ADMIN-LOGIN
 router.get('/login',adminController.getAdminLogin)
 router.post('/login',adminController.postAdminLogin)
+
+//ADMIN-HOME
+router.get('/',verify,adminController.adminHome);
+
+//ADMIN-GET-DATA
+router.get('/admin-getData',verify,adminController.getData)
+
+//ADMIN-SALES-REPORT
+router.get('/admin-salesreport',verify,adminController.getSalesReport)
 
 //ADMIN-USERS-LIST
 router.get('/admin-userslist',verify,adminController.getUsersList)

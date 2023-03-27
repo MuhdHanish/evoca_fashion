@@ -15,7 +15,7 @@
     <tbody class="pt-5 pb-5">
       {{#each orders}}
       <tr style="border-bottom: rgb(196, 196, 196) 1px solid;">
-        <td style="height: 70px;">{{deliveryDetails.fname}} {{deliveryDetails.lname}}</td>
+        <td>{{deliveryDetails.fname}} {{deliveryDetails.lname}}</td>
         <td>{{date}}</td>
         <td>{{deliveryDetails.mobile}}</td>
         <td>₹{{amount}}</td>
@@ -39,5 +39,5 @@
 <script>
   $(document).ready( function () {
     $('#admin-order-list').DataTable();
-});
+  });
 </script>

@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
   address:{
     type:Array,
     required:true
+  },
+  wallet:{
+    type:Number,
+    requried:true
   }
 })
 

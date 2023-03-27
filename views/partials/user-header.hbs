@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-bottom: rgb(189, 188, 188) 1px solid;">
   <div class="container-fluid">
-    <a href="/"><img src="/images/evoca-logo.png" alt=""></a>
+    <img src="/images/evoca-logo.png" onclick="location.href='/'" alt="">
     <button class="navbar-toggler button-toggle" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation">
@@ -9,11 +9,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-5  mb-lg-0 gap-4 d-flex" style="font-size: larger;">
         {{#if search}}
-        <form class="d-flex  ms-auto d-block d-lg-none ">
-          <input class="form-control me-2 " type="search" placeholder="Search..." aria-label="Search"
-            style="border-radius: 25px;">
-          <button type="submit" class="search"><i class="fa-solid fa-magnifying-glass text-dark "></i></button>
-        </form>
+        <div class="d-flex  ms-auto d-block d-lg-none ">
+          <input class="form-control me-2 " oninput="smallSizeData(this)" type="text" placeholder="Search..."
+            aria-label="Search" style="border-radius: 25px;">
+          <div id="searchSmallResult"
+            style="position: absolute; top: 35%; right: 5%;z-index: 10;max-width: 300px; max-height: 250px;overflow-x: hidden; overflow-y: scroll; background-color: #fff; border-radius: 4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
+          </div>
+          <p class="search"><i class="fa-solid fa-magnifying-glass text-dark ms-1"
+              style="position: relative;top: 7px;"></i></p>
+        </div>
         {{/if}}
         <li class="nav-item ">
           <a class="nav-link " aria-current="page" href="/shop">Shop</a>
@@ -26,19 +30,23 @@
         </li>
       </ul>
       {{#if search}}
-      <form class="d-flex  ms-auto me-auto d-none  d-lg-flex  ">
-        <input class="form-control me-2 " type="search" placeholder="Search..." aria-label="Search"
-          style="border-radius: 25px;">
-        <button type="submit" class="search"><i class="fa-solid fa-magnifying-glass text-dark "></i></button>
-      </form>
+      <div class="d-flex  ms-auto me-auto d-none  d-lg-flex  ">
+        <input class="form-control me-2" oninput="sendData(this)" type="search" placeholder="Search..."
+          aria-label="Search" style="border-radius: 25px;">
+        <div id="searchResult"
+          style="position: absolute; top: 101%; left: 43%; right: 0; z-index: 10; max-height: 250px;overflow-x: hidden; overflow-y: scroll; background-color: #fff;border-radius: 4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
+        </div>
+        <p class="search"><i class="fa-solid fa-magnifying-glass text-dark ms-1"
+            style="position: relative;top: 8px;"></i></p>
+      </div>
       {{/if}}
-      <ul class="navbar-nav ms-auto me-auto mb-2 mb-lg-0 ">
+      <ul class="navbar-nav ms-auto me-auto mb-1  ">
         <div class="d-flex">
           {{#if User}}
           </script>
-          <div class="dropdown  mt-2 ms-2">
+          <div class="dropdown  mt-2 ms-2" >
             <a class="nav-link active ms-5" aria-current="page" href="">{{user.userName}}</a>
-            <div class="dropdown-content tex-center">
+            <div class="dropdown-content tex-center" style="z-index: 10;">
               <a href="/user-profile">Profile</a>
               <a href="/logout">Log Out</a>
             </div>
@@ -49,7 +57,7 @@
                 class="badge bg-danger badge-pos"><small>{{count}}</small></span></a>
           </li>
           <li class="nav-item d-inline ms-4" style="margin-top:6px ;">
-            <a class="nav-link active" aria-current="page" href="#"><i class="fa-regular fa-heart"
+            <a class="nav-link active" aria-current="page" href="/user-wish"><i class="fa-regular fa-heart"
                 style="font-size: 20px;"></i></a>
           </li>
           {{else}}
@@ -65,3 +73,63 @@
     </div>
   </div>
 </nav>
+
+
+<script>
+  function sendData(e) {
+    const searchResult = document.getElementById('searchResult')
+    fetch('getSearch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ payload: e.value })
+    }).then(res => res.json()).then(data => {
+      const payload = data.payload
+      searchResult.innerHTML = ''
+      if (e.value == '') {
+        searchResult.style.visibility = 'hidden'
+        return
+      }
+      if (payload.length < 1) {
+        searchResult.style.visibility = 'visible'
+        searchResult.innerHTML = '<p class="d-flex p-3 align-item-center justify-content-center">No result found !</p>'
+        return
+      } else {
+        payload.forEach((item, index) => {
+          searchResult.style.visibility = 'visible'
+          searchResult.innerHTML += `<div class="d-flex p-3 align-item-center justify-content-center" onclick="window.location.href='/product-details/${item._id}'" >
+          <img src = '/product-images/${item.images[0]}.jpg' width='100px'><p class='p-2'>${item.title}</p></div>`
+        })
+        return
+      }
+    })
+  }
+
+  function smallSizeData(e) {
+    const searchSmallResult = document.getElementById('searchSmallResult')
+    fetch('getSearch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ payload: e.value })
+    }).then(res => res.json()).then(data => {
+      const payload = data.payload
+      searchSmallResult.innerHTML = ''
+      if (e.value == '') {
+        searchSmallResult.style.visibility = 'hidden'
+        return
+      }
+      if (payload.length < 1) {
+        searchSmallResult.style.visibility = 'visible'
+        searchSmallResult.innerHTML = '<p class="d-flex p-3 align-item-center justify-content-center">No result found !</p>'
+        return
+      } else {
+        payload.forEach((item, index) => {
+          searchSmallResult.style.visibility = 'visible'
+          searchSmallResult.innerHTML += `<div class="d-flex p-3 align-item-center justify-content-center" onclick="window.location.href='/product-details/${item._id}'" >
+          <img src = '/product-images/${item.images[0]}.jpg' width='100px'><p class='p-2'>${item.title}</p></div>`
+        })
+        return
+      }
+    })
+  }
+
+</script>

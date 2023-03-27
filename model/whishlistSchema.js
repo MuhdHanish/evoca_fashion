@@ -13,6 +13,6 @@ const wishlistSchema = mongoose.Schema({
 
 })
 
-const whislistCollection = mongoose.model("wishlistSchema",Whishlist).collection
+const wishlistCollection = mongoose.model("Wishlist",wishlistSchema).collection
 
-module.exports = wishlistSchema
+module.exports = wishlistCollection

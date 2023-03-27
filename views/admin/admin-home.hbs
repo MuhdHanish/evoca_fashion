@@ -1,26 +1,174 @@
 {{>admin-header}}
 
-<div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
-<a class="text-cetner btn btn-outline-primary" style="margin-left: 25%;">Print Sales Report</a>
+<section class="container" style="background-color: #f8f9fa;">
+  <div class="row my-5">
+    <div class="col-6 col-md-6 col-lg-3 mb-3">
+      <div class="dashboard-small-box  p-2">
+        <div class=" icon-border" style="background-color: #40c640">
+          <i class="fa-solid fa-sack-dollar text-white fs-2"></i>
+        </div>
+        <div class="d-block text-center">
+          <h6 class="small-box-text fs-6 p-2 ">Revenue</h6>
+          <h5>₹ <span id="revenue">{{revenue}}</span></h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-6 col-lg-3 mb-3">
+      <div class="dashboard-small-box  p-2">
+        <div class="icon-border" style="background-color: #5335ae">
+          <i class="fa-solid fa-users text-white fs-2"></i>
+        </div>
+        <div class="d-block text-center">
+          <h6 class="small-box-text fs-6 p-2 ">users</h6>
+          <h5 id="users">{{usersCount}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-6 col-lg-3 mb-3">
+      <div class="dashboard-small-box  p-2">
+        <div class="icon-border" style='background-color: #d5144e;'>
+          <i class="fa-solid fa-truck-fast fs-2 text-white"></i>
+        </div>
+        <div class="d-block text-center">
+          <h6 class="small-box-text fs-6 p-2 ">Orders</h6>
+          <h5 id="orders">{{ordersCount}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-6 col-lg-3 mb-3">
+      <div class="dashboard-small-box p-2">
+        <div class="icon-border" style='background-color: #df1212;'>
+          <i class="fa-solid fa-cart-shopping fs-2 text-white"></i>
+        </div>
+        <div class="d-block text-center">
+          <h6 class="small-box-text fs-6 p-2 ">Proudct</h6>
+          <h5 id="products">{{productsCount}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="container ">
+  <div class="float-end">  <a href="/admin/admin-salesreport" class="link-line">Sales Report</a></div>
+  <div class="row d-flex m-0 justify-content-center">
+    <div id="top_x_div" class="m-0" style="width:100vw; height: 50vh;"></div>
+  </div>
+</section>
+
+<script type="text/javascript">
+
+  $.ajax({
+    url: '/admin/admin-getData',
+    method: 'GET',
+    success: (rev) => {
+      const Data = [['Months', 'Rev']]
+      const Month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      rev.forEach(value => {
+        Data.push([Month[value._id - 1], value.revenue])
+      })
+      google.charts.load('current', { 'packages': ['bar'] });
+      google.charts.setOnLoadCallback(drawStuff);
+
+      window.onresize = drawStuff;
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable(Data);
+
+        var options = {
+
+          legend: { position: 'none' },
+          chart: {
+            title: 'Evoca Clothes Production',
+            subtitle: 'Monthly revenue'
+          },
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Growth Range' } // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      };
+
+    }
+  })
+
+
+</script>
+
+
+
+{{!-- <div id="myChart" style="width:100%; max-width:600px; height:500px;"></div>
 
 <script>
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+  $.ajax({
+    url: '/admin/admin-getData',
+    method: 'GET',
+    success: (rev) => {
+      const Data = [['Months', 'Rev']]
+      const Month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      rev.forEach(value => {
+        Data.push([Month[value._id - 1], value.revenue])
+      })
 
-function drawChart() {
-var data = google.visualization.arrayToDataTable([
-  ['Contry', 'Mhl'],
-  ['India',70],
-  ['France',49],
-  ['Brazil',44],
-  ['USA',24],
-]);
 
-var options = {
-  title:'Evoca Clothes Production'
-};
+      google.charts.load('current', { 'packages': ['corechart'] });
+      google.charts.setOnLoadCallback(drawChart);
 
-var chart = new google.visualization.BarChart(document.getElementById('myChart'));
-  chart.draw(data, options);
-}
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable(Data);
+
+        var options = {
+          title: 'Evoca Clothes Production',
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('myChart'));
+        chart.draw(data, options);
+      }
+
+    }
+  })
+
+  --}}
+
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      function counter(id, start, end, duration) {
+        let obj = document.getElementById(id),
+          current = start,
+          range = end - start,
+          increment = end > start ? 1 : -1,
+          step = Math.abs(Math.floor(duration / range)),
+          timer = setInterval(() => {
+            current += increment;
+            obj.textContent = current;
+            if (current == end) {
+              clearInterval(timer);
+            }
+          }, step);
+      }
+      let rev = parseInt(document.getElementById('revenue').innerHTML)
+    let user = parseInt(document.getElementById('users').innerHTML)
+    let ord = parseInt(document.getElementById('orders').innerHTML)
+    let prod = parseInt(document.getElementById('products').innerHTML)
+    counter("revenue", rev - 400, rev, 1);
+    counter("users", 0, user, 2500);
+      if (ord > 0) {
+      counter("orders", 0, ord, 1000);
+      }
+
+      if (prod > 0) {
+      counter("products", 0, prod, 1000);
+      }
+
+    });
 </script>

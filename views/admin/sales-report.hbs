@@ -1,0 +1,55 @@
+{{>admin-header}}
+
+<section id="cart-container" class="container my-5 order-details">
+  <button class="model-btn float-end mb-5" onclick="printTable()">To pdf</button>
+  <button class="model-btn float-end mb-5" style="position: relative;right: 20px;" onclick="ExportToExcel()">Print
+    Excel</button>
+  <table width="100%" id="sales-list">
+    <thead>
+      <tr>
+        <th class="text-center">Fullname</th>
+        <th class="text-center">Product</th>
+        <th class="text-center">Quantity</th>
+        <th class="text-center">Price</th>
+        <th class="text-center">Amount</th>
+      </tr>
+    </thead>
+    <tbody class="pt-5 pb-5">
+      {{#each report}}
+      {{#each products}}
+      <tr style="border-bottom: rgb(196, 196, 196) 1px solid;">
+        <td class="text-center">{{../deliveryDetails.fname}} {{../deliveryDetails.lname}}</td>
+        <td class="text-center">{{product.title}}</td>
+        <td class="text-center">{{quantity}}</td>
+        <td class="text-center">₹{{product.offerPrice}}</td>
+        <td class="text-center">₹{{../amount}}</td>
+      </tr>
+      {{/each}}
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+<script>
+  function ExportToExcel(type, fn, dl) {
+    var elt = document.getElementById("sales-list");
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+      XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  }
+
+  function printTable() {
+    var table = document.getElementById("sales-list");
+    var newWin = window.open('', 'Print-Window');
+    newWin.document.open();
+    newWin.document.write('<html><body onload="window.print()">' + table.outerHTML + '</html>');
+    newWin.document.close();
+    setTimeout(function () { newWin.close(); }, 10);
+  }
+
+</script>
+<script>
+  $(document).ready(function () {
+    $('#sales-list').DataTable();
+  });
+</script>

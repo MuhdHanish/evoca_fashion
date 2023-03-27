@@ -71,7 +71,7 @@ module.exports = {
           if (proExist != -1) {
             res.redirect('/user-cart')
           } else {
-            await cartCollection.updateOne({ userId: new ObjectId(userId) }, { $push: { products: proObj } }).then()
+          cartCollection.updateOne({ userId: new ObjectId(userId) }, { $push: { products: proObj } }).then(()=>res.redirect('/user-cart'))
           }
         } else {
           const cartObject = {
@@ -82,7 +82,7 @@ module.exports = {
           res.redirect('/user-cart')
         }
       } else {
-        res.redirect('/product-details/' + productId)
+        return res.redirect('/product-details/' + productId)
       }
     } catch (err) {
       next(err);
@@ -147,22 +147,16 @@ module.exports = {
       const total = await globalFunction.totalValue(userId)
       const overall = (total[0].total) + 10
       const address = await userCollection.findOne({ _id: new ObjectId(userId) })
+      const wallet = address.wallet
       const coupon = await couponCollection.findOne({ minimum: { $lt: overall }, status: true })
-      if (coupon) {
+
         if (address.address == null || address?.address.length == 0) {
-          res.render('users/checkout', { User: true, user, total, overall, count, coupon: true })
+          res.render('users/checkout', { User: true, user, total, overall, count, coupon, wallet })
         }
         else {
-          res.render('users/checkout', { User: true, user, total, Selected, overall, count, adr: true, coupon: true })
+          res.render('users/checkout', { User: true, user, total, Selected, overall, count, adr: true, coupon, wallet})
         }
-      } else {
-        if (address.address == null || address?.address.length == 0) {
-          res.render('users/checkout', { User: true, user, total, overall, count })
-        }
-        else {
-          res.render('users/checkout', { User: true, user, total, Selected, overall, count, adr: true })
-        }
-      }
+        
     } catch (err) {
       next(err);
     }

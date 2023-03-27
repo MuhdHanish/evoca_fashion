@@ -21,7 +21,8 @@
           </form>
           <div class="text-danger mt-2" id="coupon-err"></div>
           {{#if coupon}}
-          <a href="/coupon-card/{{overall}}" class="link-line d-block mt-3" style="color:#3a5df8;">Show Available Coupon</a>
+          <a href="/coupon-card/{{overall}}" class="link-line d-block mt-3" style="color:#3a5df8;">Show Available
+            Coupon</a>
           {{else}}
           <p class="link-line d-block mt-3 text-danger">Coupon's not available for this purchase</p>
           {{/if}}
@@ -112,7 +113,7 @@
             <div class="col-md-12">
               <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">YOUR ORDER</h2>
               <div class="p-3 p-lg-5 border">
-                <table class="table site-block-order-table mb-5" style="font-family: 'Josefin Sans', sans-serif;">
+                <table class="table site-block-order-table mb-5">
                   <tbody>
                     <tr>
                       <th>Cart-Total</th>
@@ -132,11 +133,29 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="text-center" style="font-family: 'Josefin Sans', sans-serif; ">
-                  <input type="radio" value="COD" name="c_payment" class="mb-4 ms-4"><label for="" class="ms-2">Cash-On
-                    Delivery</label>
-                  <input type="radio" value="UPI" name="c_payment" class="mb-4 ms-4"><label for=""
-                    class="ms-2">Online-Payment</label>
+                <div class="text-start">
+                  <div class="col-12">
+                    <input type="radio" value="COD" name="c_payment" class="mb-4 ms-4"><label for=""
+                      class="ms-2">Cash-On
+                      Delivery</label>
+                  </div>
+                  <div class="col-12">
+                    <input type="radio" value="UPI" name="c_payment" class="mb-4 ms-4"><label for=""
+                      class="ms-2">Online-Payment</label>
+                  </div>
+                  {{#if wallet}}
+                  {{#if (gte wallet overall)}}
+                  <div class="col-12">
+                    <input type="radio" value="Wallet" name="c_payment" class="mb-4 ms-4"><label for=""
+                      class="ms-2">Use-wallet</label>
+                  </div>
+                  {{else}}
+                  <div class="col-12">
+                    <input type="radio" value="Wallet" name="c_payment" class="mb-4 ms-4"disabled><label for=""
+                      class="ms-2 text-muted">Use-wallet <span style="color: rgb(230, 60, 60);">(Insufficient balance)</span></label>
+                  </div>
+                  {{/if}}
+                  {{/if}}
                 </div>
                 <div class="form-group  text-center">
                   <button class=" model-btn" type="submit" onclick="return placeOrder()"

@@ -29,6 +29,10 @@ const orderSchema = mongoose.Schema({
   type:Date,
   required:true
  },
+ month:{
+  type:Number,
+  required:true
+ },
  orderStatus:{
   type:String,
   required:true

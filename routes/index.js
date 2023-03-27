@@ -3,6 +3,8 @@ const productController = require('../controller/prouductController')
 const cartController = require('../controller/cartController')
 const orderController = require('../controller/orderController')
 const couponController = require('../controller/couponController')
+const wishlistController = require('../controller/wishlistController')
+
 
 const verify = require('../middleware/middleware').verifyUser
 const verifyCart = require('../middleware/middleware').verifyCart
@@ -22,6 +24,18 @@ router.get('/', productController.getHomeProducts)
 
 //SHOP
 router.get('/shop', productController.getShopProducts)
+
+//CATEGORY-FILTER
+router.post('/cateFilter',productController.cateFilter)
+
+//PRICE-FILTER
+router.post('/priceFilter',productController.priceFilter)
+
+//BRAND-FILTER
+router.post('/brandFilter',productController.brandFilter)
+
+//GET-SEARCH-RESULT
+router.post('/getSearch',productController.getSearch)
 
 //PRODUCT-DETAILS
 router.get('/product-details/:id([0-9a-fA-F]{24})', productController.getProductDetails)
@@ -49,13 +63,29 @@ router.get('/user-cart', verify, verifyCart, cartController.getCart)
 router.post('/add-to-cart/:id([0-9a-fA-F]{24})', verify, cartController.addToCart)
 
 //CHANGE-QUANTITY
-router.post('/change-quantity', cartController.changeQuantity)
+router.post('/change-quantity', verify, cartController.changeQuantity)
 
 //REMOVE-PRODUCT
 router.post('/remove-product', verify, cartController.removeProduct)
 
+
+//GET-WISHLIST
+router.get('/user-wish',verify,wishlistController.getWishlist)
+
+//ADD-TO-WISHLIST
+router.post('/add-to-wish',verify,wishlistController.addToWishlist)
+
+//REMOVE-FROM-WIHSLIST
+router.post('/remove-wishlist',verify,wishlistController.removeProduct)
+
 //CHECK-OUT
 router.get('/user-checkout', verify, verifyCart, cartController.getCheckOut)
+
+//COUPON-CARD
+router.get('/coupon-card/:id', verify, couponController.getCoupon)
+
+//USE-COUPON
+router.post('/use-coupon', verify, couponController.useCoupon)
 
 //ADDRESS-LIST
 router.get('/stored-address/:id([0-9a-fA-F]{24})', verify, userController.getSavedAddress)
@@ -78,6 +108,15 @@ router.get('/user-profile', verify, userController.userProfile)
 //ADDRESS-PROFILE-SHOW
 router.get('/stored-profile-address/:id([0-9a-fA-F]{24})', verify, userController.showSavedAddress)
 
+//RESET-PASSWORD
+router.get('/reset-password',verify,userController.getresetPassword)
+
+//VERIFY-PASSWORD
+router.post('/verifyPass',verify,userController.verifPass)
+
+//POST-RESET-PASSWORD
+router.post('/post-reset-pass',verify,userController.postresetPassword)
+
 //REMOVE-ADDRESS
 router.get('/delete-address/:id', verify, userController.deleteAddress)
 
@@ -87,14 +126,11 @@ router.get('/user-orderlist', verify, verifyOrder, orderController.getOrderList)
 //GET-ORDER-PRODUCT-DEATIALS
 router.get('/order-details/:id([0-9a-fA-F]{24})', verify, orderController.orderedProducts)
 
+//GET-INVOICE
+router.get('/download-invoice/:id([0-9a-fA-F]{24})',verify,orderController.download_invoice)
+
 //CANCEL ORDER
 router.get('/cancel-order/:id([0-9a-fA-F]{24})', verify, orderController.orderCancel)
-
-//COUPON-CARD
-router.get('/coupon-card/:id', verify, couponController.getCoupon)
-
-//USE-COUPON
-router.post('/use-coupon', verify, couponController.useCoupon)
 
 //USER-LOGOUT
 router.get('/logout', userController.userLogout)

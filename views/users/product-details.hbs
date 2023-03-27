@@ -27,7 +27,7 @@
          <h4>₹{{product.price}}</h4>
          {{/if}}
          <form action="/add-to-cart/{{product._id}}" method="POST">
-            <select name="size" class="my-3 " id="">
+            <select name="size" class="my-3 " id="size">
                {{#each product.size}}
                <option value="{{[]}}">{{[]}}</option>
                {{/each}}
@@ -36,15 +36,12 @@
             <button class="model-btn mb-3 mt-4 offset-3 col-6 col-md-10 col-lg-6 d-flex justify-content-center"
                type="submit"><i class="fa-solid fa-cart-shopping text-white me-2 fs-6"></i>Cart</button>
          </form>
-         <a href="/add-to-whishlist/{{product._id}}" class="link-line"><button
-               class="model-wish-btn offset-3 col-6 offset-2 col-md-10  col-lg-6 d-flex justify-content-center"><i
-                  class="fa-regular fa-heart fs-6 me-2"></i>Wishlist</button></a>
          {{else}}
          <p class="text-danger fs-3 text-center" style="font-family: 'Bebas Neue', cursive;">OUT OF STOCK !</p>
-         <a href="/add-to-whishlist/{{product._id}}" class="link-line"><button
-               class="model-wish-btn offset-3 col-6 offset-2 col-md-10  col-lg-6 d-flex justify-content-center"><i
-                  class="fa-regular fa-heart fs-6 me-2"></i>Wishlist</button></a>
          {{/if}}
+         <button type="button" onclick="addToWishlist('{{product._id}}')"
+            class="model-wish-btn offset-3 col-6 offset-2 col-md-10  col-lg-6 d-flex justify-content-center"><i
+               class="fa-regular fa-heart fs-6 me-2"></i>Wishlist</button>
          <h4 class="mt-4 mb-4">Description:</h4>
          <span>{{product.description}}</span>
       </div>
@@ -52,7 +49,7 @@
 </section>
 
 <section id="featured" class="my-5 pb-5">
-   <div class="container text-center mt-5 py-5 featured-text ">
+   <div class="container text-center mt-5 py-5 featured-text">
       <h3 style="	font-family: 'Climate Crisis', cursive;">Related Collections</h3>
       <hr>
       <p>This is our new and Related products.You can explore our #Male Fashion by Evoca Fashion Store.</p>
@@ -84,5 +81,46 @@
    function imgzoom(id) {
       img = document.getElementById(id).src
       document.getElementById("bigImg").src = img
+   }
+   function addToWishlist(productId) {
+      const size = document.getElementById('size').value
+      $.ajax({
+         url: '/add-to-wish',
+         data: {
+            size: size,
+            product: productId
+         },
+         method: 'post',
+         success: (response) => {
+            if (response.status == true) {
+               Swal.fire({
+                  position: 'bottom',
+                  title: '<span style="color: green; font-size: 20px;"><i class="fa-regular fa-circle-check"></i> </span> Added to wishlist',
+                  showConfirmButton: false,
+                  timer: 1200,
+                  customClass: {
+                     popup: 'my-popup-class',
+                     content: 'my-content-class',
+                     confirmButton: 'my-confirm-button-class'
+                  },
+               });
+            } else if(response.status==false){
+               Swal.fire({
+                  position: 'bottom',
+                  title: 'Product already added <i class="fa-regular text-warning fa-exclamation"></i>',
+                  showConfirmButton: false,
+                  timer: 1200,
+                  customClass: {
+                     popup: 'my-popup-class',
+                     content: 'my-content-class',
+                     confirmButton: 'my-confirm-button-class'
+                  },
+               });
+               
+            }else{
+               window.location.href="/login"
+            }
+         }
+      })
    }
 </script>

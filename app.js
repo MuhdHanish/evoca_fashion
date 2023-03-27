@@ -6,7 +6,10 @@ const logger = require('morgan')
 const hbs = require('express-handlebars')
 const db = require('./config/connection')
 const session = require('express-session')
+
 const fileUpload = require('express-fileupload')
+
+
 
 const userRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
@@ -18,12 +21,19 @@ hb.handlebars.registerHelper('eq', function (a, b) {
   return a == b;
 });
 
+hb.handlebars.registerHelper('gte',function(a,b){
+  return a>=b;
+})
+
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/temp/'
+}))
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs', hbs.engine({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layout/', partialsDir: __dirname + '/views/partials/' }))
-
-app.use(fileUpload())
 
 app.use(session({ secret: "key",saveUninitialized: true, resave: true,  cookie: { maxAge: 60000 * 60 } }))
 app.use(logger('dev'));
@@ -48,6 +58,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  console.log(err)
   res.render('error');
 });
 

@@ -1,0 +1,63 @@
+{{>user-header}}
+
+<!-- Shop Section Begin -->
+<section id="featured" class="my-5 pb-5">
+  <div class="row mx-auto container-fluid d-flex justify-content-center">
+    {{#each products}}
+    <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5"> 
+      <i class="fa-solid fa-trash p-3 " onclick="removeProduct('{{_id}}','{{product._id}}')" style="position: absolute;color: rgb(255, 0, 0);cursor: pointer;"></i>
+      <a href="/product-details/{{product._id}}"><img class="img-fluid" src="/product-images/{{product.images.[0]}}.jpg"
+          onmouseover="this.src='/product-images/{{product.images.[1]}}.jpg'"
+          onmouseout="this.src='/product-images/{{product.images.[0]}}.jpg'"></a>
+      <div class="star">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+      </div>
+      <h5 class="p-name">{{product.title}}</h5>
+      <h6 class="p-price">₹ {{product.offerPrice}}</h6>
+      {{#if product.stock}}
+      <form action="/add-to-cart/{{product._id}}" method="post">
+      <input type="text" value="{{product.size}}" hidden>
+      <button class="model-btn" type="submit" id="btn">Add to cart</button>
+      </form>
+      {{else}}
+      <p class="text-danger fs-4 text-center model-btn" style="font-family: 'Bebas Neue', cursive; background-color: transparent;">OUT OF STOCK !</p>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<script>
+function removeProduct(wishId, productId) {
+    $.ajax({
+      url: '/remove-wishlist',
+      data: {
+        wish: wishId,
+        product: productId,
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.status == true) {
+          Swal.fire({
+            position: 'bottom',
+            title: 'Product removed <i class="fa-regular text-warning fa-exclamation"></i>',
+            showConfirmButton: false,
+            timer: 1200,
+            customClass: {
+              popup: 'my-popup-class',
+              content: 'my-content-class',
+              confirmButton: 'my-confirm-button-class'
+            },
+          });
+          setTimeout(()=>{
+          location.reload()
+          },1000)
+        }
+      }
+    })
+  }
+</script>

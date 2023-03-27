@@ -12,7 +12,7 @@ require('dotenv').config()
 
 module.exports = {
 
-   getSignUp: (req, res,next) => {
+   getSignUp: (req, res, next) => {
       try {
          if (req.session.user) {
             res.redirect('/')
@@ -28,7 +28,7 @@ module.exports = {
       }
    },
 
-   postSignUp: async (req, res,next) => {
+   postSignUp: async (req, res, next) => {
       try {
          const userData = req.body
          const userExist = await userCollection.findOne({ email: userData.email })
@@ -59,7 +59,7 @@ module.exports = {
       }
    },
 
-   getLogin: (req, res,next) => {
+   getLogin: (req, res, next) => {
       try {
          const user = req.session.user
          if (user) {
@@ -76,7 +76,7 @@ module.exports = {
       }
    },
 
-   postLogin: async (req, res,next) => {
+   postLogin: async (req, res, next) => {
       try {
          const userData = req.body
          const user = await userCollection.findOne({ email: userData.email })
@@ -109,7 +109,7 @@ module.exports = {
       }
    },
 
-   getOtpLogin: (req, res,next) => {
+   getOtpLogin: (req, res, next) => {
       try {
          const user = req.session.usr
          if (user) {
@@ -127,7 +127,7 @@ module.exports = {
       }
    },
 
-   postOtpLogin: async (req, res,next) => {
+   postOtpLogin: async (req, res, next) => {
       try {
          const userData = req.body
          const userDetails = await userCollection.findOne({ email: userData.otpEmail })
@@ -173,7 +173,7 @@ module.exports = {
       }
    },
 
-   getOtpVarification: (req, res,next) => {
+   getOtpVarification: (req, res, next) => {
       try {
          if (req.session.user) {
             res.redirect('/')
@@ -193,7 +193,7 @@ module.exports = {
       }
    },
 
-   postOtpVarification: async (req, res,next) => {
+   postOtpVarification: async (req, res, next) => {
       try {
          const otpCode = req.session.otpCode
          if (otpCode === parseInt(req.body.otp)) {
@@ -217,7 +217,7 @@ module.exports = {
       }
    },
 
-   getSavedAddress: async (req, res,next) => {
+   getSavedAddress: async (req, res, next) => {
       try {
          const user = req.session.user
          const userId = req.params.id
@@ -229,7 +229,7 @@ module.exports = {
       }
    },
 
-   selectAddress: async (req, res,next) => {
+   selectAddress: async (req, res, next) => {
       try {
          const user = req.session.user
          const index = req.params.id
@@ -244,23 +244,26 @@ module.exports = {
       }
    },
 
-   userProfile: async (req, res,next) => {
+   userProfile: async (req, res, next) => {
       try {
          const user = req.session.user
          const userId = user._id
          const count = await globalFunction.cartCount(userId)
          const address = await userCollection.findOne({ _id: new ObjectId(userId) })
+         const wallet = address.wallet
+         const newPass = req.session.newPass
          if (address.address == null || address?.address.length == 0) {
-            res.render('users/user-profile', { User: true, user, count })
+            res.render('users/user-profile', { User: true, user, count, wallet ,newPass})
          } else {
-            res.render('users/user-profile', { User: true, user, count, adr: true })
+            res.render('users/user-profile', { User: true, user, count, adr: true, wallet,newPass })
          }
+         req.session.newPass = null
       } catch (err) {
          next(err)
       }
    },
 
-   showSavedAddress: async (req, res,next) => {
+   showSavedAddress: async (req, res, next) => {
       try {
          const user = req.session.user
          const userId = req.params.id
@@ -272,7 +275,64 @@ module.exports = {
       }
    },
 
-   deleteAddress: async (req, res,next) => {
+   getresetPassword: async (req, res, next) => {
+      try {
+         if(req.session.verif){
+            req.session.verifStatus= req.session.verif
+            req.session.conf = null
+         }else{
+            req.session.veriferr = req.session.veriferr
+            req.session.conf = true
+         }
+         const conf = req.session.conf
+         const verif = req.session.verifStatus
+         const veriferr = req.session.veriferr
+         res.render('users/reset-password',{verif,veriferr,conf})
+         req.session.verif = null
+         req.session.verifStatus = null
+         req.session.veriferr=null
+         req.session.conf = true
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   verifPass: async (req, res) => {
+      console.log('asdfasdfasdfasdf')
+      const userId = req.session.user._id
+      const user = await userCollection.findOne({ _id: new ObjectId(userId) })
+      const verifPass = req.body.orgPass
+      if (verifPass == '') {
+         req.session.veriferr = 'Password feild is empty !'
+         res.redirect('/reset-password')
+
+      } else {
+         bcrypt.compare(verifPass, user.password).then((status) => {
+            if (status) {
+               req.session.verif= verifPass
+               res.redirect('/reset-password')
+            } else {
+               req.session.veriferr = 'Invalid password'
+               res.redirect('/reset-password')
+            }
+         })
+      }
+   },
+
+   postresetPassword: async (req, res) => {
+      try {
+         const userId = req.session.user._id
+         const newpass = req.body.newPass
+         const newPass = await bcrypt.hash(newpass, 10)
+         userCollection.updateOne({_id:new ObjectId(userId)},{$set:{password:newPass}}).then()
+         req.session.newPass = true
+         res.redirect('/user-profile')
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   deleteAddress: async (req, res, next) => {
       try {
          const user = req.session.user
          const index = req.params.id
@@ -284,7 +344,7 @@ module.exports = {
       }
    },
 
-   userLogout: (req, res,next) => {
+   userLogout: (req, res, next) => {
       try {
          req.session.user = null
          res.redirect('/')

@@ -6,27 +6,219 @@
 </section>
 
 <!-- Shop Section Begin -->
-<section id="featured" class="my-5 pb-5">
+<section id="featured" class="pb-5">
    <div class="row mx-auto container-fluid d-flex justify-content-center">
-      {{#each products}}
-      <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
-         <a href="/product-details/{{_id}}"><img class="img-fluid"
-         src="/product-images/{{images.[0]}}.jpg"  
-         onmouseover="this.src='/product-images/{{images.[1]}}.jpg'" 
-         onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
-         <div class="star">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half-stroke"></i>
+      <div class="d-none d-md-block col-lg-2 text-center" style="border: rgb(159, 158, 158) 1px solid;max-height: 900px;">
+         <div class="shop__sidebar">
+            <div class="shop__sidebar__accordion">
+               <div class="accordion" id="accordionExample">
+                  <div class="col-12 ">
+                     <div class="card">
+                        <div class="card-heading">
+                           <a class="link-line">Categories</a>
+                        </div>
+                        <div id="collapseOne" class="collapse show " data-parent="#accordionExample">
+                           <div class="card-body text-start">
+                              <div class="shop__sidebar__categories">
+                                 <ul class="nice-scroll">
+                                    {{#each categorys}}
+                                    <li><a id="{{category}}" onclick="cateFilter(this.id)"
+                                          class="link-line">{{category}}</a></li>
+                                    {{/each}}
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-12 ">
+                     <div class="card">
+                        <div class="card-heading">
+                           <a class="link-line">Brands</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                           <div class="card-body text-start">
+                              <div class="shop__sidebar__price">
+                                 <ul>
+                                    {{#each brands}}
+                                    <li><a href="#" id="{{[]}}" onclick="brandFilter(this.id)" class="link-line">{{[]}}
+                                    </li>
+                                    {{/each}}
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-12 ">
+                     <div class="card">
+                        <div class="card-heading">
+                           <a class="link-line">Filter Price</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                           <div class="card-body text-start">
+                              <div class="shop__sidebar__price">
+                                 <ul>
+                                    <li><a href="#" id="b-1500" onclick="priceFilter(this.id)" class="link-line">-
+                                          1500</a></li>
+                                    <li><a href="#" id="b-2000" onclick="priceFilter(this.id)" class="link-line">-
+                                          2000</a></li>
+                                    <li><a href="#" id="b-2500" onclick="priceFilter(this.id)" class="link-line">-
+                                          2500</a></li>
+                                    <li><a href="#" id="b-3000" onclick="priceFilter(this.id)" class="link-line">-
+                                          3000</a></li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-12 ">
+                     <div class="card">
+                        <div class="card-heading">
+                           <a class="link-line">Sort Price</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                           <div class="card-body text-start">
+                              <div class="shop__sidebar__price">
+                                 <ul>
+                                    <li><a href="#" id="low-to-high" onclick="priceSort(this.id)" class="link-line">-
+                                          Low to High</a></li>
+                                    <li><a href="#" id="high-to-low" onclick="priceSort(this.id)" class="link-line">-
+                                          High to Low</a></li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
-         <h5 class="p-name">{{title}}</h5>
-         <h6 class="p-price">₹ {{offerPrice}}</h6>
-         <button class="model-btn" id="btn" >buy now</button>
       </div>
-      {{/each}}
+      <div class="col-9">
+         <div class="row"> {{#if cateFilter}}
+            {{#each cateFilter}}
+            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
+                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+               <div class="star">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+               </div>
+               <h5 class="p-name">{{title}}</h5>
+               <h6 class="p-price">₹ {{offerPrice}}</h6>
+               <button class="model-btn" id="btn">buy now</button>
+            </div>
+            {{/each}}
+            {{else}}
+            {{#if brandFilter}}
+            {{#each brandFilter}}
+            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
+                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+               <div class="star">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+               </div>
+               <h5 class="p-name">{{title}}</h5>
+               <h6 class="p-price">₹ {{offerPrice}}</h6>
+               <button class="model-btn" id="btn">buy now</button>
+            </div>
+            {{/each}}
+            {{else}}
+            {{#if priceFilter}}
+            {{#each priceFilter}}
+            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
+                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+               <div class="star">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+               </div>
+               <h5 class="p-name">{{title}}</h5>
+               <h6 class="p-price">₹ {{offerPrice}}</h6>
+               <button class="model-btn" id="btn">buy now</button>
+            </div>
+            {{/each}}
+            {{else}}
+            {{#each products}}
+            <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+               <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
+                     onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
+                     onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+               <div class="star">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star-half-stroke"></i>
+               </div>
+               <h5 class="p-name">{{title}}</h5>
+               <h6 class="p-price">₹ {{offerPrice}}</h6>
+               <button class="model-btn" id="btn">buy now</button>
+            </div>
+            {{/each}}
+            {{/if}}
+            {{/if}}
+            {{/if}}
+         </div>
+      </div>
+
    </div>
+
 </section>
 
 {{>user-footer}}
+
+<script>
+   function cateFilter(category) {
+      $.ajax({
+         url: '/cateFilter',
+         method: 'POST',
+         data: {
+            category: category
+         },
+         success: (response) => {
+            location.reload()
+         }
+      })
+   }
+   function priceFilter(price) {
+      $.ajax({
+         url: '/priceFilter',
+         method: "POST",
+         data: {
+            price: price
+         },
+         success: (response) => {
+            location.reload()
+         }
+      })
+   }
+   function brandFilter(brand) {
+
+      $.ajax({
+         url: '/brandFilter',
+         method: "POST",
+         data: {
+            brand: brand
+         },
+         success: (response) => {
+            location.reload()
+         }
+      })
+   }
+</script>

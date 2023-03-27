@@ -8,64 +8,68 @@
 </section>
 
 <section id="cart-container" class="container my-5">
-  <table width="100%">
-    <thead>
-      <tr>
-        <th>Remove</th>
-        <th>Image</th>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="row">
+    
+    <div class="col-md-8">
       {{#each products}}
-      <tr style="border-bottom: rgb(196, 196, 196) 1px solid;font-family: 'Josefin Sans', sans-serif;">
-        <td><i class="fa-regular fa-square-minus text-danger" onclick="removeProduct('{{_id}}','{{product._id}}')"></i>
-        </td>
-        <td><img src="/product-images/{{product.images.[0]}}.jpg" class="my-3 img-fluid" style="border: black 1px solid"
-            alt=""></td>
-        <td>
-          <h5 class="text-start">{{product.title}}</h5>
-        </td>
-        <td>
-          <h5>₹{{product.offerPrice}}</h5>
-        </td>
-        <td><button class="cart-increase"
-            onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',-1)"
-            id="decrease">-</button>
-          <span id="{{product._id}}">{{this.quantity}}</span>
-          <button class="cart-increase"
-            onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',1)"
-            id="{{@index}}">+</button>
-        </td>
-      </tr>
+      <div class="card mb-3">
+        <div class="card-body" style="border: black 1px solid;">
+          <div class="row">
+            <div class="col-md-5">
+              <img class="img-fluid mb-3 mb-md-0" width="50%" style="border: black 1px solid;"
+                src="/product-images/{{product.images.[0]}}.jpg" alt="">
+            </div>
+            <div class="col-md-7">
+              <h5 class="card-title">{{product.title}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">₹{{product.offerPrice}}</h6>
+              <p class="card-text mb-4">{{product.description}}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="input-group w-50">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-sm" style="border: black 1px solid;border-radius: 0%;"  data-action="minus"
+                      onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',-1)"
+                      id="decrease">-</button>
+                  </span>
+                  <span id="{{product._id}}" class="ms-4 pt-1">{{this.quantity}}</span>
+                  <span class="input-group-btn">
+                    <button type="button"
+                      onclick="changeQuantity('{{_id}}','{{product._id}}','{{product.title}}','{{@index}}',1)"
+                      id="{{@index}}" class="btn btn-sm  ms-4" style="border: black 1px solid;border-radius: 0%;" data-action="plus">+</button>
+                  </span>
+                </div>
+                <button type="button" onclick="removeProduct('{{_id}}','{{product._id}}')"
+                  class="btn btn-sm fs-5"><i class="fa-solid fa-trash text-danger"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {{/each}}
-    </tbody>
-  </table>
-  <p class="text-danger text-start mt-4 fs-6" id="item"></p>
-</section>
-
-<section class="container my-5 " id="cart-bottom">
-  <div class="row ">
-    <div class="total col-lg-4 col-md-6 col-12 text-center ms-auto">
-      <h5>CART TOTAL</h5>
-      <div class="text-start p-3 pb-0 " style="font-family: 'Josefin Sans', sans-serif;">
+    </div>
+    
+    <div class="col-md-4 " >
+      <div class="card mb-3" >
+        <div class="card-body" style="border: black 1px solid;">
+          <h5 class="card-title">CART TOTAL</h5>
+          <div class="text-start p-3 pb-0 " >
         {{#each products}}
         <h6>- {{product.title}}</h6>
         {{/each}}
       </div>
       <hr class="second-hr">
-      <div class="d-flex justify-content-between p-3 pb-0" style="font-family: 'Josefin Sans', sans-serif;">
+      <div class="d-flex justify-content-between pb-0" style="padding: 6px;">
         <h6 class="mt-1">Cart-Total</h6>
         <p id="Cart-Total" class="mb-1">₹{{total.[0].total}}</p>
       </div>
       <hr class="second-hr">
-      <button class="model-btn col-12" onclick="window.location.href='/user-checkout'">Proceed to check</button>
+          <button class="model-btn col-12" onclick="window.location.href='/user-checkout'">checkout</button>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
+    <p class="text-danger text-start mt-4 fs-6" id="item"></p>
+</section>
 {{>user-footer}}
 
 <script>
@@ -104,9 +108,9 @@
               confirmButton: 'my-confirm-button-class'
             },
           });
-          setTimeout(()=>{
-          location.reload()
-          },1000)
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
         }
         else if (response.status == 'out') {
           document.getElementById(index).style.visibility = 'hidden'
@@ -145,9 +149,9 @@
               confirmButton: 'my-confirm-button-class'
             },
           });
-          setTimeout(()=>{
-          location.reload()
-          },1000)
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
         }
       }
     })

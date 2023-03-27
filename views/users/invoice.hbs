@@ -1,0 +1,91 @@
+<div class="container mt-6 mb-7">
+ <div class="row justify-content-center">
+  <div class="col-lg-12 col-xl-7">
+   <div class="card" > 
+    <div class="card-body p-5">
+     <h2>
+      Hey {{orderDetails.deliveryDetails.fname}} {{orderDetails.deliveryDetails.lname}},
+     </h2>
+     <p class="fs-sm">
+      This is the receipt for a payment of <strong>₹ {{orderDetails.amount}}</strong> (INR) you made to puchase.
+     </p>
+
+     <div class="border-top border-gray-200 pt-4 mt-4">
+      <div class="row">
+       <div class="col-md-6 text-md-end">
+        <div class="text-muted mb-2">Payment Date-Tme</div>
+        <strong>{{orderDetails.date}}</strong>
+       </div>
+      </div>
+     </div>
+
+     <div class="border-top border-gray-200 mt-4 py-4">
+      <div class="row">
+       <div class="col-md-6">
+        <div class="text-muted mb-2">Client</div>
+        <strong>
+         {{orderDetails.deliveryDetails.fname}} {{orderDetails.deliveryDetails.lname}}
+        </strong>
+        <p class="fs-sm">
+         {{orderDetails.deliveryDetails.country}} , {{orderDetails.deliveryDetails.state}} ,<br>
+         {{orderDetails.deliveryDetails.district}} , {{orderDetails.pin}}
+         <br>
+         <a href="#!" class="text-purple">{{orderDetails.deliveryDetails.email}}
+         </a>
+        </p>
+       </div>
+       <div class="col-md-6 text-md-end">
+        <div class="text-muted mb-2">Payment To</div>
+        <strong>
+         Evoca Fashion Store
+        </strong>
+        <p class="fs-sm">
+         India , kerala , Palakkad <br>
+         651907 , cherpulassery
+         <br>
+        </p>
+       </div>
+      </div>
+     </div>
+
+     <table class="table border-bottom border-gray-200 mt-3">
+      <thead>
+       <tr>
+        <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0">Proudcts</th>
+        <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm text-center px-0">Amount</th>
+        <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm text-end px-0">Quantity</th>
+       </tr>
+      </thead>
+      <tbody>
+       {{#each orderDetails.products}}
+       <tr>
+        <td class="px-0">{{product.title}}</td>
+        <td class="text-center px-0">₹ {{product.offerPrice}}</td>
+        <td class="text-end px-0">{{quantity}}</td>
+       </tr>
+       {{/each}}
+      </tbody>
+     </table>
+
+     <div class="mt-5">
+      <div class="d-flex justify-content-end">
+       <p class="text-muted me-3">Shipping:</p>
+       <span>₹ 10</span>
+      </div>
+      <div class="d-flex justify-content-end mt-3">
+       <h5 class="me-3">Total:</h5>
+       <h5>₹ {{orderDetails.amount}} (INR)</h5>
+      </div>
+      <button class="model-btn" onclick="downlaod()">Download</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<script>
+ function downlaod(){
+  window.print()
+ }
+</script>
