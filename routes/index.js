@@ -37,6 +37,9 @@ router.post('/brandFilter',productController.brandFilter)
 //SORT-FILTER
 router.post('/priceSort',productController.priceSort)
 
+//PAGINATION
+router.get('/pagination/:id',productController.pagination)
+
 //ALL-PRODUCTS
 router.get('/allProducts',productController.allProudcts)
 
@@ -57,6 +60,24 @@ router.post('/login', userController.postLogin)
 //OTP-LOGIN
 router.get('/otp-login', userController.getOtpLogin)
 router.post('/otp-login', userController.postOtpLogin)
+
+//FORGOT-PASSWORD
+router.get('/forgot-password',userController.forgotpass)
+
+//FORGOT-VERIFY-EMAIL
+router.post('/forgot-VerifEmail',userController.forgotVerifEmail)
+
+//RESETING-FORGOTED-PASSWORD-GET-OTP
+router.get('/reset-forgot-password',userController.resetForgotPassword)
+
+//RESETING-FORGOTED-PASSWORD-POST-OTP
+router.post('/forgot-otp-varification',userController.forgotOtpVarification)
+
+//RESETING-FORM
+router.get('/reset-forPass-form',userController.resetForPassForm)
+
+//RESETING-FORM-POST
+router.post('/post-resetForPass-form',userController.postResetForPassForm)
 
 //OTP-VARIFICATION
 router.get('/otp-varification', userController.getOtpVarification)

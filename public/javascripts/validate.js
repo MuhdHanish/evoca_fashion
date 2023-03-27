@@ -412,3 +412,26 @@ function validateReset(){
   }
   return true
 }
+
+function  forgotemail(){
+
+  const EmailRegx = /^(\w){3,16}@([A-Za-z]){5,8}.([A-Za-z]){2,3}$/gm
+  const email = document.forgotEmail.email.value
+
+  if(email==''){
+    document.getElementById('error').innerHTML = 'Email feild is required'
+    setTimeout(() => {
+      document.getElementById('error').innerHTML = ''
+    }, 2000);
+    return false
+  }
+
+  if(EmailRegx.test(email)==false){
+    document.getElementById('error').innerHTML = 'Invalid email format'
+    setTimeout(() => {
+      document.getElementById('error').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  return true
+}

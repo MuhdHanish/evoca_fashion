@@ -37,6 +37,14 @@ module.exports = {
   },
 
   getShopProducts: async (req, res, next) => {
+    
+    const proCount=await productCollection.countDocuments()
+    const limit=6
+    let skip=0
+  
+    const page=req.session.page
+    if(page) skip=(page-1)*limit;
+
     try {
 
       if (req.session.allProudcts == true) {
@@ -50,7 +58,7 @@ module.exports = {
         req.session.brand = null
       }
 
-      let products = await productCollection.find({ status: true }).toArray()
+      let products = await productCollection.find({ status: true }).limit(limit).skip(skip).toArray()
       const categorys = await categoryCollection.find().toArray()
       const brands = await productCollection.distinct("brand")
 
@@ -58,23 +66,23 @@ module.exports = {
 
       if (req.session.sortId) {
         if (req.session.sortId == 'low-to-high') {
-          req.session.sort = await productCollection.find().sort({ offerPrice: 1 }).toArray()
+          req.session.sort = await productCollection.find().limit(limit).skip(skip).sort({ offerPrice: 1 }).toArray()
           products = req.session.sort
 
         } else {
-          req.session.sort = await productCollection.find().sort({ offerPrice: -1 }).toArray()
+          req.session.sort = await productCollection.find().limit(limit).skip(skip).sort({ offerPrice: -1 }).toArray()
           products = req.session.sort
 
         }
       }
       if (req.session.category) {
-        req.session.cateFilter = await productCollection.find({ category: req.session.category }).toArray()
+        req.session.cateFilter = await productCollection.find({ category: req.session.category }).limit(limit).skip(skip).toArray()
         products = req.session.cateFilter
       }
 
 
       if (req.session.brand) {
-        req.session.brandFilter = await productCollection.find({ brand: req.session.brand }).toArray()
+        req.session.brandFilter = await productCollection.find({ brand: req.session.brand }).limit(limit).skip(skip).toArray()
         products = req.session.brandFilter
       }
 
@@ -82,49 +90,49 @@ module.exports = {
 
       if (req.session.price) {
         if (req.session.price == 'b-1500') {
-          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).toArray()
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2000') {
-          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).toArray()
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2500') {
-          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).toArray()
+          req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else {
-          req.session.priceFilter = await productCollection.find().toArray()
+          req.session.priceFilter = await productCollection.find().limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         }
       }
 
       if (req.session.sortId && req.session.category) {
         if (req.session.sortId == 'low-to-high') {
-          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: 1 }).toArray()
+          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: -1 }).toArray()
+          req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         }
       }
       if (req.session.sortId && req.session.brand) {
         if (req.session.sortId == 'low-to-high') {
-          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: 1 }).toArray()
+          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: -1 }).toArray()
+          req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         }
       }
       if (req.session.sortId && req.session.price) {
         if (req.session.sortId == 'low-to-high') {
-          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: 1 }).toArray()
+          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: -1 }).toArray()
+          req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
         }
       }
@@ -133,15 +141,23 @@ module.exports = {
         req.session.filterMsg = 'No results found!';
       }
       const filterMsg = req.session.filterMsg
+
+      const count = Math.ceil(proCount/limit)
+      const pageArr = [] 
+      for(i=0;i<count;i++){
+        pageArr.push(i+1)
+      }
+
       if (user) {
         const count = await globalFunction.cartCount(req.session.user._id)
-        res.render('users/shop', { User: true, user, products, filterMsg, categorys, count, search: true, brands })
+        res.render('users/shop', { User: true, user, products, filterMsg, categorys, pageArr, count, search: true, brands })
       } else {
-        res.render('users/shop', { products, categorys, filterMsg, search: true, brands })
+        res.render('users/shop', { products, categorys, filterMsg, search: true, pageArr, brands })
       }
       req.session.filterMsg = null
       req.session.combine = null
       req.session.allProudcts = null
+      req.session.page = null
     } catch (err) {
       next(err)
     }
@@ -183,6 +199,15 @@ module.exports = {
       req.session.sortId = req.body.sort
       res.json(response)
     } catch (err) {
+      next(err)
+    }
+  },
+
+  pagination: async(req,res,next)=>{
+    try{
+      req.session.page = req.params.id
+      res.redirect('/shop')
+    }catch(err){
       next(err)
     }
   },

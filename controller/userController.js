@@ -61,8 +61,7 @@ module.exports = {
 
    getLogin: (req, res, next) => {
       try {
-         const user = req.session.user
-         if (user) {
+         if (req.session.user) {
             res.redirect('/')
          } else {
             error = req.session.err
@@ -111,9 +110,7 @@ module.exports = {
 
    getOtpLogin: (req, res, next) => {
       try {
-         const user = req.session.usr
-         if (user) {
-            e
+         if (req.session.user) {
             res.redirect('/')
          } else {
             otperr = req.session.otperr
@@ -129,45 +126,172 @@ module.exports = {
 
    postOtpLogin: async (req, res, next) => {
       try {
-         const userData = req.body
-         const userDetails = await userCollection.findOne({ email: userData.otpEmail })
-         if (userDetails) {
-            if (userDetails.status) {
-               let OtpCode = Math.floor(100000 + Math.random() * 900000)
-               const otpEmail = userDetails.email
-               let mailTransporter = nodemailer.createTransport({
-                  service: "gmail",
-                  auth: {
-                     user: process.env.EMAIL_ADDRESS,
-                     pass: process.env.PASSWORD
+         if(req.session.user){
+            res.redirect('/')
+         }else{
+            const userData = req.body
+            const userDetails = await userCollection.findOne({ email: userData.otpEmail })
+            if (userDetails) {
+               if (userDetails.status) {
+                  let OtpCode = Math.floor(100000 + Math.random() * 900000)
+                  const otpEmail = userDetails.email
+                  let mailTransporter = nodemailer.createTransport({
+                     service: "gmail",
+                     auth: {
+                        user: process.env.EMAIL_ADDRESS,
+                        pass: process.env.PASSWORD
+                     }
+                  })
+                  let details = {
+                     from: process.env.EMAIL_ADDRESS,
+                     to: otpEmail,
+                     subject: "Evoca Varification",
+                     text: OtpCode + " Evoca Verfication Code,Do not share with others"
                   }
-               })
-               let details = {
-                  from: process.env.EMAIL_ADDRESS,
-                  to: otpEmail,
-                  subject: "Evoca Varification",
-                  text: OtpCode + " Evoca Verfication Code,Do not share with others"
+                  mailTransporter.sendMail(details, (err) => {
+                     if (err) {
+                        console.log(err)
+                     }
+                  })
+                  req.session.otpCode = OtpCode
+                  req.session.otpStatus = true
+                  req.session.userData = req.body
+                  res.redirect('/otp-varification')
+               } else {
+                  req.session.otperr = "Your account has been blocked! Contact with us"
+                  req.session.otpdata = req.body
+                  res.redirect('/otp-login')
                }
-               mailTransporter.sendMail(details, (err) => {
-                  if (err) {
-                     console.log(err)
-                  }
-               })
-               req.session.otpCode = OtpCode
-               req.session.otpStatus = true
-               req.session.userData = req.body
-               res.redirect('/otp-varification')
-            } else {
-               req.session.otperr = "Your account has been blocked! Contact with us"
+            }
+            else {
+               req.session.otperr = "Email Not Registered"
                req.session.otpdata = req.body
                res.redirect('/otp-login')
             }
          }
-         else {
-            req.session.otperr = "Email Not Registered"
-            req.session.otpdata = req.body
-            res.redirect('/otp-login')
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   forgotpass: async (req, res, next) => {
+      try {
+         if(req.session.user){
+            res.redirect('/')
+         }else{
+            const error = req.session.forgotemailerr
+            const email = req.session.emaildata 
+            res.render('users/forgotpass-email',{error,email})
+            req.session.forgotemailerr = null
+            req.session.emaildata  = null
          }
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   forgotVerifEmail:async(req,res,next)=>{
+      try{
+         if(req.session.user){
+            res.redirect('/')
+         }else{
+            const email =  req.body.email
+            const userDetails =await userCollection.findOne({ email:email})
+            if (userDetails) { 
+               if (userDetails.status) {
+                  let OtpCode = Math.floor(100000 + Math.random() * 900000)
+                  const otpEmail = userDetails.email
+                  let mailTransporter = nodemailer.createTransport({
+                     service: "gmail",
+                     auth: {
+                        user: process.env.EMAIL_ADDRESS,
+                        pass: process.env.PASSWORD
+                     }
+                  })
+                  let details = {
+                     from: process.env.EMAIL_ADDRESS,
+                     to: otpEmail,
+                     subject: "Evoca Varification",
+                     text: OtpCode + " Evoca Verfication Code,Do not share with others"
+                  }
+                  mailTransporter.sendMail(details, (err) => {
+                     if (err) {
+                        console.log(err)
+                     }
+                  })
+                  req.session.otpCode = OtpCode
+                  req.session.otpStatus = true
+                  req.session.emaildata  = email
+                  res.redirect('/reset-forgot-password')
+               } else {
+                  req.session.forgotemailerr = "Your account has been blocked! Contact with us"
+                  req.session.emaildata  = email
+                  res.redirect('/forgot-password')
+               }
+            
+         }else{
+            req.session.forgotemailerr = 'Email not registered'
+            req.session.emaildata = email
+            res.redirect('/forgot-password')
+         }
+         }  
+      }catch(err){
+         next(err)
+      }
+   },
+
+   resetForgotPassword:async(req,res,next)=>{
+      try{
+         const otpvarerr = req.session.otpvarerr
+         const userCode = req.session.userCode
+         res.render('users/reset-forgotPassword',{otpvarerr,userCode})
+         req.session.otpvarerr = null
+         req.session.userCode = null
+      }catch(err){
+         next(err)
+      }
+   },
+
+   forgotOtpVarification: async (req, res, next) => {
+      try {
+         const otpCode = req.session.otpCode
+         if (otpCode === parseInt(req.body.otp)) {
+            req.session.email = req.session.emaildata
+            res.redirect('/reset-forPass-form')
+         }
+         else if (req.body.otp == "") {
+            req.session.otpvarerr = "OTP field is required"
+            req.session.userCode = req.body
+            res.redirect('/reset-forgot-password')
+         }
+         else {
+            req.session.otpvarerr = "Invalid OTP"
+            req.session.userCode = req.body
+            res.redirect('/reset-forgot-password')
+         }
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   resetForPassForm:async(req,res,next)=>{
+         try{
+         const email = req.session.email
+         res.render('users/Re-Fo-PassForm',{email})
+         req.session.email = null
+         }catch(err){
+            next(err)
+         }
+   },
+
+   postResetForPassForm:async(req,res,next)=>{
+      try {
+         const email = req.body.email
+         const newpass = req.body.newPass
+         const newPass = await bcrypt.hash(newpass, 10)
+         userCollection.updateOne({ email:email }, { $set: { password: newPass } }).then()
+         req.session.newPass = true
+         res.redirect('/login')
       } catch (err) {
          next(err)
       }
@@ -253,9 +377,9 @@ module.exports = {
          const wallet = address.wallet
          const newPass = req.session.newPass
          if (address.address == null || address?.address.length == 0) {
-            res.render('users/user-profile', { User: true, user, count, wallet ,newPass})
+            res.render('users/user-profile', { User: true, user, count, wallet, newPass })
          } else {
-            res.render('users/user-profile', { User: true, user, count, adr: true, wallet,newPass })
+            res.render('users/user-profile', { User: true, user, count, adr: true, wallet, newPass })
          }
          req.session.newPass = null
       } catch (err) {
@@ -277,20 +401,20 @@ module.exports = {
 
    getresetPassword: async (req, res, next) => {
       try {
-         if(req.session.verif){
-            req.session.verifStatus= req.session.verif
+         if (req.session.verif) {
+            req.session.verifStatus = req.session.verif
             req.session.conf = null
-         }else{
+         } else {
             req.session.veriferr = req.session.veriferr
             req.session.conf = true
          }
          const conf = req.session.conf
          const verif = req.session.verifStatus
          const veriferr = req.session.veriferr
-         res.render('users/reset-password',{verif,veriferr,conf})
+         res.render('users/reset-password', { verif, veriferr, conf })
          req.session.verif = null
          req.session.verifStatus = null
-         req.session.veriferr=null
+         req.session.veriferr = null
          req.session.conf = true
       } catch (err) {
          next(err)
@@ -298,7 +422,6 @@ module.exports = {
    },
 
    verifPass: async (req, res) => {
-      console.log('asdfasdfasdfasdf')
       const userId = req.session.user._id
       const user = await userCollection.findOne({ _id: new ObjectId(userId) })
       const verifPass = req.body.orgPass
@@ -309,7 +432,7 @@ module.exports = {
       } else {
          bcrypt.compare(verifPass, user.password).then((status) => {
             if (status) {
-               req.session.verif= verifPass
+               req.session.verif = verifPass
                res.redirect('/reset-password')
             } else {
                req.session.veriferr = 'Invalid password'
@@ -324,7 +447,7 @@ module.exports = {
          const userId = req.session.user._id
          const newpass = req.body.newPass
          const newPass = await bcrypt.hash(newpass, 10)
-         userCollection.updateOne({_id:new ObjectId(userId)},{$set:{password:newPass}}).then()
+         userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { password: newPass } }).then()
          req.session.newPass = true
          res.redirect('/user-profile')
       } catch (err) {

@@ -1,0 +1,36 @@
+<div class="container-xxl justify-content-center col-12 col-sm-10 col-md-8 col-lg-6 mt-5 pt-5">
+ <div class="authentication-wrapper authentication-basic container-p-y">
+  <!-- Register -->
+  <div class="card "
+   style="border-top-left-radius: 10px;border-bottom-right-radius: 10px; border: 1px solid;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+   <div class="card-body">
+    <!-- Logo -->
+    <div class="app-brand justify-content-center">
+
+     </span>
+     <span class="app-brand-text demo text-body fw-bolder mb-5 fs-3">Evoca</span>
+     <p>Evoca email verification for reseting password</p>
+     </a>
+    </div>
+    <!-- /Logo -->
+
+    <form id="formAuthentication" name="forgotEmail" onsubmit="return forgotemail()" class="mt-5 mb-3" action="/forgot-VerifEmail"
+     method="POST">
+     <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" name="email" style="border-radius:0% ;border: 1px solid;"
+       placeholder="Enter your email "  value="{{email}}" />
+     </div>
+
+     <div class="mb-3">
+      <p class="text-danger" id="error">{{error}}</p>
+     </div>
+     <div class="box">
+      <button class="btn btn-dark d-grid offset-4 col-4 log-btn" type="submit">Verify</button>
+      <a href="/login" class="mt-4 d-flex align-items-center justify-content-center" style="text-decoration: none;">Back to login</a></p>
+     </div>
+
+    </form>
+
+   </div>
+  </div>

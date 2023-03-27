@@ -9,13 +9,6 @@
       <a href="/product-details/{{product._id}}"><img class="img-fluid" src="/product-images/{{product.images.[0]}}.jpg"
           onmouseover="this.src='/product-images/{{product.images.[1]}}.jpg'"
           onmouseout="this.src='/product-images/{{product.images.[0]}}.jpg'"></a>
-      <div class="star">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star-half-stroke"></i>
-      </div>
       <h5 class="p-name">{{product.title}}</h5>
       <h6 class="p-price">₹ {{product.offerPrice}}</h6>
       {{#if product.stock}}

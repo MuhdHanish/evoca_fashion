@@ -18,7 +18,10 @@ module.exports = {
         { $match: { paymentStatus: "Paid" } },
         { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
       ]).toArray()
-      const revenue = totalAmount[0].totalAmount
+      if(totalAmount){
+        req.session.revenue = totalAmount[0].totalAmount
+      }
+      const revenue = req.session.revenue
       res.render('admin/admin-home', { usersCount, ordersCount, productsCount,revenue })
     } catch (err) {
       next(err);
