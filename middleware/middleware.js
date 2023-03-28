@@ -41,7 +41,7 @@ module.exports = {
     }
   },
 
-  verifyCart: async (req, res, next) => {
+  verifyWish: async (req, res, next) => {
     try {
       const user = req.session.user
       const userId = user._id
