@@ -41,6 +41,22 @@ module.exports = {
     }
   },
 
+  verifyCart: async (req, res, next) => {
+    try {
+      const user = req.session.user
+      const userId = user._id
+      const count = await globalFunction.cartCount(userId)
+      const wishCount = await globalFunction.wishCount(userId)
+      if (wishCount == 0) {
+        res.render('users/wish-empty', { User: true, user, count })
+      } else {
+        next()
+      }
+    } catch (err) {
+      next(err)
+    }
+  },
+
   verifyOrder: async (req, res, next) => {
     try {
       const user = req.session.user

@@ -8,6 +8,7 @@ const wishlistController = require('../controller/wishlistController')
 
 const verify = require('../middleware/middleware').verifyUser
 const verifyCart = require('../middleware/middleware').verifyCart
+const verifyWish = require('../middleware/middleware').verifyWish
 const verifyOrder = require('../middleware/middleware').verifyOrder
 const verifySuccess = require('../middleware/middleware').verifySuccess
 
@@ -97,7 +98,7 @@ router.post('/remove-product', verify, cartController.removeProduct)
 
 
 //GET-WISHLIST
-router.get('/user-wish',verify,wishlistController.getWishlist)
+router.get('/user-wish',verify,verifyWish,wishlistController.getWishlist)
 
 //ADD-TO-WISHLIST
 router.post('/add-to-wish',verify,wishlistController.addToWishlist)

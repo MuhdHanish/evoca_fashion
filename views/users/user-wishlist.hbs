@@ -5,11 +5,11 @@
   <div class="row mx-auto container-fluid d-flex justify-content-center">
     {{#each products}}
     <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5"> 
-      <i class="fa-solid fa-trash p-3 " onclick="removeProduct('{{_id}}','{{product._id}}')" style="position: absolute;color: rgb(255, 0, 0);cursor: pointer;"></i>
+      <i class="fa-solid fa-trash p-3 " onclick="removeProduct('{{_id}}','{{product._id}}')" style="position: absolute;color:#dc0345;cursor: pointer;"></i>
       <a href="/product-details/{{product._id}}"><img class="img-fluid" src="/product-images/{{product.images.[0]}}.jpg"
           onmouseover="this.src='/product-images/{{product.images.[1]}}.jpg'"
           onmouseout="this.src='/product-images/{{product.images.[0]}}.jpg'"></a>
-      <h5 class="p-name">{{product.title}}</h5>
+      <h5 class="p-name mt-2">{{product.title}}</h5>
       <h6 class="p-price">₹ {{product.offerPrice}}</h6>
       {{#if product.stock}}
       <form action="/add-to-cart/{{product._id}}" method="post">

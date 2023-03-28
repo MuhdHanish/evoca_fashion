@@ -1,6 +1,7 @@
 const cartCollection = require('../model/cartSchema')
 const orderCollection = require('../model/orderSchema')
 const productCollection = require('../model/productSchema')
+const wishlistCollection = require('../model/whishlistSchema')
 
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
@@ -13,6 +14,23 @@ module.exports = {
         const cartData = await cartCollection.findOne({ userId: new ObjectId(userId) })
         if (cartData) {
           const count = cartData.products.length
+          resolve(count)
+        } else {
+          const count = 0
+          resolve(count)
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  wishCount: (userId) => {
+    try {
+      return new Promise(async (resolve, reject) => {
+        const wishData = await wishlistCollection.findOne({ userId: new ObjectId(userId) })
+        if (wishData) {
+          const count = wishData.products.length
           resolve(count)
         } else {
           const count = 0
