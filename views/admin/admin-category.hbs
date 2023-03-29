@@ -73,8 +73,13 @@
                 <td>{{category}}</td>
                 <td class="text-center">
                   <a class="btn btn-outline-secondary" href="/admin/edit-category/{{_id}}">Edit</a>
-                  <a class="btn btn-outline-danger" href="/admin/delete-category/{{_id}}"
-                    onclick="return confirm('are you sure! you want to delete')">Delete</a>
+                  {{#if status}}
+                  <a class="btn btn-outline-danger" href="/admin/unlist-category/{{_id}}"
+                    onclick="return confirm('are you sure! you want to delete')">Un-list</a>
+                  {{else}}
+                  <a class="btn btn-outline-success" href="/admin/list-category/{{_id}}"
+                    onclick="return confirm('are you sure! you want to delete')">List</a>
+                  {{/if}}
                 </td>
                 {{else}}
                 {{/each}}

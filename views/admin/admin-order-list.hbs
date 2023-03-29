@@ -20,16 +20,26 @@
         <td>{{deliveryDetails.mobile}}</td>
         <td>₹{{amount}}</td>
         <td>{{payment}}</td>
-        {{#if (eq paymentStatus  "Paid")}}
+        {{#if (eq paymentStatus "Paid")}}
         <td class="text-success">{{paymentStatus}}</td>
         {{else}}
-        {{#if (eq paymentStatus  "Pending")}}
+        {{#if (eq paymentStatus "Pending")}}
         <td class="text-warning">{{paymentStatus}}</td>
         {{else}}
         <td class="text-danger">{{paymentStatus}}</td>
         {{/if}}
         {{/if}}
+        {{#if (eq orderStatus "Return Process")}}
+        <td><span class="d-flex align-items-center "><a href="/admin/admin-order-details/{{_id}}"
+              class="btn btn-outline-success">Details</a><i class="fa-solid fa-clock-rotate-left text-warning ms-2"></i></span></td>
+        {{else}}
+        {{#if (eq orderStatus "Return Agreed")}}
+        <td><span class="d-flex align-items-center "><a href="/admin/admin-order-details/{{_id}}"
+              class="btn btn-outline-success">Details</a><i class="fa-regular text-danger ms-2 fa-circle-xmark"></i></span></td>
+        {{else}}
         <td><a href="/admin/admin-order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
+        {{/if}}
+        {{/if}}
       </tr>
       {{/each}}
     </tbody>
@@ -37,7 +47,7 @@
 </section>
 
 <script>
-  $(document).ready( function () {
+  $(document).ready(function () {
     $('#admin-order-list').DataTable();
   });
 </script>

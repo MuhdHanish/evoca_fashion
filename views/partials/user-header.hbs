@@ -12,9 +12,7 @@
         <div class="d-flex  ms-auto d-block d-lg-none ">
           <input class="form-control me-2 " oninput="smallSizeData(this)" type="text" placeholder="Search..."
             aria-label="Search" style="border-radius: 25px;">
-          <div id="searchSmallResult"
-            style="position: absolute; top: 35%; right: 5%;z-index: 10;max-width: 300px; max-height: 250px;overflow-x: hidden; overflow-y: scroll; background-color: #fff; border-radius: 4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
-          </div>
+          <div id="searchSmallResult" class="small_search_result"></div>
           <p class="search"><i class="fa-solid fa-magnifying-glass text-dark ms-1"
               style="position: relative;top: 7px;"></i></p>
         </div>
@@ -33,18 +31,16 @@
       <div class="d-flex  ms-auto me-auto d-none  d-lg-flex  ">
         <input class="form-control me-2" oninput="sendData(this)" type="search" placeholder="Search..."
           aria-label="Search" style="border-radius: 25px;">
-        <div id="searchResult"
-          style="position: absolute; top: 101%; left: 43%; right: 0; z-index: 10; max-height: 250px;overflow-x: hidden; overflow-y: scroll; background-color: #fff;border-radius: 4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
-        </div>
+        <div id="searchResult" class="search_result_style"></div>
         <p class="search"><i class="fa-solid fa-magnifying-glass text-dark ms-1"
-            style="position: relative;top: 8px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"></i></p>
+            style="position: relative;top: 8px"></i></p>
       </div>
       {{/if}}
       <ul class="navbar-nav ms-auto me-auto mb-1  ">
         <div class="d-flex">
           {{#if User}}
           </script>
-          <div class="dropdown  mt-2 ms-2" >
+          <div class="dropdown  mt-2 ms-2">
             <a class="nav-link active ms-5" aria-current="page" href="">{{user.userName}}</a>
             <div class="dropdown-content tex-center" style="z-index: 10;">
               <a href="/user-profile">Profile</a>

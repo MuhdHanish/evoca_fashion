@@ -65,14 +65,20 @@ router.post('/admin-category',verify,categoryController.addCategory)
 router.get('/edit-category/:id([0-9a-fA-F]{24})',verify,categoryController.getEditCategory)
 router.post('/edit-category/:id([0-9a-fA-F]{24})',verify,categoryController.postEditCategory)
 
-//ADMIN-DELETE-CATEGORY
-router.get('/delete-category/:id([0-9a-fA-F]{24})',verify,categoryController.deleteCategory)
+//ADMIN-UNLIST-CATEGORY
+router.get('/unlist-category/:id([0-9a-fA-F]{24})',verify,categoryController.unlistCategory)
+
+//ADMIN-LIST-CATEGORY
+router.get('/list-category/:id([0-9a-fA-F]{24})',verify,categoryController.listCategory)
 
 //ADMIN-ORDER-LIST
 router.get('/admin-orderlist',verify,verifyOrderList,orderController.adminGetOrderList)
 
 //ADMIN-ORDER-DETIALS
 router.get('/admin-order-details/:id([0-9a-fA-F]{24})',verify,orderController.adminOrderDetails)
+
+//ADMIN-RETURN-PROCESS
+router.post('/return-process/:id([0-9a-fA-F]{24})',verify,orderController.returnProcess)
 
 //UPDADTE-ORDER-STATUS
 router.post('/update-order-status/:id([0-9a-fA-F]{24})',verify,orderController.updateOrderStatus)

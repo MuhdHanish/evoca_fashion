@@ -21,39 +21,135 @@
       <hr>
    </div>
 </section>
-<div class="col-12">
+
+{{#if (eq orderDetails.orderStatus "Delivered")}}
+{{#if (eq orderDetails.disAgreed null)}}
+<div class="col-12 container">
+   <hr>
    <div class="row d-flex justify-content-center">
       <ul id="progressbar" class="d-flex justify-content-center text-center">
-         {{#if (eq orderDetails.orderStatus "Delivered")}}
          <li class="active step0"></li>
          <li class="active step0"></li>
          <li class="active step0"></li>
          <li class="active step0"></li>
-         {{else}}
-         {{#if (eq orderDetails.orderStatus "Shipped")}}
-         <li class="active step0"></li>
-         <li class="active step0"></li>
-         <li class="active step0"></li>
-         <li class="step0"></li>
-         {{else}}
-         {{#if (eq orderDetails.orderStatus "Processing")}}
-         <li class="active step0"></li>
-         <li class="active step0"></li>
-         <li class="step0"></li>
-         <li class="step0"></li>
-         {{else}}
-         {{#if (eq orderDetails.orderStatus "Placed")}}
-         <li class="active step0"></li>
-         <li class="step0"></li>
-         <li class="step0"></li>
-         <li class="step0"></li>
-         {{/if}}
-         {{/if}}
-         {{/if}}
-         {{/if}}
       </ul>
    </div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
+   </div>
+   <div class="col-12 container">
+      <hr>
+   </div>
 </div>
+{{/if}}
+{{else}}
+{{#if (eq orderDetails.orderStatus "Shipped")}}
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+      </ul>
+   </div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
+   </div>
+   <div class="col-12 container">
+      <hr>
+   </div>
+</div>
+{{else}}
+{{#if (eq orderDetails.orderStatus "Processing")}}
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+      </ul>
+   </div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
+   </div>
+   <div class="col-12 container">
+      <hr>
+   </div>
+</div>
+{{else}}
+{{#if (eq orderDetails.orderStatus "Placed")}}
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+      </ul>
+   </div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
+   </div>
+   <div class="col-12 container">
+      <hr>
+   </div>
+</div>
+{{/if}}
+{{/if}}
+{{/if}}
+{{/if}}
+
+
+{{#if (eq orderDetails.orderStatus "Delivered")}}
+{{#if (eq orderDetails.disAgreed null)}}
+<div class="text-center my-5">
+   <p class="text-success fs-3" style="font-family: 'Bebas Neue', cursive;">Product Delivered</p>
+   <div class="text-center">
+      <button data-bs-toggle="modal" data-bs-target="#exampleModal" class=" link-line model-btn">Return </button>
+   </div>
+</div>
+{{else}}
+<div class="text-center my-5">
+   <p class="text-danger fs-3" style="font-family: 'Bebas Neue', cursive;">Cannot be return</p>
+   <div class="text-center">
+      <button class=" link-line model-wish-btn" disabled>Cancelled <i class="fa-regular fa-circle-xmark"></i></button>
+   </div>
+</div>
+{{/if}}
+{{else}}
 {{#if (eq orderDetails.orderStatus "Cancelled")}}
 <p class="text-danger fs-3 text-center " style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED !
 </p>
@@ -62,15 +158,90 @@
    </p>
 </div>
 {{else}}
-<div class=" col-12 container">
-   <div class="row d-flex justify-content-center">
-      <ul style="list-style-type: none;display: flex;justify-content: space-between;">
-         <li><i class="fa-solid fa-list-check fs-4"></i></li>
-         <li><i class="fa-solid fa-gears fs-4"></i></li>
-         <li><i class="fa-solid fa-truck-fast fs-4"></i></li>
-         <li><i class="fa-solid fa-box-open fs-4"></i></li>
-      </ul>
+{{#if (eq orderDetails.orderStatus "Return Process")}}
+<div class="text-center my-5">
+   <p class="text-danger fs-3" style="font-family: 'Bebas Neue', cursive;">Product Return in process</p>
+   <div class="text-center">
+      <button class=" link-line model-btn" disabled>Processing <i class="fa-solid fa-clock-rotate-left"></i></button>
    </div>
 </div>
-
+{{else}}
+{{#if (eq orderDetails.orderStatus "Return Agreed")}}
+<div class="text-center my-5">
+   <p class="text-danger fs-3" style="font-family: 'Bebas Neue', cursive;">Product Returned</p>
+   <div class="text-center">
+      <button class=" link-line model-wish-btn" disabled>returned <i class="fa-regular fa-circle-check"></i></button>
+   </div>
+</div>
 {{/if}}
+{{/if}}
+{{/if}}
+{{/if}}
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <form class="modal-content" method="POST" action="/return-order/{{orderDetails._id}}">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Return Order</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <div class="cart-detail p-3 p-md-4">
+               <p class="billing-heading mb-4 fs-6 fw-bold">Choose Reason</p>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="Don't want the product anymore" class="mr-2"
+                              checked><span class="ms-2">Don't want the product anymore</span></label>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="Quality of the product not as excepted"
+                              class="mr-2"><span class="ms-2">Quality of the product not as excepted</span></label>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="Recieved wrong item" class="mr-2"><span
+                              class="ms-2">Recieved wrong item</span></label>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="Recieved damaged/broken item" class="mr-2"><span
+                              class="ms-2">Recieved damaged/broken item</span></label>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="Product is missing this package"
+                              class="mr-2"><span class="ms-2">Product is missing this package</span></label>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <div class="col-md-12">
+                     <div class="radio">
+                        <label><input type="radio" name="reason" value="My reason not listed" class="mr-2"><span
+                              class="ms-2">My reason not listed</span></label>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="model-btn ps-2 pe-2 pt-2 pb-2" type="submit">Submit Reason</button>
+         </div>
+      </form>
+   </div>
+</div>

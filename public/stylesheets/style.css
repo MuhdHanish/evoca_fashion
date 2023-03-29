@@ -850,139 +850,152 @@ body {
 	font-family: 'Josefin Sans', sans-serif;
 	border-radius: 15px;
 	transition: 1s;
- align-items: center;
+	align-items: center;
 }
 
-.dashboard-small-box:hover{
+.dashboard-small-box:hover {
 	box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 @media screen and (max-width: 768px) {
-  /* Style for screens less than or equal to 768px wide */
-  #Order-list {
-    border-collapse: collapse;
-    width: 100%;
-  }
 
-  #Order-list th,
-  #Order-list td {
-    display: block;
-    padding: 8px;
-    text-align: left;
-    width: 100%;
-  }
+	/* Style for screens less than or equal to 768px wide */
+	#Order-list {
+		border-collapse: collapse;
+		width: 100%;
+	}
 
-  #Order-list td:nth-of-type(1):before {
-    content: "Date: ";
-    font-weight: bold;
-  }
+	#Order-list th,
+	#Order-list td {
+		display: block;
+		padding: 8px;
+		text-align: left;
+		width: 100%;
+	}
 
-  #Order-list td:nth-of-type(2):before {
-    content: "Address: ";
-    font-weight: bold;
-  }
+	#Order-list td:nth-of-type(1):before {
+		content: "Date: ";
+		font-weight: bold;
+	}
 
-  #Order-list td:nth-of-type(3):before {
-    content: "Phone: ";
-    font-weight: bold;
-  }
+	#Order-list td:nth-of-type(2):before {
+		content: "Address: ";
+		font-weight: bold;
+	}
 
-  #Order-list td:nth-of-type(4):before {
-    content: "Amount: ";
-    font-weight: bold;
-  }
+	#Order-list td:nth-of-type(3):before {
+		content: "Phone: ";
+		font-weight: bold;
+	}
 
-  #Order-list td:nth-of-type(5):before {
-    content: "Method: ";
-    font-weight: bold;
-  }
+	#Order-list td:nth-of-type(4):before {
+		content: "Amount: ";
+		font-weight: bold;
+	}
 
-  #Order-list td:nth-of-type(6):before {
-    content: "Status: ";
-    font-weight: bold;
-  }
+	#Order-list td:nth-of-type(5):before {
+		content: "Method: ";
+		font-weight: bold;
+	}
 
-  #Order-list td:last-child {
-    border-bottom: 0;
-  }
+	#Order-list td:nth-of-type(6):before {
+		content: "Status: ";
+		font-weight: bold;
+	}
+
+	#Order-list td:last-child {
+		border-bottom: 0;
+	}
 }
 
 /* Default style for screens wider than 768px */
 @media (ma-width: 768px) {
 	#Order-list {
-			border: 1px solid rgb(196, 196, 196);
-			border-collapse: collapse;
-			width: 100%;
+		border: 1px solid rgb(196, 196, 196);
+		border-collapse: collapse;
+		width: 100%;
 	}
 }
 
 #Order-list th,
 #Order-list td {
-  padding: 8px;
-  border-bottom: 1px solid rgb(196, 196, 196);
-  text-align: left;
+	padding: 8px;
+	border-bottom: 1px solid rgb(196, 196, 196);
+	text-align: left;
 }
 
-#Order-list td{
+#Order-list td {
 	padding: 20px;
 }
 
 #Order-list th {
-  background-color: #e1dfdf;
-  font-weight: bold;
+	background-color: #e1dfdf;
+	font-weight: bold;
 }
 
 @media only screen and (max-width: 768px) {
+
 	#admin-order-list,
 	#admin-order-list tbody,
 	#admin-order-list tr,
 	#admin-order-list td,
 	#admin-order-list th {
-			display: block;
+		display: block;
 	}
+
 	#admin-order-list thead tr {
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
 	}
+
 	#admin-order-list tr {
-			border: 1px solid #ccc;
+		border: 1px solid #ccc;
 	}
+
 	#admin-order-list td {
-			border: none;
-			border-bottom: 1px solid #eee;
-			position: relative;
-			padding-left: 50%;
-			text-align: left;
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		text-align: left;
 	}
+
 	#admin-order-list td:before {
-			position: absolute;
-			top: 6px;
-			left: 6px;
-			width: 45%;
-			padding-right: 10px;
-			white-space: nowrap;
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
 	}
+
 	#admin-order-list td:nth-of-type(1):before {
-			content: "Fullname:";
+		content: "Fullname:";
 	}
+
 	#admin-order-list td:nth-of-type(2):before {
-			content: "Date:";
+		content: "Date:";
 	}
+
 	#admin-order-list td:nth-of-type(3):before {
-			content: "Phone:";
+		content: "Phone:";
 	}
+
 	#admin-order-list td:nth-of-type(4):before {
-			content: "Amount:";
+		content: "Amount:";
 	}
+
 	#admin-order-list td:nth-of-type(5):before {
-			content: "Method:";
+		content: "Method:";
 	}
+
 	#admin-order-list td:nth-of-type(6):before {
-			content: "Status:";
+		content: "Status:";
 	}
+
 	#admin-order-list td:nth-of-type(7):before {
-			content: "Action:";
+		content: "Action:";
 	}
 }
 
@@ -1029,6 +1042,7 @@ body {
 	text-transform: uppercase;
 	display: block;
 }
+
 .shop__sidebar__categories ul,
 .shop__sidebar__price ul,
 .shop__sidebar__brand ul {
@@ -1209,13 +1223,62 @@ body {
 }
 
 .shop__sidebar {
- padding-right: 0;
- padding-top: 40px;
+	padding-right: 0;
+	padding-top: 40px;
 }
 
-.wishlist-remove-icon{
+.wishlist-remove-icon {
 	position: absolute;
 	top: 20px;
 	right: 15px;
 }
 
+::-webkit-scrollbar {
+	width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: rgb(114, 113, 113);
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #757575;
+}
+
+.search_result_style {
+
+	position: absolute;
+	top: 104%;
+	left: 43%;
+	right: 0;
+	z-index: 10;
+	max-height: 256px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.small_search_result {
+	position: absolute;
+	top: 35%;
+	right: 5%;
+	z-index: 10;
+	max-width: 300px;
+	max-height: 246px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}

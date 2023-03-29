@@ -12,17 +12,19 @@ module.exports = {
     try {
       const usersCount = await userCollection.estimatedDocumentCount()
       const ordersCount = await orderCollection.estimatedDocumentCount()
-      const productsCount = await orderCollection.estimatedDocumentCount()
+      const productsCount = await productCollection.estimatedDocumentCount()
 
       const totalAmount = await orderCollection.aggregate([
         { $match: { paymentStatus: "Paid" } },
         { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
       ]).toArray()
-      if(totalAmount){
+      if (totalAmount == null || totalAmount.length == 0) {
+        req.session.revenue = 0
+      }else{
         req.session.revenue = totalAmount[0].totalAmount
       }
       const revenue = req.session.revenue
-      res.render('admin/admin-home', { usersCount, ordersCount, productsCount,revenue })
+      res.render('admin/admin-home', { usersCount, ordersCount, productsCount, revenue })
     } catch (err) {
       next(err);
     }
@@ -70,26 +72,37 @@ module.exports = {
     }
   },
 
-  getData:async(req,res)=>{
-  try{
-  const monthWise= await orderCollection.aggregate([
-    {
-    $group:{_id:'$month',revenue:{$sum:'$amount'}},
-    },
-    {
-      $sort:{_id:1}
+  getData: async (req, res) => {
+    try {
+      const monthWise = await orderCollection.aggregate([
+        {
+          $match: { paymentStatus: "Paid" }
+        },
+        {
+          $group: {
+            _id: '$month',
+            revenue: { $sum: '$amount' },
+          },
+        },
+        {
+          $sort: { _id: 1 },
+        },
+      ]).toArray();
+      if(monthWise){
+        res.json(monthWise)
+      }else{
+        monthWise = 0
+        res.json(monthWise)
+      }
+    } catch (err) {
+      res.next(err)
     }
-    ]).toArray()
-    res.json(monthWise)
-  }catch(err){
-    res.next(err)
-  }
   },
 
-  getSalesReport:async(req,res)=>{
-    const report = await orderCollection.find({orderStatus:'Delivered'}).sort({date:-1}).toArray()
+  getSalesReport: async (req, res) => {
+    const report = await orderCollection.find({ orderStatus: 'Delivered' }).sort({ date: -1 }).toArray()
     const products = await productCollection.find().toArray()
-    res.render('admin/sales-report',{report,products})
+    res.render('admin/sales-report', { report, products })
   },
 
   getUsersList: async (req, res, next) => {

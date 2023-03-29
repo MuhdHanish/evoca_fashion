@@ -1,11 +1,12 @@
 const categoryCollection = require('../model/categorySchema')
 
 const mongoose = require('mongoose')
+const productCollection = require('../model/productSchema')
 const { ObjectId } = mongoose.Types
 
 module.exports = {
 
-  getCategory: async (req, res,next) => {
+  getCategory: async (req, res, next) => {
     try {
       const Category = await categoryCollection.find().toArray()
       cateerr = req.session.cateerr
@@ -20,7 +21,7 @@ module.exports = {
     }
   },
 
-  addCategory: async (req, res,next) => {
+  addCategory: async (req, res, next) => {
     try {
       const CategoryData = req.body
       const Category = await categoryCollection.findOne({ category: CategoryData.category })
@@ -47,7 +48,7 @@ module.exports = {
     }
   },
 
-  getEditCategory: async (req, res,next) => {
+  getEditCategory: async (req, res, next) => {
     try {
       const categoryId = req.params.id
       const category = await categoryCollection.findOne({ _id: new ObjectId(categoryId) })
@@ -58,7 +59,7 @@ module.exports = {
     }
   },
 
-  postEditCategory: async (req, res,next) => {
+  postEditCategory: async (req, res, next) => {
     try {
       const cataData = req.body
       const categoryId = req.params.id
@@ -72,7 +73,13 @@ module.exports = {
         req.session.catadata = req.body
         res.redirect('/admin/admin-category')
       } else {
+
+        const category = await categoryCollection.findOne({ _id: new ObjectId(categoryId) })
+
         categoryCollection.updateOne({ _id: new ObjectId(categoryId) }, { $set: { category: cataData.category } }).then()
+
+        productCollection.updateMany({ category: category.category }, { $set: { category: cataData.category } }).then()
+
         res.redirect('/admin/admin-category')
       }
     } catch (err) {
@@ -80,10 +87,24 @@ module.exports = {
     }
   },
 
-  deleteCategory: async (req, res,next) => {
+  unlistCategory: async (req, res, next) => {
     try {
       const categoryId = req.params.id
-      await categoryCollection.deleteOne({ _id: new ObjectId(categoryId) }).then()
+      const category = await categoryCollection.findOne({_id:new ObjectId(categoryId)})
+      categoryCollection.updateOne({ _id: new ObjectId(categoryId) },{$set:{status:null}}).then()
+      productCollection.updateMany({category:category.category},{$set:{status:false}})
+      res.redirect('/admin/admin-category')
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  listCategory: async (req, res, next) => {
+    try {
+      const categoryId = req.params.id
+      const category = await categoryCollection.findOne({_id:new ObjectId(categoryId)})
+      categoryCollection.updateOne({ _id: new ObjectId(categoryId) },{$set:{status:true}}).then()
+      productCollection.updateMany({category:category.category},{$set:{status:true}})
       res.redirect('/admin/admin-category')
     } catch (err) {
       next(err);

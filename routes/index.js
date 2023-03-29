@@ -160,6 +160,9 @@ router.get('/download-invoice/:id([0-9a-fA-F]{24})',verify,orderController.downl
 //CANCEL ORDER
 router.get('/cancel-order/:id([0-9a-fA-F]{24})', verify, orderController.orderCancel)
 
+//RETURN ORDER
+router.post('/return-order/:id([0-9a-fA-F]{24})',verify,orderController.returnOrder)
+
 //USER-LOGOUT
 router.get('/logout', userController.userLogout)
 

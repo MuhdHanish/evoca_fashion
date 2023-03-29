@@ -2,7 +2,7 @@
 
 <div class="table-responsive p-5">
   <table id="Order-list" class="large-screen">
-    <thead >
+    <thead>
       <tr>
         <th>Date</th>
         <th>Address</th>
@@ -43,11 +43,24 @@
         <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
         {{else}}
         {{#if (eq orderStatus "Delivered")}}
+        {{#if (eq disAgreed true)}}
+        <td><span class="d-flex align-items-center"><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a><i class="fa-regular text-danger ms-2 fa-circle-xmark"></i></span></td>
+        {{else}}
+        <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
+        {{/if}}
+        {{else}}
+        {{#if (eq orderStatus "Return Process")}}
         <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a>
-        <a href="" class="btn btn-outline-danger">Return</a>
+        </td>
+        {{else}}
+        {{#if (eq orderStatus "Return Agreed")}}
+        <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
         {{else}}
         <td><a href="/order-details/{{_id}}" class="btn btn-outline-success">Details</a>
-        <a href="/cancel-order/{{_id}}" class="btn btn-outline-danger">Cancel</a></td>
+          <a href="/cancel-order/{{_id}}" class="btn btn-outline-danger">Cancel</a>
+        </td>
+        {{/if}}
+        {{/if}}
         {{/if}}
         {{/if}}
       </tr>
@@ -56,8 +69,9 @@
   </table>
 </div>
 
+
 <script>
-  $(document).ready( function () {
+  $(document).ready(function () {
     $('#Order-list').DataTable();
   });
 </script>

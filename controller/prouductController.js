@@ -410,7 +410,7 @@ module.exports = {
           title: productData.title,
           brand: productData.brand,
           price: parseInt(productData.price),
-          category: productData.category,
+          category: proudctData.category,
           description: productData.description,
           discount: parseInt(productData.discount),
           offerPrice: Math.round(parseInt(productData.price) - (parseInt(productData.price) * parseInt(productData.discount)) / 100),
@@ -441,7 +441,7 @@ module.exports = {
     }
   },
 
-  postEditProduct: (req, res, next) => {
+  postEditProduct:async (req, res, next) => {
     try {
       const numberregx = /^[0-9]{1,6}$/
       const discountregx = /^[0-9]{1,2}$/
@@ -449,7 +449,7 @@ module.exports = {
       const desregx = /^[a-zA-Z0-9,-.\s+&]{2,}$/i
 
       const productData = req.body
-      const productId = req.params.id
+      const productId = req.params.id   
 
       if (productData.title === "" && productData.brand === "" && productData.price === "" && productData.description === "") {
         req.session.editerr = "Feilds are required"

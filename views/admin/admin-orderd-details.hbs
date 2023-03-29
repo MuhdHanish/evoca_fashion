@@ -54,64 +54,116 @@
          </div>
       </div>
       <div class="col-lg-3 order-style-2   mb-5" style="border: 1px solid rgb(189, 189, 189);">
-         <div class="mt-3 ps-3 mb-5">
-            {{#if (eq orderDetails.orderStatus "Cancelled")}}
-            <p class="text-danger fs-3 text-center mt-5" style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED !
-            </p>
-            <div class="text-center">
-               <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment returned
-               </p>
-            </div>
-            {{else}}
-            <form action="/admin/update-order-status/{{orderDetails._id}}" method="post">
-               <div class="col-lg-12 mt-3">
-                  <div class="text-start" style="font-family: 'Josefin Sans', sans-serif;">
-                     {{#if (eq orderDetails.orderStatus "Placed")}}
-                     <div class="mt-5 pt-1">
-                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
-                        </h3>
-                     </div>
-                     <input type="radio" value="Processing" name="OrderStatus" class="mb-1 ">
-                     <label for="" style="color: blueviolet;">Processing</label><br>
-                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
-                     </div>
-                     {{else}}
-                     {{#if (eq orderDetails.orderStatus "Processing")}}
-                     <div class="mt-5 pt-1">
-                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
-                        </h3>
-                     </div>
-                     <input type="radio" value="Shipped" name="OrderStatus" class="mb-1 ">
-                     <label for="" class=" text-primary">Shipped</label><br>
-                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
-                     </div>
-                     {{else}}
-                     {{#if (eq orderDetails.orderStatus "Shipped")}}
-                     <div class="mt-5 pt-1">
-                        <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
-                        </h3>
-                     <input type="radio" value="Delivered" name="OrderStatus" class="mb-1">
-                     <label for="" class=" mb-1 text-success">Delivered</label>
-                     <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
-                     </div>
-                     {{else}}
-                     <div class="text-center my-5">
-                        <p class="text-success fs-3" style="font-family: 'Bebas Neue', cursive;">ORDER COMPLETED <i class="text-success fa-regular fa-circle-check"></i></p>
-                        <div class="text-center">
-                           <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment
-                              successfull
-                           </p>
-                           <a href="/admin/admin-orderlist" style="font-family: 'Bebas Neue', cursive;" class=" link-line btn btn-outline-dark">Go To Orders</a>
-                        </div>
-                     </div>
-                     {{/if}}
-                     {{/if}}
-                     {{/if}}
+         <div class="mt-3  mb-5">
+            {{#if (eq orderDetails.orderStatus "Return Process")}}
+            <div class="mt-5 pt-1">
+               <h4 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;" class="text-danger">Return
+                  Process
+                  <i class="fa-solid fa-clock-rotate-left "></i>
+               </h4>
+               <label for="" class=" mb-1 text-dark" style="font-family: 'Josefin Sans', sans-serif;">-
+                  {{orderDetails.reason}}</label>
+               <span class="d-flex gap-2 ">
+                  <form action="/admin/return-process/{{orderDetails._id}}" method="post">
+                     <input type="text" name="action" value="agree" hidden>
+                     <button class="model-btn bg-success" type="submit">Agree</button>
+                  </form>
+                  <form action="/admin/return-process/{{orderDetails._id}}" method="post">
+                     <input type="text" name="action" value="disagree" hidden>
+                     <button class="model-wish-btn" type="submit">DisAgree</button>
+               </span>
+               </form>
+               {{/if}}
+               {{#if (eq orderDetails.orderStatus "Return Agreed")}}
+               <div class="mt-5 pt-1">
+                  <h4 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;" class="text-danger">Return
+                     Agreed
+                  </h4>
+                  <label for="" class=" mb-1 text-dark" style="font-family: 'Josefin Sans', sans-serif;">-
+                     {{orderDetails.reason}}</label>
+                  <div class="text-center mt-1">
+                     <button class="model-wish-btn " disabled>Agreed<i
+                           class="ms-2 fa-regular fa-circle-check"></i></button>
                   </div>
                </div>
-            </form>
-            {{/if}}
+               {{/if}}
+               {{#if (eq orderDetails.orderStatus "Cancelled")}}
+               <p class="text-danger fs-3 text-center mt-5" style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED
+                  !
+               </p>
+               <div class="text-center">
+                  <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment returned
+                  </p>
+               </div>
+               {{else}}
+               <form action="/admin/update-order-status/{{orderDetails._id}}" method="post">
+                  <div class="col-lg-12 mt-3">
+                     <div class="text-start" style="font-family: 'Josefin Sans', sans-serif;">
+                        {{#if (eq orderDetails.orderStatus "Placed")}}
+                        <div class="mt-5 pt-1">
+                           <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                           </h3>
+                        </div>
+                        <input type="radio" value="Processing" name="OrderStatus" class="mb-1 ">
+                        <label for="" style="color: blueviolet;">Processing</label><br>
+                        <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                        </div>
+                        {{/if}}
+                        {{#if (eq orderDetails.orderStatus "Processing")}}
+                        <div class="mt-5 pt-1">
+                           <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                           </h3>
+                        </div>
+                        <input type="radio" value="Shipped" name="OrderStatus" class="mb-1 ">
+                        <label for="" class=" text-primary">Shipped</label><br>
+                        <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                        </div>
+                        {{/if}}
+                        {{#if (eq orderDetails.orderStatus "Shipped")}}
+                        <div class="mt-5 pt-1">
+                           <h3 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;">Update Order Status
+                           </h3>
+                           <input type="radio" value="Delivered" name="OrderStatus" class="mb-1">
+                           <label for="" class=" mb-1 text-success">Delivered</label>
+                           <div class="text-center pt-3"><button type="submit"
+                                 class="model-btn link-line">Proceed</button>
+                           </div>
+                           {{/if}}
+                           {{#if (eq orderDetails.orderStatus "Delivered")}}
+                           {{#if (eq orderDetails.disAgreed true)}}
+                           <div class="mt-5 pt-1">
+                              <h4 style="text-transform: uppercase;font-family: 'Bebas Neue', cursive;"
+                                 class="text-danger">Return
+                                 Dis-Agreed
+                              </h4>
+                              <label for="" class=" mb-1 text-dark" style="font-family: 'Josefin Sans', sans-serif;">-
+                                 suspicious reson</label>
+                              <div class="text-center mt-2">
+                                 <button class="model-wish-btn " disabled>Dis-Agreed<i
+                                       class="fa-regular fa-circle-xmark ms-2"></i></button>
+                              </div>
+                           </div>
+                           {{else}}
+                           <div class="text-center my-5">
+                              <p class="text-success fs-3" style="font-family: 'Bebas Neue', cursive;">ORDER COMPLETED
+                                 <i class="text-success fa-regular fa-circle-check"></i>
+                              </p>
+                              <div class="text-center">
+                                 <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">
+                                    Payment
+                                    successfull
+                                 </p>
+                                 <a href="/admin/admin-orderlist" style="font-family: 'Bebas Neue', cursive;"
+                                    class=" link-line btn btn-outline-dark">Go To Orders</a>
+                              </div>
+                           </div>
+                           {{/if}}
+                           {{/if}}
+                        </div>
+                     </div>
+               </form>
+               {{/if}}
+            </div>
          </div>
       </div>
    </div>
-</div>

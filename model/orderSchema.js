@@ -36,6 +36,14 @@ const orderSchema = mongoose.Schema({
  orderStatus:{
   type:String,
   required:true
+ },
+ reason:{
+  type:String,
+  required:true
+ },
+ disAgreed:{
+  type:Boolean,
+  required:true
  }
 })
 
