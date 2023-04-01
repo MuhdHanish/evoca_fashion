@@ -2,13 +2,15 @@ const cartCollection = require('../model/cartSchema')
 const orderCollection = require('../model/orderSchema')
 const productCollection = require('../model/productSchema')
 const wishlistCollection = require('../model/whishlistSchema')
+const reviewCollection = require('../model/reviewSchema')
+
 
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 
 module.exports = {
 
-  cartCount: (userId) => {
+  cartCount: (userId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const cartData = await cartCollection.findOne({ userId: new ObjectId(userId) })
@@ -25,7 +27,7 @@ module.exports = {
     }
   },
 
-  wishCount: (userId) => {
+  wishCount: (userId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const wishData = await wishlistCollection.findOne({ userId: new ObjectId(userId) })
@@ -42,7 +44,7 @@ module.exports = {
     }
   },
 
-  totalValue: (userId) => {
+  totalValue: (userId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const totalValue = await cartCollection.aggregate([
@@ -84,7 +86,7 @@ module.exports = {
     }
   },
 
-  getCartProducts: (userId) => {
+  getCartProducts: (userId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const products = await cartCollection.aggregate([
@@ -122,7 +124,7 @@ module.exports = {
     }
   },
 
-  orderCount: (userId) => {
+  orderCount: (userId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const orders = await orderCollection.find({ userId: new ObjectId(userId) }).toArray()
@@ -133,7 +135,7 @@ module.exports = {
     }
   },
 
-  adminOrderCount: () => {
+  adminOrderCount: (next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const orders = await orderCollection.find().toArray()
@@ -144,7 +146,7 @@ module.exports = {
     }
   },
 
-  stockCount: (productId) => {
+  stockCount: (productId, next) => {
     try {
       return new Promise(async (resolve, reject) => {
         const product = await productCollection.findOne({ _id: new ObjectId(productId) })
@@ -154,5 +156,25 @@ module.exports = {
     } catch (err) {
       next(err)
     }
-  }
+  },
+
+  getReviews: (productId, next) => {
+    try {
+      return new Promise(async (resolve, reject) => {
+        const review = await reviewCollection.aggregate([
+          {
+            $match: {
+              productId: new ObjectId(productId)
+            },
+          },
+          {
+            $unwind: '$review'
+          }
+        ]).limit(2).toArray()
+        resolve(review)
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
 }

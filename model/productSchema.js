@@ -40,6 +40,10 @@ const ProductSchema = mongoose.Schema({
   status:{
     type:Boolean,
     required:true
+  },
+  rating:{
+    type:Number,
+    required:true
   }
 })
 

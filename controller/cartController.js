@@ -13,6 +13,7 @@ module.exports = {
 
   getCart: async (req, res,next) => {
     try {
+      req.session.successId = null
       const user = req.session.user
       req.session.Selected = null
       const userId = user._id
@@ -159,6 +160,16 @@ module.exports = {
         
     } catch (err) {
       next(err);
+    }
+  },
+
+  buyNowCheckout:async(req,res,next)=>{
+    try{
+      const productId = req.params.id
+      const product = await productCollection.findOne({_id:new ObjectId(productId)})
+      res.render('users/buy-now-checkout')
+    }catch(err){
+      next(err)
     }
   }
 }

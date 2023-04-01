@@ -172,7 +172,7 @@
             </ul>
          </div>
       </div>
-      <div class=" d-flex d-md-none justify-content-end pt-3" >
+      <div class=" d-flex d-md-none justify-content-end pt-3">
          <div class="btn-group d-block d-md-none">
             <button type="button" class="btn-c  dropdown-toggle" style="border: none;" data-bs-toggle="dropdown"
                data-bs-display="static" aria-expanded="false">
@@ -257,21 +257,27 @@
                <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
                      onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
                      onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+               <div class="star">
+                  {{#times rating }}
+                  {{rating}}
+                  {{/times}}
+               </div>
                <h5 class="p-name mt-2">{{title}}</h5>
                <h6 class="p-price">₹ {{offerPrice}}</h6>
-               <button class="model-btn" id="btn">buy now</button>
+               <button class="model-btn" onclick="location.href='/buy-now/{{_id}}'" id="btn">buy now</button>
             </div>
             {{/each}}
          </div>
-         <nav aria-label="Page navigation example">
-            <ul class="pagination float-end">
-               {{#each pageArr}}
-               <li class="page-item" style="border: rgb(185, 184, 184) 1px solid;"><a class="page-link text-dark"
-                     href="/pagination/{{[]}}">{{[]}}</a></li>
-               {{/each}}
-            </ul>
-         </nav>
       </div>
+      <nav aria-label="Page navigation example">
+         <ul class="pagination float-end">
+            {{#each pageArr}}
+            <li style="border: rgb(185, 184, 184) 1px solid;" {{#if (eq ../page [])}}class="active page-item " {{/if}}>
+               <a class="page-link text-dark" href="/pagination/{{[]}}">{{[]}}</a>
+            </li>
+            {{/each}}
+         </ul>
+      </nav>
    </div>
 
 </section>

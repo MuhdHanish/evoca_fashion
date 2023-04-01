@@ -367,20 +367,20 @@ function bannerValidate() {
   return true
 }
 
-function validateReset(){
+function validateReset() {
 
   const pasregx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/gm
 
   const newPass = document.post_reset.newPass.value
   const newConfirmPass = document.post_reset.newConfirmPass.value
-  if(newPass==''&&newConfirmPass==''){
+  if (newPass == '' && newConfirmPass == '') {
     document.getElementById('veriferr').innerHTML = 'Feilds are required'
     setTimeout(() => {
       document.getElementById('veriferr').innerHTML = ''
     }, 2000);
     return false
   }
-  if(newPass==''){
+  if (newPass == '') {
     document.getElementById('veriferr').innerHTML = 'New Password feild is required'
     setTimeout(() => {
       document.getElementById('veriferr').innerHTML = ''
@@ -388,7 +388,7 @@ function validateReset(){
     return false
   }
 
-  if(pasregx.test(newPass)==false){
+  if (pasregx.test(newPass) == false) {
     document.getElementById('veriferr').innerHTML = 'Password is invalid format'
     setTimeout(() => {
       document.getElementById('veriferr').innerHTML = ''
@@ -396,14 +396,14 @@ function validateReset(){
     return false
   }
 
-  if(newConfirmPass==''){
+  if (newConfirmPass == '') {
     document.getElementById('veriferr').innerHTML = 'Confirm Password feild is required'
     setTimeout(() => {
       document.getElementById('veriferr').innerHTML = ''
     }, 2000);
     return false
   }
-  if(newPass!==newConfirmPass){
+  if (newPass !== newConfirmPass) {
     document.getElementById('veriferr').innerHTML = 'Confirm password not matching'
     setTimeout(() => {
       document.getElementById('veriferr').innerHTML = ''
@@ -413,12 +413,12 @@ function validateReset(){
   return true
 }
 
-function  forgotemail(){
+function forgotemail() {
 
   const EmailRegx = /^(\w){3,16}@([A-Za-z]){5,8}.([A-Za-z]){2,3}$/gm
   const email = document.forgotEmail.email.value
 
-  if(email==''){
+  if (email == '') {
     document.getElementById('error').innerHTML = 'Email feild is required'
     setTimeout(() => {
       document.getElementById('error').innerHTML = ''
@@ -426,7 +426,7 @@ function  forgotemail(){
     return false
   }
 
-  if(EmailRegx.test(email)==false){
+  if (EmailRegx.test(email) == false) {
     document.getElementById('error').innerHTML = 'Invalid email format'
     setTimeout(() => {
       document.getElementById('error').innerHTML = ''
@@ -435,3 +435,33 @@ function  forgotemail(){
   }
   return true
 }
+
+function review() {
+  const rating = document.ratingform.reviewValid.value
+  const description = document.ratingform.description.value
+  const desregx = /^[a-zA-Z0-9,-.\s+&]{20,}$/i
+
+  if (rating == '0') {
+    document.getElementById('reErr').innerHTML = 'Please rate the product !'
+    setTimeout(() => {
+      document.getElementById('reErr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  if (description.length == 0) {
+    document.getElementById('reErr').innerHTML = 'Please enter the description !'
+    setTimeout(() => {
+      document.getElementById('reErr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  if (desregx.test(description) == false) {
+    document.getElementById('reErr').innerHTML = 'Please contain at least 20 letters'
+    setTimeout(() => {
+      document.getElementById('reErr').innerHTML = ''
+    }, 2000);
+    return false
+  }
+  return true
+}
+

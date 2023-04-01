@@ -126,9 +126,9 @@ module.exports = {
 
    postOtpLogin: async (req, res, next) => {
       try {
-         if(req.session.user){
+         if (req.session.user) {
             res.redirect('/')
-         }else{
+         } else {
             const userData = req.body
             const userDetails = await userCollection.findOne({ email: userData.otpEmail })
             if (userDetails) {
@@ -176,28 +176,28 @@ module.exports = {
 
    forgotpass: async (req, res, next) => {
       try {
-         if(req.session.user){
+         if (req.session.user) {
             res.redirect('/')
-         }else{
+         } else {
             const error = req.session.forgotemailerr
-            const email = req.session.emaildata 
-            res.render('users/forgotpass-email',{error,email})
+            const email = req.session.emaildata
+            res.render('users/forgotpass-email', { error, email })
             req.session.forgotemailerr = null
-            req.session.emaildata  = null
+            req.session.emaildata = null
          }
       } catch (err) {
          next(err)
       }
    },
 
-   forgotVerifEmail:async(req,res,next)=>{
-      try{
-         if(req.session.user){
+   forgotVerifEmail: async (req, res, next) => {
+      try {
+         if (req.session.user) {
             res.redirect('/')
-         }else{
-            const email =  req.body.email
-            const userDetails =await userCollection.findOne({ email:email})
-            if (userDetails) { 
+         } else {
+            const email = req.body.email
+            const userDetails = await userCollection.findOne({ email: email })
+            if (userDetails) {
                if (userDetails.status) {
                   let OtpCode = Math.floor(100000 + Math.random() * 900000)
                   const otpEmail = userDetails.email
@@ -221,33 +221,33 @@ module.exports = {
                   })
                   req.session.otpCode = OtpCode
                   req.session.otpStatus = true
-                  req.session.emaildata  = email
+                  req.session.emaildata = email
                   res.redirect('/reset-forgot-password')
                } else {
                   req.session.forgotemailerr = "Your account has been blocked! Contact with us"
-                  req.session.emaildata  = email
+                  req.session.emaildata = email
                   res.redirect('/forgot-password')
                }
-            
-         }else{
-            req.session.forgotemailerr = 'Email not registered'
-            req.session.emaildata = email
-            res.redirect('/forgot-password')
+
+            } else {
+               req.session.forgotemailerr = 'Email not registered'
+               req.session.emaildata = email
+               res.redirect('/forgot-password')
+            }
          }
-         }  
-      }catch(err){
+      } catch (err) {
          next(err)
       }
    },
 
-   resetForgotPassword:async(req,res,next)=>{
-      try{
+   resetForgotPassword: async (req, res, next) => {
+      try {
          const otpvarerr = req.session.otpvarerr
          const userCode = req.session.userCode
-         res.render('users/reset-forgotPassword',{otpvarerr,userCode})
+         res.render('users/reset-forgotPassword', { otpvarerr, userCode })
          req.session.otpvarerr = null
          req.session.userCode = null
-      }catch(err){
+      } catch (err) {
          next(err)
       }
    },
@@ -274,22 +274,22 @@ module.exports = {
       }
    },
 
-   resetForPassForm:async(req,res,next)=>{
-         try{
+   resetForPassForm: async (req, res, next) => {
+      try {
          const email = req.session.email
-         res.render('users/Re-Fo-PassForm',{email})
+         res.render('users/Re-Fo-PassForm', { email })
          req.session.email = null
-         }catch(err){
-            next(err)
-         }
+      } catch (err) {
+         next(err)
+      }
    },
 
-   postResetForPassForm:async(req,res,next)=>{
+   postResetForPassForm: async (req, res, next) => {
       try {
          const email = req.body.email
          const newpass = req.body.newPass
          const newPass = await bcrypt.hash(newpass, 10)
-         userCollection.updateOne({ email:email }, { $set: { password: newPass } }).then()
+         userCollection.updateOne({ email: email }, { $set: { password: newPass } }).then()
          req.session.newPass = true
          res.redirect('/login')
       } catch (err) {
@@ -370,6 +370,7 @@ module.exports = {
 
    userProfile: async (req, res, next) => {
       try {
+         req.session.successId = null
          const user = req.session.user
          const userId = user._id
          const count = await globalFunction.cartCount(userId)
@@ -467,8 +468,116 @@ module.exports = {
       }
    },
 
+   getContactForm: async (req, res, next) => {
+      try {
+         if (req.session.user) {
+            const user = req.session.user
+            const userId = user._id
+            const count = await globalFunction.cartCount(userId)
+            res.render('users/contact-us',{User:true,user,count})
+         }else{
+            res.render('users/contact-us')
+         }
+      } catch (err) {
+         next(err)
+      }
+   },
+
+   postContactForm: async (req, res, next) => {
+      try {
+         data = req.body;
+         const response = {}
+         if (data) {
+            const name = data.name;
+            const email = data.email;
+            const subject = data.subject;
+            const message = data.message;
+
+            const emailRegex = /^(\w){3,16}@([A-Za-z]){5,8}.([A-Za-z]){2,3}$/gm
+            const nameRegex = /^([A-Za-z ]){3,20}$/gm;
+            const subjectRegex = /^([A-Za-z0-9 ]){8,20}$/gm;
+            const messageRegex = /^([A-Za-z0-9 ]){10,50}$/gm;
+
+            if (name == '' && email == '' && subject == '' && message == '') {
+               response.err = 'All feilds are required'
+               response.status = false
+               res.json(response);
+            }
+
+            else if (name == '') {
+               response.err = 'Name field is required'
+               response.status = false
+               res.json(response);
+            }
+            else if (nameRegex.test(name) == false) {
+               response.err = 'Name is invalid'
+               response.status = false
+               res.json(response);
+            }
+            else if (email == '') {
+               response.err = 'Email field is required'
+               response.status = false
+               res.json(response);
+            }
+            else if (emailRegex.test(email) == false) {
+               response.err = 'Email is invalid'
+               response.status = false
+               res.json(response);
+            }
+            else if (subject == '') {
+               response.err = 'Subject feild is required'
+               response.status = false
+               res.json(response);
+            }
+            else if (subjectRegex.test(subject) == false) {
+               response.err = 'Subject is invalid'
+               response.status = false
+               res.json(response);
+            }
+            else if (message == '') {
+               response.err = 'Message field is required'
+               response.status = false
+               res.json(response);
+            }
+            else if (messageRegex.test(message) == false) {
+               response.err = 'Message is invalid'
+               response.status = false
+               res.json(response);
+            }
+            else {
+               const mailTransporter = nodemailer.createTransport({
+                  service: "gmail",
+                  auth: {
+                     user: process.env.EMAIL_ADDRESS,
+                     pass: process.env.PASSWORD
+                  }
+               })
+
+               const details = {
+                  from: data.email,
+                  to: process.env.EMAIL_ADDRESS,
+                  subject: data.subject,
+                  text: data.message
+               }
+
+               mailTransporter.sendMail(details, (err) => {
+                  if (err) {
+                     console.log(err)
+                  } else {
+                     response.status = true
+                     res.json(response);
+                  }
+               })
+            }
+         }
+      } catch (err) {
+         next(err)
+      }
+   },
+
    userLogout: (req, res, next) => {
       try {
+         req.session.successId = null
          req.session.user = null
          res.redirect('/')
       } catch (err) {

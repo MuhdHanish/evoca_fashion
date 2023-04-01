@@ -1,43 +1,36 @@
+<div id="form_varification" class="container-xxl justify-content-center col-10 col-sm-8 col-md-6 col-lg-4 mt-5 pt-5">
+  <div class="authentication-wrapper authentication-basic container-p-y">
 
-  <div id="form_varification" class="container-xxl justify-content-center col-10 col-sm-8 col-md-6 col-lg-4 mt-5 pt-5">
-      <div class="authentication-wrapper authentication-basic container-p-y">
+    <!-- Register -->
+    <div class="card "
+      style="border-radius:10px ;border: 1px solid;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+      <div class="card-body">
+        <!-- Logo -->
+        <div class="app-brand justify-content-center mb-3">
 
-          <!-- Register -->
-          <div class="card "style="border-radius:10px ;border: 1px solid;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
-            <div class="card-body">
-              <!-- Logo -->
-              <div class="app-brand justify-content-center mb-3">
-                
-                  </span>
-                  <span class="app-brand-text demo text-body fw-bolder mb-5">Evoca</span>
-                </a>
-              </div>
-              <!-- /Logo -->
-              <span class="mb-2 ">OTP VARIFICATION</span>
+          </span>
+          <span class="app-brand-text demo text-body fw-bolder mb-5">Evoca</span>
+          </a>
+        </div>
+        <!-- /Logo -->
+        <span class="mb-2 ">OTP VARIFICATION</span>
 
-              <form id="formAuthentication" name="otpcode" class="mb-3 mt-3" action="/otp-varification" method="POST">
-                <div class="mb-2">
-                  {{!-- <label for="email" class="form-label">Varificaton Code</label> --}}
-                  <input
-                    type="text" name="otp"
-                    class="form-control mt-3"
-                    style="border-radius:0% ;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;"
-                    id="otp"
-                    placeholder="Enter Otp Varification Code"
-                    value="{{userCode.otp}}"
-                  />
-                </div>
-                </div>
-                <div class="mb-3 ms-4">
-                  <p class="text-danger">{{otpvarerr}}</p>
-                </div>
-                <div class="mb-4 box">
-                  <button class="btn btn-dark d-grid  col-4 offset-4 col-sm-4 offset-4 col-md-4 offset-4 col-lg-4 log-btn" style="border-radius:5px " type="submit">Confirm OTP</button>
-                  <p class="text-center text-muted mt-3 mb-0">Re-send OTP? <a href="/otp-login"
-                style="text-decoration: none;">Re-send</a></p>
-                </div>
-
-              </form>
-
+        <form id="formAuthentication" name="otpcode" class="mb-3 mt-3" action="/otp-varification" method="POST">
+          <div class="mb-2">
+            <input type="text" name="otp" class="form-control mt-3"
+              style="border-radius:0% ;box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;"
+              id="otp" placeholder="Enter Otp Varification Code" value="{{userCode.otp}}" />
+          </div>
       </div>
+      <div class="mb-3 ms-4">
+        <p class="text-danger">{{otpvarerr}}</p>
+      </div>
+      <div class="mb-4 box">
+        <button class="btn btn-dark d-grid  col-4 offset-4 col-sm-4 offset-4 col-md-4 offset-4 col-lg-4 log-btn"
+          style="border-radius:5px " type="submit">Confirm OTP</button>
+        <p class="text-center text-muted mt-3 mb-0">Re-send OTP? <a href="/otp-login"
+            style="text-decoration: none;">Re-send</a></p>
+      </div>
+      </form>
     </div>
+  </div>

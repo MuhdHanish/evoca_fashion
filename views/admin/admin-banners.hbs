@@ -8,10 +8,10 @@
         <h5 class="card-header text-center mb-3"
           style="border: 0px solid rgba(255, 255, 255, 0.125);font-family: 'Bebas Neue', cursive;">ALL
           Banners</h5>
-        <div class="table-responsive text-nowrap container" style="font-family: 'Bebas Neue', cursive;">
-          <a href="/admin/admin-addbanner" class="btn btn-outline-primary">Add banner</a>
+        <div class="table-responsive text-nowrap container">
+          <button onclick="location.href='/admin/admin-addbanner'" class="model-btn">Add banner</button>
 
-          <table class="table ">
+          <table class="table my-5">
             <thead>
               <tr class="text-center">
                 <th scope="col">Image</th>
@@ -28,17 +28,27 @@
                 <td>{{title}}</td>
                 {{#if status}}
                 <td class="text-success">Listed</td>
-                <td class="text-center">
-                  <a href="/admin/banner-preview/{{_id}}" class="btn btn-outline-secondary">Preview</a>
-                  <button class="btn btn-outline-danger"
-                    onclick="unlist('{{_id}}')">Un-List</button>
+                <td>
+                  <div class="col-lg-12">
+                    <button onclick="location.href='/admin/banner-preview/{{_id}}'" class="model-btn mb-1"
+                      style="padding: 10px 9px;">Preview</button>
+                  </div>
+                  <div class="col-lg-12">
+                    <button class="model-wish-btn" onclick="unlist('{{_id}}')"
+                      style="padding: 10px 13px;">Un-List</button>
+                  </div>
                 </td>
                 {{else}}
                 <td class="text-danger">Un-Listed</td>
-                <td class="text-center">
-                  <a href="/admin/banner-preview/{{_id}}" class="btn btn-outline-secondary">Preview</a>
-                  <a class="btn btn-outline-success"
-                  onclick="list('{{_id}}')"></i>List</a>
+                <td>
+                  <div class="col-lg-12">
+                    <button onclick="location.href='/admin/banner-preview/{{_id}}'" class="model-btn mb-1"
+                      style="padding: 10px 9px;">Preview</button>
+                  </div>
+                  <div class="col-lg-12">
+                    <button class="model-order-btn" onclick="list('{{_id}}')"
+                      style="padding: 10px 26px"></i>List</a>
+                  </div>
                 </td>
                 {{/if}}
               </tr>
@@ -54,42 +64,42 @@
 
 <script>
 
-      function unlist(bannerId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            showCancelButton: true,
-            confirmButtonColor: '#9d4de6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, unlist',
-            position: 'top-end',
-            timer: 3000,
-            customClass: {
-                container: 'my-swal'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.href = '/admin/unlist-banner/' +bannerId
-            }
-        })
-    }
+  function unlist(bannerId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      showCancelButton: true,
+      confirmButtonColor: '#9d4de6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, unlist',
+      position: 'top-end',
+      timer: 3000,
+      customClass: {
+        container: 'my-swal'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.href = '/admin/unlist-banner/' + bannerId
+      }
+    })
+  }
 
-      function list(bannerId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            showCancelButton: true,
-            confirmButtonColor: '#9d4de6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, list',
-            position: 'top-end',
-            timer: 3000,
-            customClass: {
-                container: 'my-swal'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.href = '/admin/list-banner/' +bannerId
-            }
-        })
-    }
-    
+  function list(bannerId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      showCancelButton: true,
+      confirmButtonColor: '#9d4de6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, list',
+      position: 'top-end',
+      timer: 3000,
+      customClass: {
+        container: 'my-swal'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.href = '/admin/list-banner/' + bannerId
+      }
+    })
+  }
+
 </script>

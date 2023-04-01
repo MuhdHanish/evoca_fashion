@@ -80,7 +80,7 @@ module.exports = {
       for (i = 0; i < proCount; i++) {
         const productId = products[i].item
         const quantity = -(products[i].quantity)
-        productCollection.updateOne({ _id: new ObjectId(productId) }, { $inc: { stock: quantity } })
+        productCollection.updateOne({ _id: new ObjectId(productId) }, { $inc: { stock: quantity } }).then()
       }
 
       if (req.body.save == 'true') {
@@ -210,7 +210,6 @@ module.exports = {
       const count = await globalFunction.cartCount(user._id)
       const orderDetails = await orderCollection.findOne({ _id: new ObjectId(req.session.successId) })
       res.render('users/order-success', { User: true, user, count, orderDetails })
-      req.session.successId = null
     } catch (err) {
       next(err)
     }
@@ -218,6 +217,7 @@ module.exports = {
 
   getOrderList: async (req, res, next) => {
     try {
+      req.session.successId = null
       const user = req.session.user
       const userId = user._id
       const count = await globalFunction.cartCount(userId)
@@ -280,10 +280,22 @@ module.exports = {
     try {
       const orderId = req.params.id
       const order = await orderCollection.findOne({ _id: new ObjectId(orderId) })
-      orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Cancelled', paymentStatus: 'Return' } })
-      const amount = order.amount
-      const userId = order.userId
-      userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } })
+
+      if(order.payment=='COD'){
+        orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Cancelled', paymentStatus: 'Cancelled' } }).then()
+      }
+      else if(order.payment=='COD'||order.orderStatus=='Delivered'){
+        orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Cancelled', paymentStatus: 'Return' } }).then()
+        const amount = order.amount
+        const userId = order.userId
+        userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } }).then()
+      }
+      else{
+        orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Cancelled', paymentStatus: 'Return' } }).then()
+        const amount = order.amount
+        const userId = order.userId
+        userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } }).then()
+      }
       res.redirect('/user-orderlist')
     } catch (err) {
       next(err)
@@ -294,7 +306,6 @@ module.exports = {
     try {
       const orderId = req.params.id
       const reason = req.body.reason
-      const order = await orderCollection.findOne({ _id: new ObjectId(orderId) })
       orderCollection.updateMany({ _id: new ObjectId(orderId) }, { $set: { orderStatus: 'Return Process', reason: reason } }).then()
       res.redirect('/order-details/'+orderId)
     } catch (err) {
@@ -311,12 +322,12 @@ module.exports = {
       const userId = order.userId
       const action = req.body.action
       if(action == 'agree'){
-        orderCollection.updateOne({_id:new ObjectId(orderId)},{$set:{orderStatus:'Return Agreed',paymentStatus:'Return'}})
-        userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } })
+        orderCollection.updateOne({_id:new ObjectId(orderId)},{$set:{orderStatus:'Return Agreed',paymentStatus:'Return'}}).then()
+        userCollection.updateOne({ _id: new ObjectId(userId) }, { $inc: { wallet: amount } }).then()
         res.redirect('/admin/admin-order-details/'+orderId)
       }
       else{
-        orderCollection.updateOne({_id:new ObjectId(orderId)},{$set:{orderStatus:'Delivered',disAgreed:true}})
+        orderCollection.updateOne({_id:new ObjectId(orderId)},{$set:{orderStatus:'Delivered',disAgreed:true}}).then()
         res.redirect('/admin/admin-order-details/'+orderId)
       }
     }catch(err){
@@ -339,7 +350,9 @@ module.exports = {
       const orderId = req.params.id
       const orderDetails = await orderCollection.findOne({ _id: new ObjectId(orderId) })
       const products = orderDetails.products
-      res.render('admin/admin-orderd-details', { orderDetails, products })
+      const orderUpErr = req.session.orderUpErr 
+      res.render('admin/admin-orderd-details', { orderDetails, products, orderUpErr })
+      req.session.orderUpErr = null
     } catch (err) {
       next(err)
     }
@@ -349,12 +362,17 @@ module.exports = {
     try {
       const status = req.body.OrderStatus
       const orderId = req.params.id
-      if (status == "Delivered") {
-        orderCollection.updateOne({ _id: new ObjectId(orderId) }, { $set: { orderStatus: status, paymentStatus: "Paid" } })
-      } else {
-        orderCollection.updateOne({ _id: new ObjectId(orderId) }, { $set: { orderStatus: status } })
+      if(status == null){
+        req.session.orderUpErr  = 'Select Button !'
+        res.redirect('/admin/admin-order-details/'+orderId)
+      }else{
+        if (status == "Delivered") {
+          orderCollection.updateOne({ _id: new ObjectId(orderId) }, { $set: { orderStatus: status, paymentStatus: "Paid" } }).then()
+        } else {
+          orderCollection.updateOne({ _id: new ObjectId(orderId) }, { $set: { orderStatus: status } }).then()
+        }
+        res.redirect('/admin/admin-order-details/' + orderId)
       }
-      res.redirect('/admin/admin-order-details/' + orderId)
     } catch (err) {
       next(err)
     }

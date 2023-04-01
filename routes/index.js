@@ -17,6 +17,7 @@ const express = require('express');
 const router = express.Router();
 
 const nocache = require('nocache');
+const reviewController = require('../controller/reviewController')
 
 router.use(nocache())
 
@@ -25,6 +26,12 @@ router.get('/', productController.getHomeProducts)
 
 //SHOP
 router.get('/shop', productController.getShopProducts)
+
+//CONTACT-US
+router.get('/contact-us',userController.getContactForm)
+
+//POST-CONTACT
+router.post('/contact-us',userController.postContactForm)
 
 //CATEGORY-FILTER
 router.post('/cateFilter',productController.cateFilter)
@@ -50,6 +57,15 @@ router.post('/getSearch',productController.getSearch)
 //PRODUCT-DETAILS
 router.get('/product-details/:id([0-9a-fA-F]{24})', productController.getProductDetails)
 
+//GET-POST-REVIEW
+router.get('/get-post-review/:id([0-9a-fA-F]{24})',verify,reviewController.getPostReview)
+
+//GET-ALL-REVIEWS
+router.get('/get-all-reviews/:id([0-9a-fA-F]{24})',verify,reviewController.getAllReviews)
+
+//SUBMIT-REVIEW
+router.post('/submit-review/:id([0-9a-fA-F]{24})',verify,reviewController.submitReview)
+
 //SIGNUP
 router.get('/signup', userController.getSignUp);
 router.post('/signup', userController.postSignUp)
@@ -72,7 +88,7 @@ router.post('/forgot-VerifEmail',userController.forgotVerifEmail)
 router.get('/reset-forgot-password',userController.resetForgotPassword)
 
 //RESETING-FORGOTED-PASSWORD-POST-OTP
-router.post('/forgot-otp-varification',userController.forgotOtpVarification)
+router.post('/forgot-otp-verification',userController.forgotOtpVarification)
 
 //RESETING-FORM
 router.get('/reset-forPass-form',userController.resetForPassForm)
@@ -108,6 +124,9 @@ router.post('/remove-wishlist',verify,wishlistController.removeProduct)
 
 //CHECK-OUT
 router.get('/user-checkout', verify, verifyCart, cartController.getCheckOut)
+
+//BUY-NOW
+router.get('/buy-now/:id([0-9a-fA-F]{24})',verify,cartController.buyNowCheckout)
 
 //COUPON-CARD
 router.get('/coupon-card/:id', verify, couponController.getCoupon)

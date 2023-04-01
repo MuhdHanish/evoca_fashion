@@ -92,7 +92,7 @@ module.exports = {
       const categoryId = req.params.id
       const category = await categoryCollection.findOne({_id:new ObjectId(categoryId)})
       categoryCollection.updateOne({ _id: new ObjectId(categoryId) },{$set:{status:null}}).then()
-      productCollection.updateMany({category:category.category},{$set:{status:false}})
+      productCollection.updateMany({category:category.category},{$set:{status:false}}).then()
       res.redirect('/admin/admin-category')
     } catch (err) {
       next(err);
@@ -104,7 +104,7 @@ module.exports = {
       const categoryId = req.params.id
       const category = await categoryCollection.findOne({_id:new ObjectId(categoryId)})
       categoryCollection.updateOne({ _id: new ObjectId(categoryId) },{$set:{status:true}}).then()
-      productCollection.updateMany({category:category.category},{$set:{status:true}})
+      productCollection.updateMany({category:category.category},{$set:{status:true}}).then()
       res.redirect('/admin/admin-category')
     } catch (err) {
       next(err);

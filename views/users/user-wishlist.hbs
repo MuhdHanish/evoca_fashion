@@ -4,20 +4,27 @@
 <section id="featured" class="my-5 pb-5">
   <div class="row mx-auto container-fluid d-flex justify-content-center">
     {{#each products}}
-    <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5"> 
-      <i class="fa-solid fa-trash p-3 " onclick="removeProduct('{{_id}}','{{product._id}}')" style="position: absolute;color:#dc0345;cursor: pointer;"></i>
+    <div class="shop-product featured-prodcut text-center col-lg-3 col-md-4 col-12 mb-5">
+      <i class="fa-solid fa-trash p-3 " onclick="removeProduct('{{_id}}','{{product._id}}')"
+        style="position: absolute;color:#dc0345;cursor: pointer;"></i>
       <a href="/product-details/{{product._id}}"><img class="img-fluid" src="/product-images/{{product.images.[0]}}.jpg"
           onmouseover="this.src='/product-images/{{product.images.[1]}}.jpg'"
           onmouseout="this.src='/product-images/{{product.images.[0]}}.jpg'"></a>
+      <div class="star">
+        {{#times rating }}
+        {{rating}}
+        {{/times}}
+      </div>
       <h5 class="p-name mt-2">{{product.title}}</h5>
       <h6 class="p-price">₹ {{product.offerPrice}}</h6>
       {{#if product.stock}}
       <form action="/add-to-cart/{{product._id}}" method="post">
-      <input type="text" value="{{product.size}}" hidden>
-      <button class="model-btn" type="submit" id="btn">Add to cart</button>
+        <input type="text" value="{{product.size}}" hidden>
+        <button class="model-btn" type="submit" id="btn">Add to cart</button>
       </form>
       {{else}}
-      <p class="text-danger fs-4 text-center model-btn" style="font-family: 'Bebas Neue', cursive; background-color: transparent;">OUT OF STOCK !</p>
+      <p class="text-danger fs-4 text-center model-btn"
+        style="font-family: 'Bebas Neue', cursive; background-color: transparent;">OUT OF STOCK !</p>
       {{/if}}
     </div>
     {{/each}}
@@ -25,7 +32,7 @@
 </section>
 
 <script>
-function removeProduct(wishId, productId) {
+  function removeProduct(wishId, productId) {
     $.ajax({
       url: '/remove-wishlist',
       data: {
@@ -46,9 +53,9 @@ function removeProduct(wishId, productId) {
               confirmButton: 'my-confirm-button-class'
             },
           });
-          setTimeout(()=>{
-          location.reload()
-          },1000)
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
         }
       }
     })

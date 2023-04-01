@@ -1,0 +1,90 @@
+{{>user-header}}
+
+<div class="site-section my-5">
+ <div class="container">
+
+  <form id="contact-form" name="contact">
+   <div class="row justify-content-center">
+    <div class="col-md-6 mb-5 mb-md-0">
+     <h2 class="h3 mb-3 text-black" style="font-family: 'Bebas Neue', cursive;">CONTACT US</h2>
+     <div class="p-3 p-lg-5 border" style="border-radius: 0%;border: black 1px solid;">
+
+      <div class="form-group row mb-3">
+       <div class="col-md-12">
+        <label for="c_companyname" class="text-black">Full name <span class="text-danger">*</span></label>
+        <input type="text" style="border-radius: 0%;border: black 1px solid;" class="form-control" id="name" name="name"
+         placeholder="Full Name">
+       </div>
+      </div>
+
+      <div class="form-group row mb-3">
+       <div class="col-md-12">
+        <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
+        <input type="text" style="border-radius: 0%; border: black 1px solid;" class="form-control" id="email"
+         name="email" placeholder="Email Adress">
+       </div>
+      </div>
+
+      <div class="form-group row mb-3">
+       <div class="col-md-12">
+        <label for="c_companyname" class="text-black">Subject <span class="text-danger">*</span></label>
+        <input type="text" style="border-radius: 0%;border: black 1px solid;" class="form-control" id="subject"
+         name="subject" placeholder="Subject">
+       </div>
+      </div>
+
+      <div class="form-group row mb-3">
+       <div class="col-md-12">
+        <label for="c_email_address" class="text-black">Message<span class="text-danger">*</span></label>
+        <textarea class="form-control" style="border-radius: 0%;border: black 1px solid;" id="message" name="message"
+         placeholder="Message"></textarea>
+       </div>
+      </div>
+      <h6 class="text-danger text-center mb-4" id="contactErr"></h6>
+      <div class="form-group text-center">
+       <button class="model-btn" type="submit" style="font-family: 'Josefin Sans', sans-serif;">Submit</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </form>
+
+ </div>
+</div>
+
+<script>
+ $('#contact-form').submit((e) => {
+  e.preventDefault();
+  $.ajax({
+   url: '/contact-us',
+   method: 'post',
+   data: $('#contact-form').serialize(),
+   success: (response) => {
+    if (response.status) {
+     Swal.fire({
+      position: 'bottom',
+      title: '<span style="color: green; font-size: 20px;"><i class="fa-regular fa-circle-check"></i> </span> Submitted Successfully!',
+      showConfirmButton: false,
+      timer: 1200,
+      customClass: {
+       popup: 'my-popup-class',
+       content: 'my-content-class',
+       confirmButton: 'my-confirm-button-class'
+      },
+     });
+     setTimeout(() => {
+      location.reload()
+     }, 1000)
+    } else {
+     document.getElementById('contactErr').innerHTML = response.err
+     setTimeout(() => {
+      document.getElementById('contactErr').innerHTML = ''
+
+     }, 2000)
+    }
+   }
+  })
+ })
+</script>
+
+{{>user-footer}}

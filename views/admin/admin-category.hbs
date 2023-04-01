@@ -1,5 +1,15 @@
 {{>admin-header}}
 
+<style>
+  table.dataTable thead th {
+    text-align: center;
+  }
+
+  table.dataTable tbody td {
+    text-align: center;
+  }
+</style>
+
 <div class="layout-wrapper layout-content-navbar ">
   <div class="layout-container ">
     <div class="layout-page container">
@@ -36,10 +46,10 @@
             </div>
             <form action="/admin/admin-category" method="post">
               <div class="row mb-3 mt-3">
-                <label class="col-sm-2 col-form-label" for="basic-default-name">Category name</label>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                  <input type="text" class="form-control" style="width: 50%;" id="basic-default-name" name="category"
-                    value="{{catadata.category}}" />
+                <label class="col-sm-6 col-form-label" for="basic-default-name">Category name</label>
+                <div class="col-lg-8 col-md-8 col-sm-10 col-10">
+                  <input type="text" class="form-control" style="width: 50%;border-radius: 0%;border: black 1px solid;"
+                    id="basic-default-name" name="category" value="{{catadata.category}}" />
                 </div>
               </div>
               <div class="text-center">
@@ -47,7 +57,7 @@
               </div>
               <div class="row justify-content-end">
                 <div class="col-sm-10">
-                  <button type="submit" class="btn btn-outline-primary">Submit</button>
+                  <button type="submit" class="model-btn">Submit</button>
                 </div>
               </div>
             </form>
@@ -56,43 +66,42 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <h5 class="card-header text-center mb-3 me-5 " style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
-          CATEGORYS</h5>
-        <div class="table-responsive text-nowrap offset-3 col-lg-6 col-md-6 offset-3 col-sm-6 col-6">
-          <table class="table" id="admin-category-list">
-            <thead>
-              <tr class="text-center">
-                <th>Category</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-              {{#each Category}}
-              <tr class="text-center">
-                <td>{{category}}</td>
-                <td class="text-center">
-                  <a class="btn btn-outline-secondary" href="/admin/edit-category/{{_id}}">Edit</a>
-                  {{#if status}}
-                  <a class="btn btn-outline-danger" href="/admin/unlist-category/{{_id}}"
-                    onclick="return confirm('are you sure! you want to delete')">Un-list</a>
-                  {{else}}
-                  <a class="btn btn-outline-success" href="/admin/list-category/{{_id}}"
-                    onclick="return confirm('are you sure! you want to delete')">List</a>
-                  {{/if}}
-                </td>
-                {{else}}
-                {{/each}}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script>
-  $(document).ready(function () {
-    $('#admin-category-list').DataTable();
-  });
-</script>
+
+      <div class="table-responsive">
+        <table class="table" id="admin-category-list">
+          <thead>
+            <tr class="text-center">
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            {{#each Category}}
+            <tr class="text-center">
+              <td>{{category}}</td>
+              <td class="text-center">
+                <div class="btn-group">
+                  <button class="model-btn px-3 py-2 ms-2"
+                    onclick="location.href='/admin/edit-category/{{_id}}'">Edit</button>
+                  {{#if status}}
+                  <button class="model-wish-btn px-3 py-2 ms-2"
+                    onclick="location.href='/admin/unlist-category/{{_id}}'">Un-list</button>
+                  {{else}}
+                  <button class="model-order-btn px-3 py-2 ms-2"
+                    onclick="location.href='/admin/list-category/{{_id}}'">List</button>
+                  {{/if}}
+                </div>
+              </td>
+            </tr>
+            {{else}}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <script>
+        $(document).ready(function () {
+          $('#admin-category-list').DataTable();
+        });
+      </script>

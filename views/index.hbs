@@ -66,6 +66,11 @@
       <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg" alt=""
           onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
           onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+      <div class="star">
+        {{#times rating }}
+        {{rating}}
+        {{/times}}
+      </div>
       <h5 class="p-name mt-2">{{title}}</h5>
       <h6 class="p-price">₹ {{offerPrice}}</h6>
       <button class="model-btn" id="btn">buy now</button>

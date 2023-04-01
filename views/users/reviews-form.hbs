@@ -1,0 +1,85 @@
+{{>user-header}}
+<div class="container mt-5 p-3" style="	">
+  <div class="row border">
+    <div class="d-flex justify-content-between align-items-center"
+      style="border-radius: 0%;border: rgb(135, 135, 135) 1px solid;">
+      <h3 class="mt-2">Ratings &amp; Reviews</h3>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center  my-5">
+    <img style="border: black 1px solid;" src="/product-images/{{product.images.[0]}}.jpg" width="90px" alt="">
+    <div class="p-3">
+      <h5 class="">{{product.title}}</h5>
+      <h6 class="text-secondary my-2">Brand : {{product.brand}}</h6>
+      {{#if product.rating}}
+      <h6 class="text-secondary my-2">Rating : {{product.rating}}<i class="text-success  ms-1 fa-regular fa-star"></i>
+      </h6>
+      {{/if}}
+    </div>
+  </div>
+
+
+  <div class="row mt-4 mb-5" style="border-radius: 0%;border: rgb(135, 135, 135) 1px solid;">
+    <div class="col-md-4 border  py-4 px-2">
+      <h5>How to review a product?</h5>
+      <p class="fs-6">Your review should include facts. An honest opinion is always appreciated. If you have an
+        issue with the product or service please contact us from the help center.</p>
+
+      <h5>Why review a product?</h5>
+      <p class="fs-6">
+        Your valuable feedback will help fellow shoppers decide!</p>
+    </div>
+    <div class="col-md-8 border">
+      {{#if odr}}
+      <form name="ratingform" onsubmit="return review()" action="/submit-review/{{product._id}}" method="post">
+        <h5 class="ps-3 pt-3">Rate This Product </h5>
+        <div class="ps-3 d-flex gap-2" style="font: size 10px;color:#d4af37;">
+          <span onclick="rating(1)" class="review-star"><i class="fa-regular fa-star"></i></span>
+          <span onclick="rating(2)" class="review-star"><i class="fa-regular fa-star"></i></span>
+          <span onclick="rating(3)" class="review-star"><i class="fa-regular fa-star"></i></span>
+          <span onclick="rating(4)" class="review-star"><i class="fa-regular fa-star"></i></span>
+          <span onclick="rating(5)" class="review-star"><i class="fa-regular fa-star"></i></span>
+          <input type="hidden" name="reviewValid" id="reviewValid" value="0">
+        </div>
+        <div class="mb-3">
+        </div>
+        <div class="mb-3 mt-5">
+          <label for="exampleFormControlTextarea1" class="form-label">Your Review</label>
+          <textarea name="description" style="border-radius: 0%;border: rgb(0, 0, 0) 1px solid;" class="form-control"
+            id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <p class="text-danger fs-6" id="reErr" ></p>
+        <button type="submit" class="model-btn  mb-3">Submit Review</button>
+      </form>
+      {{else}}
+      <div class="pt-4 text-center my-5">
+        <div>
+          <i class="fa-solid fa-circle-exclamation text-danger fs-1 mb-4"></i>
+          <h3>Haven't purchased this product?</h3>
+          <h6 class="text-secondary">Sorry! You are not allowed to review this product as you haven't acquired it
+            through -
+            <br> Evoca Fashion Store
+          </h6>
+
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+</div>
+{{>user-footer}}
+
+<script>
+  function rating(rating) {
+    rate = document.getElementsByClassName('review-star')
+    document.getElementById('reviewValid').value = rating
+    for (i = 0; i < 5; i++) {
+      rate[i].innerHTML = "<i class='fa-regular fa-star'></i>"
+    }
+  for (i = 0; i < rating; i++) {
+    rate[i].innerHTML = "<i class='fa-solid fa-star'></i >"
+  }
+  }
+</script>

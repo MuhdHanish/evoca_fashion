@@ -57,15 +57,15 @@
   </div>
 </div>
 
-<div class="layout-wrapper layout-content-navbar ">
+<div class="layout-wrapper layout-content-navbar d-none d-md-block">
   <div class="layout-container">
     <div class="layout-page">
       <br><br>
       <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
         <h5 class="card-header text-center mb-3"
-          style="border: 0px solid rgba(255, 255, 255, 0.125);font-family: 'Bebas Neue', cursive;">ALL
+          style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
           COUPONS</h5>
-        <div class="table-responsive text-nowrap container" style="font-family: 'Bebas Neue', cursive;">
+        <div class="table-responsive text-nowrap container" >
           <table class="table ">
             <thead>
               <tr class="text-center">
@@ -88,9 +88,52 @@
                 <td class='text-danger'>Expired!</td>
                 {{/if}}
                 {{#if status}}
-                <td><button onclick=" disable('{{_id}}')" class="btn btn-outline-danger">disable</button></td>
+                <td><button onclick=" disable('{{_id}}')" class="model-wish-btn">disable</button></td>
                 {{else}}
-                <td><a href="/admin/expand-coupon/{{_id}}" class="btn btn-outline-secondary">expand</a></td>
+                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button></td>
+                {{/if}}
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="layout-wrapper layout-content-navbar d-block d-md-none">
+  <div class="layout-container">
+    <div class="layout-page">
+      <br><br>
+      <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
+        <h5 class="card-header text-center mb-3"
+          style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+          COUPONS</h5>
+        <div class="table-responsive text-nowrap container" >
+          <table class="table ">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">Details</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              {{#each couponDetails}}
+              <tr class="text-center">
+                <td>Name- {{coupon}} <br>
+                Amount- {{minimum}} <br>
+                discount- {{discount}}% <br>
+                {{#if status}}
+                Exdate- {{expireDate}}
+                {{else}}
+                <p class='text-danger'>Expired!</p>
+                {{/if}}
+                {{#if status}}
+                <td><button onclick=" disable('{{_id}}')" class="model-wish-btn">disable</button></td>
+                {{else}}
+                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button></td>
                 {{/if}}
               </tr>
               {{/each}}

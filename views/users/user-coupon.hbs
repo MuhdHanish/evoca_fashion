@@ -1,8 +1,78 @@
+<style>
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .coupon-card {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .logo {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .coupon-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+  }
+
+  #coupon-code {
+    font-size: 28px;
+    font-weight: 600;
+    color: #000000;
+    margin-right: 10px;
+  }
+
+  #copy-code {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #copy-code:hover {
+    background-color: #444444;
+  }
+
+  @media screen and (min-width: 768px) {
+    .coupon-card {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    #coupon-code {
+      font-size: 20px;
+    }
+
+    #copy-code {
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+  }
+</style>
+
 <div class="container">
-  <div class="Coupon">
+  <div class="coupon">
     <div class="coupon-container">
       <div class="coupon-card">
-        <img src="/images/evoca-logo.jpg" class="logo" style="border-radius: 6px;">
+        <img src="/images/evoca-logo.jpg" style="border-radius: 5px;" class="logo" alt="Evoca logo">
         <p><small>{{coupon.discount}}% flat off for all above Rs.{{coupon.minimum}} purchases<br> Enjoy your
             Shopping</small></p>
         <div class="coupon-row">
@@ -10,7 +80,7 @@
           <span id="copy-code">Copy code</span>
         </div>
         {{#if exp}}
-        <p><small class="text-danger">Coupon has been expired !</small></p>
+        <p><small class="text-danger">Coupon has been expired!</small></p>
         {{else}}
         <p><small>Valid Till : {{coupon.expireDate}}</small></p>
         {{/if}}
@@ -20,6 +90,7 @@
     </div>
   </div>
 </div>
+
 
 <script>
   const cpnBtn = document.getElementById('copy-code')

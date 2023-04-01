@@ -96,5 +96,5 @@ module.exports = {
     } catch (err) {
       next(err)
     }
-  }
+  },
 }

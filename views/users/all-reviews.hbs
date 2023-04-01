@@ -1,0 +1,67 @@
+{{>user-header}}
+
+<div class="container mt-5 p-3" style="	">
+  <div class="row border">
+    <div class="d-flex justify-content-between align-items-center"
+      style="border-radius: 0%;border: rgb(135, 135, 135) 1px solid;">
+      <h3 class="mt-2">All Reviews</h3>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center  my-5">
+    <img style="border: black 1px solid;" src="/product-images/{{product.images.[0]}}.jpg" width="90px" alt="">
+    <div class="p-3">
+      <h5 class="">{{product.title}}</h5>
+      <h6 class="text-secondary my-2">Brand : {{product.brand}}</h6>
+      {{#if product.rating}}
+      <h6 class="text-secondary my-2">Rating : {{product.rating}}<i class="text-success  ms-1 fa-regular fa-star"></i>
+      </h6>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+<section class="container" style="font-family: 'Josefin Sans', sans-serif;">
+  {{#each reviews}}
+  <div class="offset-1 col-10 ">
+    <hr>
+    <div class="col-lg-10 p-4 d-flex ">
+      <div style="height: 45px;width: 45px;background-color: rgb(194, 193, 193);border-radius: 50px;">
+        <i style="position: relative;left: 3px;" class="fa-regular p-2 fs-3 fa-user "></i>
+      </div>
+      <div class="text-center">
+        <span class="fs-5 ms-3 ">{{review.userName}} -
+          {{#if (gt review.rating 3)}}
+          <span class="badge bg-success fs-6"><span>{{review.rating}}</span><i
+              class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+          {{else}}
+          {{#if (gt 3 review.rating)}}
+          <span class="badge bg-danger fs-6"><span>{{review.rating}}</span><i
+              class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+          {{else}}
+          {{#if (eq 3 review.rating)}}
+          <span class="badge bg-warning fs-6"><span>{{review.rating}}</span><i
+              class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+          {{/if}}
+          {{/if}}
+          {{/if}}
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 offset-1 col-10 ">
+      {{review.description}}
+    </div>
+  </div>
+  {{/each}}
+  <div class="offset-1 col-10 ">
+    <hr>
+  </div>
+  {{#if prCount}}
+  {{#if (gt prCount 2)}}
+  <div class="offset-1 col-10 ">
+    <span class="text-primary fs-5 float-end p-2" onclick="location.href='/get-all-reviews/{{product._id}}'">View
+      all reviews</i></span>
+  </div>
+  {{/if}}
+  {{/if}}
+</section>

@@ -1,8 +1,19 @@
 {{>admin-header}}
+
+<style>
+  table.dataTable thead th {
+    text-align: center;
+  }
+
+  table.dataTable tbody td {
+    text-align: center;
+  }
+</style>
+
 <section id="cart-container" class="container my-5 order-details">
   <table width="100%" id="admin-order-list">
     <thead>
-      <tr>
+      <tr class="text-center">
         <th>Fullname</th>
         <th>Date</th>
         <th>Phone</th>
@@ -30,14 +41,15 @@
         {{/if}}
         {{/if}}
         {{#if (eq orderStatus "Return Process")}}
-        <td><span class="d-flex align-items-center "><a href="/admin/admin-order-details/{{_id}}"
-              class="btn btn-outline-success">Details</a><i class="fa-solid fa-clock-rotate-left text-warning ms-2"></i></span></td>
+        <td><button onclick="location. href='/admin/admin-order-details/{{_id}}'" class="model-btn text-waring"
+            style="padding: 8px 15px;">Details</button></td>
         {{else}}
         {{#if (eq orderStatus "Return Agreed")}}
-        <td><span class="d-flex align-items-center "><a href="/admin/admin-order-details/{{_id}}"
-              class="btn btn-outline-success">Details</a><i class="fa-regular text-danger ms-2 fa-circle-xmark"></i></span></td>
+        <td><button onclick="location. href='/admin/admin-order-details/{{_id}}'" class="model-btn text-danger"
+            style="padding: 8px 15px;">Details</button></td>
         {{else}}
-        <td><a href="/admin/admin-order-details/{{_id}}" class="btn btn-outline-success">Details</a></td>
+        <td><button onclick="location. href='/admin/admin-order-details/{{_id}}'" class="model-btn"
+            style="padding: 8px 15px;">Details</button></td>
         {{/if}}
         {{/if}}
       </tr>

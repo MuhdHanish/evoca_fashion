@@ -1,5 +1,20 @@
 {{>admin-header}}
 
+<style>
+    table.dataTable thead th {
+        text-align: center;
+    }
+
+    table.dataTable tbody td {
+        text-align: center;
+    }
+
+    .table-responsive {
+        overflow-x: visible;
+    }
+</style>
+
+
 <div class="layout-wrapper layout-content-navbar container">
     <div class="layout-container d-none d-md-block ">
         <div class="layout-page">
@@ -27,12 +42,12 @@
                                 {{#if status}}
                                 <td class="text-success">Active</td>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" onclick="ban('{{_id}}')">Ban</a>
+                                    <button class="model-wish-btn py-2" onclick="ban('{{_id}}')">Ban</a>
                                 </td>
                                 {{else}}
                                 <td class="text-danger">Banned</td>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-success" onclick="unban('{{_id}}')">Un-Ban</a>
+                                    <button class="model-order-btn" style="padding: 8px 18px;" onclick="unban('{{_id}}')">Un-Ban</a>
                                 </td>
                                 {{/if}}
                             </tr>
@@ -54,7 +69,7 @@
                 <h5 class="card-header text-center mb-4" style="background-color: rgba(0,0,0,.03);border:none">ALL USERS
                 </h5>
                 <div class="table-responsive text-nowrap">
-                    <table class="table " id="admin-users-list">
+                    <table class="table " id="admin-user-list">
                         <thead>
                             <tr class="text-center">
                                 <th>Detials</th>
@@ -70,12 +85,12 @@
                                     {{#if status}}
                                     <p>Status:<span class="text-success">Active</span></p>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" onclick="ban('{{_id}}')">Ban</a>
+                                    <button class="model-wish-btn py-2" onclick="ban('{{_id}}')">Ban</a>
                                 </td>
                                 {{else}}
                                 <p>Status:<span class="text-danger">Banned</span></p>
                                 <td class="text-center">
-                                    <button class="btn btn-outline-success" onclick="unban('{{_id}}')">Un-Ban</a>
+                                    <button class="model-order-btn " style="padding: 8px 18px;" onclick="unban('{{_id}}')">Un-Ban</a>
                                 </td>
                                 {{/if}}
                             </tr>
@@ -129,4 +144,17 @@
     }
 
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#admin-users-list').DataTable();
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#admin-user-list').DataTable();
+    });
 </script>

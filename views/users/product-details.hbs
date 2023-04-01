@@ -18,7 +18,12 @@
          <h6 class="text-secondary">Category: {{product.category}}</h6>
          <h3 class="py-3">{{product.title}}</h3>
          <h5 class="py-3"><span class="text-secondary fs-5">Brand: </span> {{product.brand}}</h5>
-         {{#if disc}}
+         {{#if product.rating}}
+         <h5 class="text-secondary my-4">Rating : {{product.rating}}<i
+               class="text-success  ms-1 fa-regular fa-star"></i>
+         </h5>
+         {{/if}}
+         {{#if product.discount}}
          <span class="fs-6 text-muted">{{product.discount}}% discount</span>
          <h4 class="mt-1"><span>₹{{product.offerPrice}}</span>
             <span class="fs-6 text-muted ms-2"><strike>₹{{product.price}}</strike></span>
@@ -32,7 +37,7 @@
                <option value="{{[]}}">{{[]}}</option>
                {{/each}}
             </select>
-            {{#if stock}}
+            {{#if product.stock}}
             <button class="model-btn mb-3 mt-4 offset-3 col-6 col-md-10 col-lg-6 d-flex justify-content-center"
                type="submit"><i class="fa-solid fa-cart-shopping text-white me-2 fs-6"></i>Cart</button>
          </form>
@@ -48,6 +53,76 @@
    </div>
 </section>
 
+{{#if reviews}}
+<div class="container " style="font-family: 'Josefin Sans', sans-serif;">
+   <div class="row my-5">
+      <div class="offset-1 col-10">
+         <h5 class="mt-5">Rating & Reviews :</h5>
+         <span class="text-primary fs-5 float-end p-2" onclick="location.href='/get-post-review/{{product._id}}'">Post
+            Review<i class="ms-2 fa-solid fa-circle-plus"></i></span>
+      </div>
+   </div>
+</div>
+
+<section class="container" style="font-family: 'Josefin Sans', sans-serif;">
+   {{#each reviews}}
+   <div class="offset-1 col-10 ">
+      <hr>
+      <div class="col-lg-10 p-4 d-flex ">
+         <div style="height: 45px;width: 45px;background-color: rgb(194, 193, 193);border-radius: 50px;">
+            <i style="position: relative;left: 3px;" class="fa-regular p-2 fs-3 fa-user "></i>
+         </div>
+         <div class="text-center">
+            <span class="fs-5 ms-3 ">{{review.userName}} -
+               {{#if (gt review.rating 3)}}
+               <span class="badge bg-success fs-6"><span>{{review.rating}}</span><i
+                     class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+               {{else}}
+               {{#if (gt 3 review.rating)}}
+               <span class="badge bg-danger fs-6"><span>{{review.rating}}</span><i
+                     class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+               {{else}}
+               {{#if (eq 3 review.rating)}}
+               <span class="badge bg-warning fs-6"><span>{{review.rating}}</span><i
+                     class="  ms-1 fa-regular fs-6 fa-star"></i></span>
+               {{/if}}
+               {{/if}}
+               {{/if}}
+            </span>
+         </div>
+      </div>
+      <div class="col-lg-6 col-md-6 offset-1 col-10 ">
+         {{review.description}}
+      </div>
+   </div>
+   {{/each}}
+   <div class="offset-1 col-10 ">
+      <hr>
+   </div>
+   {{#if prCount}}
+   {{#if (gt prCount 2)}}
+   <div class="offset-1 col-10 ">
+      <span class="text-primary fs-5 float-end p-2" onclick="location.href='/get-all-reviews/{{product._id}}'">View
+         all reviews</i></span>
+   </div>
+   {{/if}}
+   {{/if}}
+</section>
+
+{{else}}
+<div class="container " style="font-family: 'Josefin Sans', sans-serif;">
+   <div class="row my-5">
+      <div class="offset-1 col-10">
+         <h5 class="mt-5">Rating & Reviews : <span class="text-danger fs-6">No Reviews yet ! </span>
+            <span class="text-primary fs-5 float-end p-2"
+               onclick="location.href='/get-post-review/{{product._id}}'">Post
+               Review<i class="ms-2 fa-solid fa-circle-plus"></i></span>
+         </h5>
+      </div>
+   </div>
+</div>
+{{/if}}
+
 <section id="featured" class="my-5 pb-5">
    <div class="container text-center mt-5 py-5 featured-text">
       <h3 style="	font-family: 'Climate Crisis', cursive;">Related Collections</h3>
@@ -60,6 +135,11 @@
          <a href="/product-details/{{_id}}"><img class="img-fluid" src="/product-images/{{images.[0]}}.jpg"
                onmouseover="this.src='/product-images/{{images.[1]}}.jpg'"
                onmouseout="this.src='/product-images/{{images.[0]}}.jpg'"></a>
+         <div class="star">
+            {{#times rating }}
+            {{rating}}
+            {{/times}}
+         </div>
          <h5 class="p-name mt-2">{{title}}</h5>
          <h6 class="p-price">₹ {{offerPrice}}</h6>
          <button class="model-btn" id="btn">buy now</button>
@@ -97,7 +177,7 @@
                      confirmButton: 'my-confirm-button-class'
                   },
                });
-            } else if(response.status==false){
+            } else if (response.status == false) {
                Swal.fire({
                   position: 'bottom',
                   title: 'Product already added <i class="fa-regular text-warning fa-exclamation"></i>',
@@ -109,9 +189,9 @@
                      confirmButton: 'my-confirm-button-class'
                   },
                });
-               
-            }else{
-               window.location.href="/login"
+
+            } else {
+               window.location.href = "/login"
             }
          }
       })

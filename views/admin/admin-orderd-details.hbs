@@ -88,13 +88,9 @@
                </div>
                {{/if}}
                {{#if (eq orderDetails.orderStatus "Cancelled")}}
-               <p class="text-danger fs-3 text-center mt-5" style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED
+               <p class="text-danger fs-3 text-center mt-5 pt-5" style="font-family: 'Bebas Neue', cursive;">ORDER CANCELLED
                   !
                </p>
-               <div class="text-center">
-                  <p class="text-dark fs-5 text-center" style="font-family: 'Bebas Neue', cursive;">Payment returned
-                  </p>
-               </div>
                {{else}}
                <form action="/admin/update-order-status/{{orderDetails._id}}" method="post">
                   <div class="col-lg-12 mt-3">
@@ -107,6 +103,7 @@
                         <input type="radio" value="Processing" name="OrderStatus" class="mb-1 ">
                         <label for="" style="color: blueviolet;">Processing</label><br>
                         <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                           <h6 class="text-danger mt-1">{{orderUpErr}}</h6>
                         </div>
                         {{/if}}
                         {{#if (eq orderDetails.orderStatus "Processing")}}
@@ -117,6 +114,7 @@
                         <input type="radio" value="Shipped" name="OrderStatus" class="mb-1 ">
                         <label for="" class=" text-primary">Shipped</label><br>
                         <div class="text-center pt-3"><button type="submit" class="model-btn link-line">Proceed</button>
+                           <h6 class="text-danger mt-1">{{orderUpErr}}</h6>
                         </div>
                         {{/if}}
                         {{#if (eq orderDetails.orderStatus "Shipped")}}
@@ -127,6 +125,7 @@
                            <label for="" class=" mb-1 text-success">Delivered</label>
                            <div class="text-center pt-3"><button type="submit"
                                  class="model-btn link-line">Proceed</button>
+                              <h6 class="text-danger mt-1">{{orderUpErr}}</h6>
                            </div>
                            {{/if}}
                            {{#if (eq orderDetails.orderStatus "Delivered")}}
@@ -153,8 +152,8 @@
                                     Payment
                                     successfull
                                  </p>
-                                 <a href="/admin/admin-orderlist" style="font-family: 'Bebas Neue', cursive;"
-                                    class=" link-line btn btn-outline-dark">Go To Orders</a>
+                                 <button class="model-btn" type="button" onclick="location.href='/admin/admin-orderlist'">Go To
+                                    Orders</button>
                               </div>
                            </div>
                            {{/if}}

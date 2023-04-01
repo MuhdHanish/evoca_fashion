@@ -1,7 +1,22 @@
 {{>admin-header}}
 
+
+<style>
+    table.dataTable thead th {
+        text-align: center;
+    }
+
+    table.dataTable tbody td {
+        text-align: center;
+    }
+    .table-responsive {
+    overflow-x: visible;
+}
+    
+</style>
+
 <div class="layout-wrapper layout-content-navbar ">
-    <div class="layout-container d-none d-md-block">
+    <div class="layout-container d-none  d-lg-block">
         <div class="layout-page">
             <br><br>
             <div class="card " style="border: 0px solid rgba(0,0,0,.125)">
@@ -34,14 +49,94 @@
                                 {{#if status}}
                                 <td class="text-success">Listed</td>
                                 <td class="text-center">
-                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
-                                    <a class="btn btn-outline-danger" onclick="unlist('{{_id}}')"></i>Un-List</a>
+                                    <div class="col-2">
+                                        <div class="col-12">
+                                            <button onclick="location. href='/admin/edit-product/{{_id}}'"
+                                                class="model-btn mb-1" style="padding: 8px 41px;">Edit</button>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="model-wish-btn py-2"
+                                                onclick="unlist('{{_id}}')"></i>Un-List</a>
+
+                                        </div>
+                                    </div>
                                 </td>
                                 {{else}}
                                 <td class="text-danger">Un-Listed</td>
                                 <td class="text-center">
-                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
-                                    <a class="btn btn-outline-success" onclick="list('{{_id}}')"></i>List</a>
+                                    <div class="col-2">
+                                        <div class="col-12">
+                                            <button onclick="location. href='/admin/edit-product/{{_id}}'"
+                                                class="model-btn mb-1" style="padding: 8px 41px;">Edit</button>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="model-order-btn " style="padding: 8px 43px;"
+                                                onclick="list('{{_id}}')"></i>List</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                {{/if}}
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="layout-wrapper layout-content-navbar ">
+    <div class="layout-container d-none d-md-block d-lg-none ">
+        <div class="layout-page">
+            <br><br>
+            <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
+                <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+                    PRODUCTS</h5>
+                <div class="table-responsive text-nowrap">
+                    <table class="table " id="admin-pro-list">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Details</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            {{#each products}}
+                            <tr>
+                                <td class="text-start">
+                                    - {{title}} <br>
+                                    - {{brand}} <br>
+                                    - {{category}} <br>
+                                    - ₹{{offerPrice}}
+                                </td>
+                                <td><img src="/product-images/{{images.[0]}}.jpg" alt=""
+                                        style="width: 100px;height: 100px; border: black 1px solid;"></td>
+                                <td class="text-center">{{stock}}</td>
+                                {{#if status}}
+                                <td class="text-success text-center">Listed</td>
+                                <td class="text-center">
+                                    <div class="col-12"><button onclick="location. href='/admin/edit-product/{{_id}}'"
+                                            style="padding: 8px 41px;" class="model-btn mb-1">Edit</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="model-wish-btn py-2" onclick="unlist('{{_id}}')"></i>Un-List</a>
+                                    </div>
+                                    {{else}}
+                                <td class="text-danger">Un-Listed</td>
+                                <td class="text-center ">
+                                    <div class="col-12">
+                                        <button onclick="location.href='/admin/edit-product/{{_id}}'"
+                                            style="padding: 8px 41px;" class="model-btn mb-1">Edit</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="model-order-btn " style="padding: 8px 43px;"
+                                            onclick="list('{{_id}}')"></i>List</a>
+                                    </div>
                                 </td>
                                 {{/if}}
                             </tr>
@@ -56,15 +151,16 @@
 </div>
 
 
+
 <div class="layout-wrapper layout-content-navbar ">
-    <div class="layout-container d-block d-md-none">
+    <div class="layout-container d-block d-md-none ">
         <div class="layout-page">
             <br><br>
             <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
                 <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
                     PRODUCTS</h5>
                 <div class="table-responsive text-nowrap">
-                    <table class="table " id="admin-product-list">
+                    <table class="table " id="admin-products-list">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">Details</th>
@@ -75,24 +171,33 @@
                         <tbody class="table-border-bottom-0">
                             {{#each products}}
                             <tr class="text-center">
-                                <td>{{title}} <br>
-                                    {{brand}} <br>
-                                    {{offerPrice}} <br>
-                                    {{category}} <br>
-                                    {{stock}}</td>
-                                <td class="text-center"><img src="/product-images/{{images.[0]}}.jpg" alt=""
-                                        style="width: 100px;height: 100px; border-radius: 10px;"></td>
-                                {{#if status}}
-                                <td class="text-success">Listed</td>
+                                <td><img src="/product-images/{{images.[0]}}.jpg" alt=""
+                                        style="width: 100px;height: 100px; border: black 1px solid;"></td>
+                                        <td class="text-start">- {{title}} <br>
+                                    - {{brand}} <br>
+                                    - {{offerPrice}} <br>
+                                    - {{category}} <br>
+                                    - {{stock}} <br>
+                                    {{#if status}}
+                                    - <p class="text-success">- Listed</p></td>
                                 <td class="text-center">
-                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
-                                    <a class="btn btn-outline-danger" onclick="unlist('{{_id}}')"></i>Un-List</a>
-                                </td>
-                                {{else}}
-                                <td class="text-danger">Un-Listed</td>
-                                <td class="text-center">
-                                    <a href="/admin/edit-product/{{_id}}" class="btn btn-outline-success">Edit</a>
-                                    <a class="btn btn-outline-success" onclick="list('{{_id}}')"></i>List</a>
+                                    <div class="col-12"><button onclick="location. href='/admin/edit-product/{{_id}}'"
+                                            style="padding: 8px 41px;" class="model-btn mb-1">Edit</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="model-wish-btn py-2" onclick="unlist('{{_id}}')"></i>Un-List</a>
+                                    </div>
+                                    {{else}}
+                                    <p class="text-danger">- Un-Listed</p>
+                                <td class="text-center ">
+                                    <div class="col-12">
+                                        <button onclick="location.href='/admin/edit-product/{{_id}}'"
+                                            style="padding: 8px 41px;" class="model-btn mb-1">Edit</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="model-order-btn " style="padding: 8px 43px;"
+                                            onclick="list('{{_id}}')"></i>List</a>
+                                    </div>
                                 </td>
                                 {{/if}}
                             </tr>
@@ -147,4 +252,23 @@
 
 
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#admin-product-list').DataTable();
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#admin-products-list').DataTable();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#admin-pro-list').DataTable();
+    });
 </script>

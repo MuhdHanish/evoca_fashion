@@ -1,6 +1,8 @@
 const productCollection = require('../model/productSchema')
 const categoryCollection = require('../model/categorySchema')
 const bannerCollection = require('../model/bannerSchema')
+const reviewCollection = require('../model/reviewSchema')
+
 
 const globalFunction = require('../global/global-functions')
 
@@ -15,7 +17,8 @@ module.exports = {
 
   getHomeProducts: async (req, res, next) => {
     try {
-      const products = await productCollection.find({ status: true }).sort({ _id: -1 }).limit(4).toArray()
+      req.session.successId = null
+      const products = await productCollection.find({status:true}).sort({_id:-1}).limit(4).toArray()
       const banners = await bannerCollection.find({ status: true }).skip(1).toArray()
       const firstBanner = await bannerCollection.find({ status: true }).limit(1).toArray()
 
@@ -37,8 +40,8 @@ module.exports = {
   },
 
   getShopProducts: async (req, res, next) => {
-    
-    const proCount=await productCollection.countDocuments()
+    req.session.successId = null
+    let proCount=await productCollection.countDocuments()
     const limit=6
     let skip=0
   
@@ -57,7 +60,7 @@ module.exports = {
         req.session.brandFilter = null
         req.session.brand = null
       }
-
+      
       let products = await productCollection.find({ status: true }).limit(limit).skip(skip).toArray()
       const categorys = await categoryCollection.find().toArray()
       const brands = await productCollection.distinct("brand")
@@ -76,12 +79,14 @@ module.exports = {
         }
       }
       if (req.session.category) {
+        proCount=await productCollection.countDocuments({ category: req.session.category })
         req.session.cateFilter = await productCollection.find({ category: req.session.category }).limit(limit).skip(skip).toArray()
         products = req.session.cateFilter
       }
 
 
       if (req.session.brand) {
+        proCount=await productCollection.countDocuments({ brand: req.session.brand })
         req.session.brandFilter = await productCollection.find({ brand: req.session.brand }).limit(limit).skip(skip).toArray()
         products = req.session.brandFilter
       }
@@ -90,12 +95,15 @@ module.exports = {
 
       if (req.session.price) {
         if (req.session.price == 'b-1500') {
+          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 1500 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2000') {
+          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 2000 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2500') {
+          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 2500 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else {
@@ -106,10 +114,12 @@ module.exports = {
 
       if (req.session.sortId && req.session.category) {
         if (req.session.sortId == 'low-to-high') {
+          proCount=await productCollection.countDocuments({ category: req.session.category })
           req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
+          proCount=await productCollection.countDocuments({ category: req.session.category })
           req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
@@ -117,10 +127,12 @@ module.exports = {
       }
       if (req.session.sortId && req.session.brand) {
         if (req.session.sortId == 'low-to-high') {
+          proCount=await productCollection.countDocuments({ brand: req.session.brand })
           req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
+          proCount=await productCollection.countDocuments({ brand: req.session.brand })
           req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
@@ -128,10 +140,12 @@ module.exports = {
       }
       if (req.session.sortId && req.session.price) {
         if (req.session.sortId == 'low-to-high') {
+          proCount=await productCollection.countDocuments({ price: req.session.price })
           req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
+          proCount=await productCollection.countDocuments({ price: req.session.price })
           req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
         }
@@ -140,6 +154,7 @@ module.exports = {
       if (products.length === 0) {
         req.session.filterMsg = 'No results found!';
       }
+
       const filterMsg = req.session.filterMsg
 
       const count = Math.ceil(proCount/limit)
@@ -150,9 +165,9 @@ module.exports = {
 
       if (user) {
         const count = await globalFunction.cartCount(req.session.user._id)
-        res.render('users/shop', { User: true, user, products, filterMsg, categorys, pageArr, count, search: true, brands })
+        res.render('users/shop', { User: true, user, products, filterMsg, categorys, pageArr, count, search: true, brands ,page})
       } else {
-        res.render('users/shop', { products, categorys, filterMsg, search: true, pageArr, brands })
+        res.render('users/shop', { products, categorys, filterMsg, search: true, pageArr, brands,page})
       }
       req.session.filterMsg = null
       req.session.combine = null
@@ -238,40 +253,33 @@ module.exports = {
       const productId = req.params.id
       const product = await productCollection.findOne({ _id: new ObjectId(productId) })
       const products = await productCollection.find({ $and: [{ _id: { $ne: new ObjectId(productId) } }, { status: true }] }).limit(4).toArray()
+      
+      const review = await globalFunction.getReviews(productId)
+      if(review){
+        req.session.reviews = review
+      }
+      const reviews = req.session.reviews
+
+      const rvCount = await reviewCollection.findOne({productId:new ObjectId(productId)})
+      if(rvCount){
+        const review = rvCount.review
+        req.session.rvCount = review.length
+      }
+      const prCount = req.session.rvCount
+      
       const user = req.session.user
-      if (user) {
-        const count = await globalFunction.cartCount(req.session.user._id)
-        if (product.discount == 0) {
-          if (product.stock < 1) {
-            res.render('users/product-details', { User: true, user, product, products, count })
-          }
-          else {
-            res.render('users/product-details', { User: true, user, product, products, count, stock: true })
-          }
-        } else {
-          if (product.stock < 1) {
-            res.render('users/product-details', { User: true, user, product, products, disc: true, count })
-          }
-          else {
-            res.render('users/product-details', { User: true, user, product, products, disc: true, stock: true, count })
-          }
+      let count = 0
+
+      if(user){
+        const cartCount = await globalFunction.cartCount(req.session.user._id)
+        if(cartCount){
+          count = cartCount
         }
       }
-      else {
-        if (product.discount == 0) {
-          if (product.stock < 1) {
-            res.render('users/product-details', { product, products })
-          } else {
-            res.render('users/product-details', { product, products, stock: true })
-          }
-        } else {
-          if (product.stock < 1) {
-            res.render('users/product-details', { product, products, disc: true })
-          }
-          else {
-            res.render('users/product-details', { product, products, disc: true, stock: true })
-          }
-        }
+      if(user){
+        res.render('users/product-details', { User: true, user, product, products,prCount,reviews, count})
+      }else{
+        res.render('users/product-details', { product, products,reviews,prCount, count})
       }
     } catch (err) {
       next(err)

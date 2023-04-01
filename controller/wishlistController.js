@@ -9,6 +9,7 @@ module.exports = {
 
   getWishlist: async (req, res, next) => {
     try {
+      req.session.successId = null
       const user = req.session.user
       const userId = user._id
       const count = await globalFunction.cartCount(userId)
