@@ -315,7 +315,6 @@ module.exports = {
 
   returnProcess:async(req,res,next)=>{
     try{
-      console.log('adsfadsfasdfad')
       const orderId = req.params.id
       const order = await orderCollection.findOne({_id:new ObjectId(orderId)})
       const amount = order.amount

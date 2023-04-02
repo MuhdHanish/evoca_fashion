@@ -188,10 +188,9 @@ body {
 
 .badge-pos {
 	border-radius: 50px;
-	position: relative;
-	bottom: 16px;
-	right: 6px;
-	border: none;
+	font-size: 11px;
+	background-color: #dc0345;
+	transform: translate(-20%,-65%)!important;
 }
 
 .login-button {

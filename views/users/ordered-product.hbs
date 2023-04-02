@@ -24,135 +24,107 @@
 
 {{#if (eq orderDetails.orderStatus "Delivered")}}
 {{#if (eq orderDetails.disAgreed null)}}
-<div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+      </ul>
    </div>
-   <div class="track-line" style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
    </div>
-   <div class="track-line"  style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
-   </div>
-   <div class="track-line"  style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot " style="background-color: #198754;"></div>
-   </div>
-</div>
-<div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <p class="pe-md-5">Order Placed</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-4 pe-md-5">Shipped</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5 pe-md-4">Out for delivery</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5">Delivered</p>
+   <div class="col-12 container">
+      <hr>
    </div>
 </div>
 {{/if}}
 {{else}}
 {{#if (eq orderDetails.orderStatus "Shipped")}}
-<div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+      </ul>
    </div>
-   <div class="track-line" style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot " style="background-color: #198754;"></div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
    </div>
-   <div class="track-line"  style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
-   </div>
-   <div class="track-line"  ></div>
-   <div class="d-block">
-      <div class="track-dot" ></div>
-   </div>
-</div>
-<div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <p class="pe-md-5">Order Placed</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-4 pe-md-5">Shipped</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5 pe-md-4">Out for delivery</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5">Delivered</p>
+   <div class="col-12 container">
+      <hr>
    </div>
 </div>
 {{else}}
 {{#if (eq orderDetails.orderStatus "Processing")}}
-<div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <div class="track-dot " style="background-color: #198754;"></div>
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+      </ul>
    </div>
-   <div class="track-line" style="background-color: #198754;"></div>
-   <div class="d-block">
-      <div class="track-dot" style="background-color: #198754;"></div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
    </div>
-   <div class="track-line" ></div>
-   <div class="d-block">
-      <div class="track-dot " ></div>
-   </div>
-   <div class="track-line"  ></div>
-   <div class="d-block">
-      <div class="track-dot " ></div>
-   </div>
-</div>
-<div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <p class="pe-md-5">Order Placed</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-4 pe-md-5">Shipped</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5 pe-md-4">Out for delivery</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5">Delivered</p>
+   <div class="col-12 container">
+      <hr>
    </div>
 </div>
 {{else}}
 {{#if (eq orderDetails.orderStatus "Placed")}}
-<div class="col-md-12 d-flex py-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <div class="track-dot bg-success" style="background-color: #198754;"></div>
+<div class="col-12 container">
+   <hr>
+   <div class="row d-flex justify-content-center">
+      <ul id="progressbar" class="d-flex justify-content-center text-center">
+         <li class="active step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+         <li class="step0"></li>
+      </ul>
    </div>
-   <div class="track-line"></div>
-   <div class="d-block">
-      <div class="track-dot"></div>
+   <div class="col-11 col-lg-10 col-sm-11 container">
+      <div class="row d-flex justify-content-center">
+         <ul style="list-style-type: none;display: flex;justify-content: space-between;">
+            <li>Placed</li>
+            <li>Process</i></li>
+            <li>Shipped</li>
+            <li>Delivered</li>
+         </ul>
+      </div>
    </div>
-   <div class="track-line"></div>
-   <div class="d-block">
-      <div class="track-dot"></div>
-   </div>
-   <div class="track-line"></div>
-   <div class="d-block">
-      <div class="track-dot"></div>
-   </div>
-</div>
-<div class="col-md-12 d-flex pb-3 justify-content-center align-items-center">
-   <div class="d-block">
-      <p class="pe-md-5">Order Placed</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-4 pe-md-5">Shipped</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5 pe-md-4">Out for delivery</p>
-   </div>
-   <div class="d-block">
-      <p class="ps-md-5">Delivered</p>
+   <div class="col-12 container">
+      <hr>
    </div>
 </div>
 {{/if}}

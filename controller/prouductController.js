@@ -17,11 +17,10 @@ module.exports = {
 
   getHomeProducts: async (req, res, next) => {
     try {
-      req.session.successId = null
-      const products = await productCollection.find({status:true}).sort({_id:-1}).limit(4).toArray()
+      const products = await productCollection.find({}, { sort: { _id: -1 } }).limit(4).toArray()
       const banners = await bannerCollection.find({ status: true }).skip(1).toArray()
       const firstBanner = await bannerCollection.find({ status: true }).limit(1).toArray()
-
+      req.session.successId = null
       const user = req.session.user
 
       if (user) {
@@ -41,12 +40,12 @@ module.exports = {
 
   getShopProducts: async (req, res, next) => {
     req.session.successId = null
-    let proCount=await productCollection.countDocuments()
-    const limit=6
-    let skip=0
-  
-    const page=req.session.page
-    if(page) skip=(page-1)*limit;
+    let proCount = await productCollection.countDocuments()
+    const limit = 6
+    let skip = 0
+
+    const page = req.session.page
+    if (page) skip = (page - 1) * limit;
 
     try {
 
@@ -60,7 +59,7 @@ module.exports = {
         req.session.brandFilter = null
         req.session.brand = null
       }
-      
+
       let products = await productCollection.find({ status: true }).limit(limit).skip(skip).toArray()
       const categorys = await categoryCollection.find().toArray()
       const brands = await productCollection.distinct("brand")
@@ -79,14 +78,14 @@ module.exports = {
         }
       }
       if (req.session.category) {
-        proCount=await productCollection.countDocuments({ category: req.session.category })
+        proCount = await productCollection.countDocuments({ category: req.session.category })
         req.session.cateFilter = await productCollection.find({ category: req.session.category }).limit(limit).skip(skip).toArray()
         products = req.session.cateFilter
       }
 
 
       if (req.session.brand) {
-        proCount=await productCollection.countDocuments({ brand: req.session.brand })
+        proCount = await productCollection.countDocuments({ brand: req.session.brand })
         req.session.brandFilter = await productCollection.find({ brand: req.session.brand }).limit(limit).skip(skip).toArray()
         products = req.session.brandFilter
       }
@@ -95,15 +94,15 @@ module.exports = {
 
       if (req.session.price) {
         if (req.session.price == 'b-1500') {
-          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 1500 } })
+          proCount = await productCollection.countDocuments({ offerPrice: { $lt: 1500 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 1500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2000') {
-          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 2000 } })
+          proCount = await productCollection.countDocuments({ offerPrice: { $lt: 2000 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2000 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else if (req.session.price == 'b-2500') {
-          proCount=await productCollection.countDocuments({ offerPrice: { $lt: 2500 } })
+          proCount = await productCollection.countDocuments({ offerPrice: { $lt: 2500 } })
           req.session.priceFilter = await productCollection.find({ offerPrice: { $lt: 2500 } }).limit(limit).skip(skip).toArray()
           products = req.session.priceFilter
         } else {
@@ -114,12 +113,12 @@ module.exports = {
 
       if (req.session.sortId && req.session.category) {
         if (req.session.sortId == 'low-to-high') {
-          proCount=await productCollection.countDocuments({ category: req.session.category })
+          proCount = await productCollection.countDocuments({ category: req.session.category })
           req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          proCount=await productCollection.countDocuments({ category: req.session.category })
+          proCount = await productCollection.countDocuments({ category: req.session.category })
           req.session.combine = await productCollection.find({ category: req.session.category }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
@@ -127,12 +126,12 @@ module.exports = {
       }
       if (req.session.sortId && req.session.brand) {
         if (req.session.sortId == 'low-to-high') {
-          proCount=await productCollection.countDocuments({ brand: req.session.brand })
+          proCount = await productCollection.countDocuments({ brand: req.session.brand })
           req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          proCount=await productCollection.countDocuments({ brand: req.session.brand })
+          proCount = await productCollection.countDocuments({ brand: req.session.brand })
           req.session.combine = await productCollection.find({ brand: req.session.brand }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
@@ -140,12 +139,12 @@ module.exports = {
       }
       if (req.session.sortId && req.session.price) {
         if (req.session.sortId == 'low-to-high') {
-          proCount=await productCollection.countDocuments({ price: req.session.price })
+          proCount = await productCollection.countDocuments({ price: req.session.price })
           req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: 1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
 
         } else {
-          proCount=await productCollection.countDocuments({ price: req.session.price })
+          proCount = await productCollection.countDocuments({ price: req.session.price })
           req.session.combine = await productCollection.find({ price: req.session.price }).sort({ offerPrice: -1 }).limit(limit).skip(skip).toArray()
           products = req.session.combine
         }
@@ -157,17 +156,17 @@ module.exports = {
 
       const filterMsg = req.session.filterMsg
 
-      const count = Math.ceil(proCount/limit)
-      const pageArr = [] 
-      for(i=0;i<count;i++){
-        pageArr.push(i+1)
+      const count = Math.ceil(proCount / limit)
+      const pageArr = []
+      for (i = 0; i < count; i++) {
+        pageArr.push(i + 1)
       }
 
       if (user) {
         const count = await globalFunction.cartCount(req.session.user._id)
-        res.render('users/shop', { User: true, user, products, filterMsg, categorys, pageArr, count, search: true, brands ,page})
+        res.render('users/shop', { User: true, user, products, filterMsg, categorys, pageArr, count, search: true, brands, page })
       } else {
-        res.render('users/shop', { products, categorys, filterMsg, search: true, pageArr, brands,page})
+        res.render('users/shop', { products, categorys, filterMsg, search: true, pageArr, brands, page })
       }
       req.session.filterMsg = null
       req.session.combine = null
@@ -218,11 +217,11 @@ module.exports = {
     }
   },
 
-  pagination: async(req,res,next)=>{
-    try{
+  pagination: async (req, res, next) => {
+    try {
       req.session.page = req.params.id
       res.redirect('/shop')
-    }catch(err){
+    } catch (err) {
       next(err)
     }
   },
@@ -253,33 +252,33 @@ module.exports = {
       const productId = req.params.id
       const product = await productCollection.findOne({ _id: new ObjectId(productId) })
       const products = await productCollection.find({ $and: [{ _id: { $ne: new ObjectId(productId) } }, { status: true }] }).limit(4).toArray()
-      
+
       const review = await globalFunction.getReviews(productId)
-      if(review){
+      if (review) {
         req.session.reviews = review
       }
       const reviews = req.session.reviews
 
-      const rvCount = await reviewCollection.findOne({productId:new ObjectId(productId)})
-      if(rvCount){
+      const rvCount = await reviewCollection.findOne({ productId: new ObjectId(productId) })
+      if (rvCount) {
         const review = rvCount.review
         req.session.rvCount = review.length
       }
       const prCount = req.session.rvCount
-      
+
       const user = req.session.user
       let count = 0
 
-      if(user){
+      if (user) {
         const cartCount = await globalFunction.cartCount(req.session.user._id)
-        if(cartCount){
+        if (cartCount) {
           count = cartCount
         }
       }
-      if(user){
-        res.render('users/product-details', { User: true, user, product, products,prCount,reviews, count})
-      }else{
-        res.render('users/product-details', { product, products,reviews,prCount, count})
+      if (user) {
+        res.render('users/product-details', { User: true, user, product, products, prCount, reviews, count })
+      } else {
+        res.render('users/product-details', { product, products, reviews, prCount, count })
       }
     } catch (err) {
       next(err)
@@ -449,7 +448,7 @@ module.exports = {
     }
   },
 
-  postEditProduct:async (req, res, next) => {
+  postEditProduct: async (req, res, next) => {
     try {
       const numberregx = /^[0-9]{1,6}$/
       const discountregx = /^[0-9]{1,2}$/
@@ -457,7 +456,7 @@ module.exports = {
       const desregx = /^[a-zA-Z0-9,-.\s+&]{2,}$/i
 
       const productData = req.body
-      const productId = req.params.id   
+      const productId = req.params.id
 
       if (productData.title === "" && productData.brand === "" && productData.price === "" && productData.description === "") {
         req.session.editerr = "Feilds are required"
