@@ -17,7 +17,7 @@ module.exports = {
 
   getHomeProducts: async (req, res, next) => {
     try {
-      const products = await productCollection.find({}, { sort: { _id: -1 } }).limit(4).toArray()
+      const products = await productCollection.find({}).sort({_id:-1}).limit(4).toArray()
       const banners = await bannerCollection.find({ status: true }).skip(1).toArray()
       const firstBanner = await bannerCollection.find({ status: true }).limit(1).toArray()
       req.session.successId = null
