@@ -76,7 +76,7 @@
 
   function changeQuantity(cartId, productId, product, index, count) {
     const quantity = parseInt(document.getElementById(productId).innerHTML)
-    if (quantity > 9 & count == 1) {
+    if (quantity > 9 && count == 1) {
       document.getElementById(index).style.visibility = 'hidden'
       document.getElementById('item').style.visibility = 'visible'
       document.getElementById('item').innerHTML = '<span class="text-dark fs-5">' + product + '</span>' + " - " + " You can't buy more than 10 at one time !"
