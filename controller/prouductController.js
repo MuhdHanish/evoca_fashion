@@ -417,7 +417,7 @@ module.exports = {
           title: productData.title,
           brand: productData.brand,
           price: parseInt(productData.price),
-          category: proudctData.category,
+          category: productData.category,
           description: productData.description,
           discount: parseInt(productData.discount),
           offerPrice: Math.round(parseInt(productData.price) - (parseInt(productData.price) * parseInt(productData.discount)) / 100),
