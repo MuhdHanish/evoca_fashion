@@ -83,11 +83,21 @@ module.exports = {
     try{
       const user = req.session.user
       const productId = req.params.id
-      const reviewObj={
-        rating  : parseInt(req.body.reviewValid),
-        description  : req.body.description,
-        userName  : user.userName
+      if(req.body.reviewValid == '3'){
+        req.session.reviewObj={
+          rating  : 3,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else{
+        req.session.reviewObj={
+          rating  : parseInt(req.body.reviewValid),
+          description  : req.body.description,
+          userName  : user.userName
+        }
       }
+      const reviewObj = req.session.reviewObj
+
       const review = await reviewCollection.findOne({productId:new ObjectId(productId)})
       if(review){
         reviewCollection.updateOne({productId:new ObjectId(productId)},{$push:{review:reviewObj}}).then()
