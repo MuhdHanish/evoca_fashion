@@ -51,7 +51,7 @@ hb.handlebars.registerHelper('times', function(n, block) {
 
 app.use(fileUpload({
   useTempFiles: true,
-  tempFileDir: __dirname+'/public/temp'
+  tempFileDir: __dirname + '/public/temp'
 }))
 
 // view engine setup
