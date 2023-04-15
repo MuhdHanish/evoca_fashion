@@ -1,3 +1,67 @@
+<style>
+   .pagination-nav {
+      margin-top: 20px;
+   }
+
+   .pagination-list {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+   }
+
+   .pagination-item {
+      margin: 0 5px;
+   }
+
+   .pagination-link {
+      border: 1px solid #e0e0e0;
+      color: #333;
+      display: block;
+      font-size: 14px;
+      padding: 6px 12px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+   }
+
+   .pagination-link:hover,
+   .pagination-link:focus {
+      background-color: #f1f1f1;
+   }
+
+   .pagination-item.is-active .pagination-link {
+      background-color: #333;
+      color: #fff;
+   }
+
+   .pagination-previous,
+   .pagination-next {
+      border: 1px solid #e0e0e0;
+      color: #333;
+      display: block;
+      font-size: 14px;
+      padding: 6px 12px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+   }
+
+   .pagination-previous:hover,
+   .pagination-next:hover,
+   .pagination-previous:focus,
+   .pagination-next:focus {
+      background-color: #f1f1f1;
+   }
+
+   .pagination-item.is-disabled .pagination-link,
+   .pagination-previous.is-disabled,
+   .pagination-next.is-disabled {
+      opacity: 0.5;
+      pointer-events: none;
+   }
+</style>
 {{>user-header}}
 
 <section id="page-header" class="mb-5">
@@ -107,7 +171,7 @@
                </div>
             </div>
          </div>
-      </div>   
+      </div>
       {{#if filterMsg}}
       <div class="col-9">
          <div class="row">
@@ -133,11 +197,11 @@
             {{/each}}
          </div>
       </div>
-      <nav aria-label="Page navigation example">
-         <ul class="pagination float-end">
+      <nav class="pagination-nav">
+         <ul class="pagination-list">
             {{#each pageArr}}
-            <li style="border: rgb(185, 184, 184) 1px solid;" {{#if (eq ../page [])}}class="active page-item " {{/if}}>
-               <a class="page-link text-dark" href="/pagination/{{[]}}">{{[]}}</a>
+            <li class="pagination-item {{#if (eq ../page [])}}active{{/if}}">
+               <a class="pagination-link" href="/pagination/{{[]}}">{{[]}}</a>
             </li>
             {{/each}}
          </ul>
