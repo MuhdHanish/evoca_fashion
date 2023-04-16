@@ -83,15 +83,34 @@ module.exports = {
     try{
       const user = req.session.user
       const productId = req.params.id
-      if(req.body.reviewValid == '3'){
+      
+      if(req.body.reviewValid == '1'){
+        req.session.reviewObj={
+          rating  : 1,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '2'){
+        req.session.reviewObj={
+          rating  : 2,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '3'){
         req.session.reviewObj={
           rating  : 3,
           description  : req.body.description,
           userName  : user.userName
         }
-      }else{
+      }else if(req.body.reviewValid == '4'){
         req.session.reviewObj={
-          rating  : parseInt(req.body.reviewValid),
+          rating  : 4,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '5'){
+        req.session.reviewObj={
+          rating  : 5,
           description  : req.body.description,
           userName  : user.userName
         }
