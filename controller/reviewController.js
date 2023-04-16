@@ -83,7 +83,6 @@ module.exports = {
     try{
       const user = req.session.user
       const productId = req.params.id
-      
       if(req.body.reviewValid == '1'){
         req.session.reviewObj={
           rating  : 1,
@@ -145,7 +144,14 @@ module.exports = {
           }
         }
       ]).toArray()
-      const rating = overall[0]?.overall
+
+      if(overall[0].overall!=null){
+        req.session.newRating = overall[0].overall
+      }else{
+        req.session.newRating = reviewObj.rating
+      }
+
+      const rating = req.session.newRating
       productCollection.updateOne({_id:new ObjectId(productId)},{$set:{rating:rating}}).then()
       
       res.redirect('/product-details/'+productId)
