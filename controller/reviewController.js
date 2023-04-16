@@ -145,12 +145,11 @@ module.exports = {
         }
       ]).toArray()
 
-      if(overall[0].overall!=null){
-        req.session.newRating = overall[0].overall
-      }else{
+      if(overall===null||overall.length===0){
         req.session.newRating = reviewObj.rating
+      }else{
+        req.session.newRating = overall[0].overall
       }
-
       const rating = req.session.newRating
       productCollection.updateOne({_id:new ObjectId(productId)},{$set:{rating:rating}}).then()
       
