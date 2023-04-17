@@ -11,8 +11,8 @@
           onmouseover="this.src='/product-images/{{product.images.[1]}}.jpg'"
           onmouseout="this.src='/product-images/{{product.images.[0]}}.jpg'"></a>
       <div class="star">
-        {{#times rating }}
-        {{rating}}
+        {{#times product.rating }}
+        {{product.rating}}
         {{/times}}
       </div>
       <h5 class="p-name mt-2">{{product.title}}</h5>

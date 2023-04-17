@@ -152,8 +152,10 @@ module.exports = {
       }
       const rating = req.session.newRating
       productCollection.updateOne({_id:new ObjectId(productId)},{$set:{rating:rating}}).then()
-      
-      res.redirect('/product-details/'+productId)
+
+      setTimeout(() => {
+        res.redirect('/product-details/'+productId)
+      }, 1000);
     }
     catch(err){
       next(err)
