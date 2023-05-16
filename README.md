@@ -65,7 +65,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For any inquiries or feedback, you can reach me at your-email@example.com.
+For any inquiries or feedback, you can reach me at muhammedhanish11@gmail.com.
 
 
 
