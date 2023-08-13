@@ -62,10 +62,9 @@
     <div class="layout-page">
       <br><br>
       <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
-        <h5 class="card-header text-center mb-3"
-          style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+        <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
           COUPONS</h5>
-        <div class="table-responsive text-nowrap container" >
+        <div class="table-responsive text-nowrap container">
           <table class="table ">
             <thead>
               <tr class="text-center">
@@ -90,7 +89,8 @@
                 {{#if status}}
                 <td><button onclick=" disable('{{_id}}')" class="model-wish-btn">disable</button></td>
                 {{else}}
-                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button></td>
+                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button>
+                </td>
                 {{/if}}
               </tr>
               {{/each}}
@@ -108,10 +108,9 @@
     <div class="layout-page">
       <br><br>
       <div class="card " style="border: 0px solid rgba(0,0,0,.125);">
-        <h5 class="card-header text-center mb-3"
-          style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
+        <h5 class="card-header text-center mb-3" style="border: 0px solid rgba(255, 255, 255, 0.125);">ALL
           COUPONS</h5>
-        <div class="table-responsive text-nowrap container" >
+        <div class="table-responsive text-nowrap container">
           <table class="table ">
             <thead>
               <tr class="text-center">
@@ -123,17 +122,18 @@
               {{#each couponDetails}}
               <tr class="text-center">
                 <td>Name- {{coupon}} <br>
-                Amount- {{minimum}} <br>
-                discount- {{discount}}% <br>
-                {{#if status}}
-                Exdate- {{expireDate}}
-                {{else}}
-                <p class='text-danger'>Expired!</p>
-                {{/if}}
-                {{#if status}}
+                  Amount- {{minimum}} <br>
+                  discount- {{discount}}% <br>
+                  {{#if status}}
+                  Exdate- {{expireDate}}
+                  {{else}}
+                  <p class='text-danger'>Expired!</p>
+                  {{/if}}
+                  {{#if status}}
                 <td><button onclick=" disable('{{_id}}')" class="model-wish-btn">disable</button></td>
                 {{else}}
-                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button></td>
+                <td><button onclick="location.href='/admin/expand-coupon/{{_id}}'" class="model-btn">expand</button>
+                </td>
                 {{/if}}
               </tr>
               {{/each}}
@@ -150,23 +150,23 @@
   var today = new Date().toISOString().split('T')[0];
   document.getElementById('c_date').setAttribute("min", today)
 
-      function disable(couponId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            showCancelButton: true,
-            confirmButtonColor: '#9d4de6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, disable',
-            position: 'top-end',
-            timer: 3000,
-            customClass: {
-                container: 'my-swal'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.href = '/admin/disable-coupon/'+couponId
-            }
-        })
-    }
+  function disable(couponId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      showCancelButton: true,
+      confirmButtonColor: '#9d4de6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, disable',
+      position: 'top-end',
+      timer: 3000,
+      customClass: {
+        container: 'my-swal'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.href = '/admin/disable-coupon/' + couponId
+      }
+    })
+  }
 
 </script>

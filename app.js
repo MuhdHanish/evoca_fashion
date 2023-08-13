@@ -51,7 +51,7 @@ hb.handlebars.registerHelper('times', function(n, block) {
 
 app.use(fileUpload({
   useTempFiles: true,
-  tempFileDir: '/temp/'
+  tempFileDir: __dirname + '/public/temp'
 }))
 
 // view engine setup
@@ -83,7 +83,15 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   console.log(err)
-  res.render('error');
+  const route = (req.url).split("/")[1]
+  if(route =='admin'){
+    req.session.ad= true
+  }
+  else{
+    req.session.ad = null
+  } 
+  const ad = req.session.ad
+  res.render('error',{ad});
 });
 
 module.exports = app;

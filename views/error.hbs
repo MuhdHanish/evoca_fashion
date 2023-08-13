@@ -35,7 +35,11 @@
 
             <p>the page you are looking for not avaible!</p>
             <button onclick="history.back(-1)" class=" link-line model-btn">Go back</button>
+            {{#if ad}}
+            <button onclick="location.href='/admin'" class="ms-3 link-line model-btn">Go to Home</button>
+            {{else}}
             <button onclick="location.href='/'" class="ms-3 link-line model-btn">Go to Home</button>
+            {{/if}}
           </div>
         </div>
       </div>

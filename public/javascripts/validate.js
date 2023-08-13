@@ -439,7 +439,7 @@ function forgotemail() {
 function review() {
   const rating = document.ratingform.reviewValid.value
   const description = document.ratingform.description.value
-  const desregx = /^[a-zA-Z0-9,-.\s+&]{20,}$/i
+  const desregx = /^[a-zA-Z0-9,'-.\s+&]{20,}$/i
 
   if (rating == '0') {
     document.getElementById('reErr').innerHTML = 'Please rate the product !'

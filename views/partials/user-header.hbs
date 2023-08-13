@@ -1,6 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light"
-  style="border-bottom: rgb(189, 188, 188) 1px solid;background-color: #fff;" >
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-bottom: rgb(189, 188, 188) 1px solid;">
+  <div class="container-fluid" style="background-color: #ffffff;">
     <img src="/images/evoca-logo.jpg" onclick="location.href='/'" alt="">
     <button class="navbar-toggler button-toggle" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -8,7 +7,7 @@
       <span><i id="bar" class="fa-solid fa-list"></i></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav   mb-lg-0 gap-4 d-flex" style="font-size: medium;">
+      <ul class="navbar-nav ms-5  mb-lg-0 gap-4 d-flex" style="font-size: larger;">
         {{#if search}}
         <div class="d-flex  ms-auto d-block d-lg-none ">
           <input class="form-control me-2 " oninput="smallSizeData(this)" type="text" placeholder="Search..."
@@ -25,13 +24,7 @@
           <a class="nav-link " aria-current="page" href="/user-orderlist">Orders</a>
         </li>
         <li class="nav-item">
-          <div class="dropdown ">
-            <a class="nav-link active" aria-current="page" href="">Enquiry</a>
-            <div class="dropdown-content tex-center" style="z-index: 10;">
-              <a href="/user-profile">About Us</a>
-              <a href="/contact-us">Contact</a>
-            </div>
-          </div>
+          <a class="nav-link " aria-current="page" href="/contact-us">Contact</a>
         </li>
       </ul>
       {{#if search}}
@@ -47,25 +40,26 @@
         <div class="d-flex">
           {{#if User}}
           </script>
-          <div class="dropdown  mt-2 ms-2 me-3">
-            <a class="nav-link active " aria-current="page" href="">{{user.userName}}</a>
+          <div class="dropdown  mt-2 " style="margin-left: 47px;">
+            <a class="nav-link active " aria-current="page" style="font-size: 18px;" href="">{{user.userName}}</a>
             <div class="dropdown-content tex-center" style="z-index: 10;">
               <a href="/user-profile">Profile</a>
               <a href="/logout">Log Out</a>
             </div>
           </div>
-          <li class="nav-item d-inline ms-1 mt-2 ">
-            <a class="nav-link active" aria-current="page" href="/user-cart"><i class="fa-solid fa-cart-shopping"
-                style="font-size: 20px;"></i> <span class="badge badge-pos"
-                style="background-color: #dc0345;"><small>{{count}}</small></span></a>
+          <li class="nav-item d-inline mt-2" style="margin-left: 35px;">
+            <a class="nav-link active" aria-current="page" href="/user-cart">
+              <i class="fa-solid  fa-cart-shopping position-relative" style="font-size: 20px;"><span
+                  class="badge  position-absolute top-0  start-100 badge-pos"><small
+                    style="font-size: 100;">{{count}}</small></span></i></a>
           </li>
-          <li class="nav-item d-inline ms-2" style="margin-top:6px ;">
-            <a class="nav-link active" aria-current="page" href="/user-wish"><i class="fa-regular fa-heart"
+          <li class="nav-item d-inline " style="margin-top: 6px;margin-left: 40px;">
+            <a class="nav-link active" aria-current="page" href="/user-wish"><i class="fa-regular  fa-heart"
                 style="font-size: 20px;"></i></a>
           </li>
           {{else}}
           <div class="dropdown ms-4 mt-2 ps-4">
-            Guest<i class="ms-3 fa-regular fa-user dropbtn search" style="font-size: 20px;"></i>
+            <span style="font-size: 18px;">Guest</span><i class="ms-3 fa-regular fa-user dropbtn search" style="font-size: 20px;"></i>
             <div class="dropdown-content text-center">
               <a href="/login">Login</a>
             </div>
@@ -76,8 +70,6 @@
     </div>
   </div>
 </nav>
-
-
 <script>
   function sendData(e) {
     const searchResult = document.getElementById('searchResult')
@@ -106,7 +98,6 @@
       }
     })
   }
-
   function smallSizeData(e) {
     const searchSmallResult = document.getElementById('searchSmallResult')
     fetch('getSearch', {
@@ -134,5 +125,4 @@
       }
     })
   }
-
 </script>

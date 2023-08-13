@@ -83,11 +83,39 @@ module.exports = {
     try{
       const user = req.session.user
       const productId = req.params.id
-      const reviewObj={
-        rating  : parseInt(req.body.reviewValid),
-        description  : req.body.description,
-        userName  : user.userName
+      if(req.body.reviewValid == '1'){
+        req.session.reviewObj={
+          rating  : 1,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '2'){
+        req.session.reviewObj={
+          rating  : 2,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '3'){
+        req.session.reviewObj={
+          rating  : 3,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '4'){
+        req.session.reviewObj={
+          rating  : 4,
+          description  : req.body.description,
+          userName  : user.userName
+        }
+      }else if(req.body.reviewValid == '5'){
+        req.session.reviewObj={
+          rating  : 5,
+          description  : req.body.description,
+          userName  : user.userName
+        }
       }
+      const reviewObj = req.session.reviewObj
+
       const review = await reviewCollection.findOne({productId:new ObjectId(productId)})
       if(review){
         reviewCollection.updateOne({productId:new ObjectId(productId)},{$push:{review:reviewObj}}).then()
@@ -116,10 +144,18 @@ module.exports = {
           }
         }
       ]).toArray()
-      const rating = overall[0]?.overall
+
+      if(overall===null||overall.length===0){
+        req.session.newRating = reviewObj.rating
+      }else{
+        req.session.newRating = overall[0].overall
+      }
+      const rating = req.session.newRating
       productCollection.updateOne({_id:new ObjectId(productId)},{$set:{rating:rating}}).then()
-      
-      res.redirect('/product-details/'+productId)
+
+      setTimeout(() => {
+        res.redirect('/product-details/'+productId)
+      }, 1000);
     }
     catch(err){
       next(err)

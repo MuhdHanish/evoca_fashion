@@ -9,10 +9,10 @@
     table.dataTable tbody td {
         text-align: center;
     }
+
     .table-responsive {
-    overflow-x: visible;
-}
-    
+        overflow-x: visible;
+    }
 </style>
 
 <div class="layout-wrapper layout-content-navbar ">
@@ -173,13 +173,14 @@
                             <tr class="text-center">
                                 <td><img src="/product-images/{{images.[0]}}.jpg" alt=""
                                         style="width: 100px;height: 100px; border: black 1px solid;"></td>
-                                        <td class="text-start">- {{title}} <br>
+                                <td class="text-start">- {{title}} <br>
                                     - {{brand}} <br>
                                     - {{offerPrice}} <br>
                                     - {{category}} <br>
                                     - {{stock}} <br>
                                     {{#if status}}
-                                    - <p class="text-success">- Listed</p></td>
+                                    <p class="text-success">- Listed</p>
+                                </td>
                                 <td class="text-center">
                                     <div class="col-12"><button onclick="location. href='/admin/edit-product/{{_id}}'"
                                             style="padding: 8px 41px;" class="model-btn mb-1">Edit</button>

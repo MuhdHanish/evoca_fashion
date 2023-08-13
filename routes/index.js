@@ -125,9 +125,6 @@ router.post('/remove-wishlist',verify,wishlistController.removeProduct)
 //CHECK-OUT
 router.get('/user-checkout', verify, verifyCart, cartController.getCheckOut)
 
-//BUY-NOW
-router.get('/buy-now/:id([0-9a-fA-F]{24})',verify,cartController.buyNowCheckout)
-
 //COUPON-CARD
 router.get('/coupon-card/:id', verify, couponController.getCoupon)
 

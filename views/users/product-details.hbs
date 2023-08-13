@@ -1,6 +1,6 @@
 {{>user-header}}
 
-<section class="container sproduct featured-prodcut  my-5">
+<section class="container sproduct featured-prodcut  my-5" data-aos="fade-up" data-aos-duration="800">
    <div class="row mb-5">
       <div class="col-lg-4 col-md-6 offset-1 col-10 mb-3">
          <img src="/product-images/{{product.images.[0]}}.jpg" id="bigImg" width="100%" class="img-fluid w-100 pb-3"
@@ -54,7 +54,7 @@
 </section>
 
 {{#if reviews}}
-<div class="container " style="font-family: 'Josefin Sans', sans-serif;">
+<div class="container " style="font-family: 'Josefin Sans', sans-serif;" data-aos="fade-up" data-aos-duration="800">
    <div class="row my-5">
       <div class="offset-1 col-10">
          <h5 class="mt-5">Rating & Reviews :</h5>
@@ -64,7 +64,7 @@
    </div>
 </div>
 
-<section class="container" style="font-family: 'Josefin Sans', sans-serif;">
+<section class="container" style="font-family: 'Josefin Sans', sans-serif;" data-aos="fade-up" data-aos-duration="800">
    {{#each reviews}}
    <div class="offset-1 col-10 ">
       <hr>
@@ -123,7 +123,7 @@
 </div>
 {{/if}}
 
-<section id="featured" class="my-5 pb-5">
+<section id="featured" class="my-5 pb-5" data-aos="fade-up" data-aos-duration="800">
    <div class="container text-center mt-5 py-5 featured-text">
       <h3 style="	font-family: 'Climate Crisis', cursive;">Related Collections</h3>
       <hr>
@@ -142,7 +142,6 @@
          </div>
          <h5 class="p-name mt-2">{{title}}</h5>
          <h6 class="p-price">₹ {{offerPrice}}</h6>
-         <button class="model-btn" id="btn">buy now</button>
       </div>
       {{/each}}
    </div>

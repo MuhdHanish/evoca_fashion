@@ -1,13 +1,13 @@
 {{>user-header}}
 
 
-<section class="pt-5  container">
+<section class="pt-5  container" data-aos="fade-up" data-aos-duration="800">
   <h2 style="font-weight: bold;font-family: 'Josefin Sans', sans-serif;text-transform: uppercase;" class="pt-5">Shopping
     Cart<i class="fa-solid fa-cart-shopping text-dark ms-2 fs-4"></i></h2>
   <hr>
 </section>
 
-<section id="cart-container" class="container my-5">
+<section id="cart-container" class="container my-5" style="height: 53vh;" data-aos="fade-up" data-aos-duration="800">
   <div class="row">
     
     <div class="col-md-8">
@@ -76,7 +76,10 @@
 
   function changeQuantity(cartId, productId, product, index, count) {
     const quantity = parseInt(document.getElementById(productId).innerHTML)
-    if (quantity > 9 & count == 1) {
+    document.getElementById('decrease').disabled = true
+    document.getElementById(index).disabled = true
+    if (quantity > 9 && count == 1) {
+      document.getElementById('decrease').disabled = false
       document.getElementById(index).style.visibility = 'hidden'
       document.getElementById('item').style.visibility = 'visible'
       document.getElementById('item').innerHTML = '<span class="text-dark fs-5">' + product + '</span>' + " - " + " You can't buy more than 10 at one time !"
@@ -84,8 +87,6 @@
     } else {
       document.getElementById(index).style.visibility = 'visible'
       document.getElementById('item').style.visibility = 'hidden'
-    }
-
     $.ajax({
       url: '/change-quantity',
       data: {
@@ -113,12 +114,15 @@
           }, 1000)
         }
         else if (response.status == 'out') {
+          document.getElementById('decrease').disabled = false
           document.getElementById(index).style.visibility = 'hidden'
           document.getElementById('item').style.visibility = 'visible'
           document.getElementById('item').innerHTML = '<span class="text-dark fs-5">' + product + '</span>' + '<br>' + " This Product is out of stock! Missed out on this item! " + '<br>' + '<span class="text-dark">' + "Its will added soon. Now you can purchase it related products don't worry" + '</span>'
           return
         }
         else {
+          document.getElementById('decrease').disabled = false
+          document.getElementById(index).disabled = false
           document.getElementById(productId).innerHTML = quantity + count
           document.getElementsByClassName(productId).innerHTML = quantity + count
           document.getElementById('Cart-Total').innerHTML = "₹" + response.total[0].total
@@ -126,6 +130,7 @@
         }
       }
     })
+    }
   }
 
   function removeProduct(cartId, productId) {
