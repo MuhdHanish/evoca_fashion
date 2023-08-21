@@ -15,7 +15,7 @@ module.exports = {
    getSignUp: (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             const signerr = req.session.signerr
             const signdata = req.session.signdata
@@ -50,7 +50,7 @@ module.exports = {
                req.session.user = req.body
                req.session.user._id = data.insertedId
                req.session.signed = 'signed'
-               res.redirect('/')
+               res.redirect('/home')
             })
 
          }
@@ -62,7 +62,7 @@ module.exports = {
    getLogin: (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             error = req.session.err
             logdata = req.session.logdata
@@ -85,7 +85,7 @@ module.exports = {
                   if (status) {
                      req.session.user = user
                      req.session.logged = 'logged'
-                     res.redirect('/')
+                     res.redirect('/home')
                   }
                   else {
                      req.session.err = "Invalid Password"
@@ -111,7 +111,7 @@ module.exports = {
    getOtpLogin: (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             otperr = req.session.otperr
             otpdata = req.session.otpdata
@@ -127,7 +127,7 @@ module.exports = {
    postOtpLogin: async (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             const userData = req.body
             const userDetails = await userCollection.findOne({ email: userData.otpEmail })
@@ -177,7 +177,7 @@ module.exports = {
    forgotpass: async (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             const error = req.session.forgotemailerr
             const email = req.session.emaildata
@@ -193,7 +193,7 @@ module.exports = {
    forgotVerifEmail: async (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          } else {
             const email = req.body.email
             const userDetails = await userCollection.findOne({ email: email })
@@ -300,7 +300,7 @@ module.exports = {
    getOtpVarification: (req, res, next) => {
       try {
          if (req.session.user) {
-            res.redirect('/')
+            res.redirect('/home')
          }
          else if (req.session.otpStatus != true) {
             res.redirect('/otp-login')
@@ -324,7 +324,7 @@ module.exports = {
             const userData = req.session.userData
             const user = await userCollection.findOne({ email: userData.otpEmail })
             req.session.user = user
-            res.redirect('/')
+            res.redirect('/home')
          }
          else if (req.body.otp == "") {
             req.session.otpvarerr = "OTP field is required"
@@ -579,7 +579,7 @@ module.exports = {
       try {
          req.session.successId = null
          req.session.user = null
-         res.redirect('/')
+         res.redirect('/home')
       } catch (err) {
          next(err)
       }

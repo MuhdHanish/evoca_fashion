@@ -33,7 +33,7 @@ module.exports = {
   getAdminLogin: (req, res, next) => {
     try {
       if (req.session.admin) {
-        res.redirect('/')
+        res.redirect('/home')
       }
       else {
         const admerr = req.session.admerr
