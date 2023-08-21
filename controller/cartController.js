@@ -29,7 +29,7 @@ module.exports = {
         {
           $unwind: '$products'
         },
-        {
+        { 
           $project: {
             item: '$products.item',
             quantity: '$products.quantity'

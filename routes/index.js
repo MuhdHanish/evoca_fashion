@@ -21,6 +21,8 @@ const reviewController = require('../controller/reviewController')
 
 router.use(nocache())
 
+router.get('/healthz', (req, res) => { return res.statusCode(200) });
+
 //HOME
 router.get('/', productController.getHomeProducts)
 
