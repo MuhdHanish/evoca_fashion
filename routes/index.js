@@ -21,10 +21,10 @@ const reviewController = require('../controller/reviewController')
 
 router.use(nocache())
 
-router.get('/', (req, res) => { return res.sendStatus(200) });
+router.get('/helthz', (req, res) => { return res.sendStatus(200) });
 
 //HOME
-router.get('/home', productController.getHomeProducts)
+router.get('/', productController.getHomeProducts)
 
 //SHOP
 router.get('/shop', productController.getShopProducts)
