@@ -1,4 +1,4 @@
-# EvocaFashion.store
+# Evoca Fashion
 
 EvocaFashion.store is a web application built with Node.js, MongoDB, Handlebars, CSS, and Bootstrap. It is an e-commerce platform where users can browse and purchase fashion products.
 
